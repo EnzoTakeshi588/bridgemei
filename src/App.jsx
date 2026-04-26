@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import Login from './Login'
 import Home from './Home'
+import MEI from './MEI'          // ✅ ADICIONADO
 import Chat from './Chat'
 import Documentos from './Documentos'
 import Alertas from './Alertas'
 import Faturamento from './Faturamento'
 import Aprendizado from './Aprendizado'
 
-// Sidebar compartilhada para as telas internas
 const sidebarStyles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
   .layout { display: flex; min-height: 100vh; }
@@ -82,11 +82,11 @@ function SharedLayout({ tela, onNavegar }) {
           </div>
         </aside>
         <div className="page-content">
-          {tela === "chat" && <Chat />}
-          {tela === "docs" && <Documentos />}
-          {tela === "alerts" && <Alertas />}
+          {tela === "chat"      && <Chat />}
+          {tela === "docs"      && <Documentos />}
+          {tela === "alerts"    && <Alertas />}
           {tela === "dashboard" && <Faturamento />}
-          {tela === "edu" && <Aprendizado />}
+          {tela === "edu"       && <Aprendizado />}
         </div>
       </div>
     </>
@@ -99,6 +99,7 @@ function App() {
 
   if (!logado) return <Login onLogin={() => setLogado(true)} />;
   if (tela === "home") return <Home onNavegar={setTela} />;
+  if (tela === "mei")  return <MEI  onNavegar={setTela} />;  // ✅ ADICIONADO
   return <SharedLayout tela={tela} onNavegar={setTela} />;
 }
 
