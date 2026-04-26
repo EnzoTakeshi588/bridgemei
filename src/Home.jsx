@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -9,89 +9,269 @@ const styles = `
     --green: #22c55e; --green-glow: rgba(34,197,94,0.1); --green-border: rgba(34,197,94,0.3);
     --surface: rgba(255,255,255,0.04); --border: rgba(255,255,255,0.08);
   }
+
+  /* ===== Background Animado ===== */
   .app {
     font-family: 'DM Sans', sans-serif; background: var(--bg); min-height: 100vh;
     display: flex; align-items: center; justify-content: center; color: var(--text);
+    position: relative; overflow: hidden;
   }
-  .panel-wrap { width: 100%; max-width: 480px; padding: 32px 20px; }
-  .header { text-align: center; margin-bottom: 48px; animation: fadeUp 0.5s ease both; }
-  .logo-name { font-family: 'DM Serif Display', serif; font-size: 28px; }
+  .app::before {
+    content: ''; position: absolute; inset: -50%;
+    background: radial-gradient(circle at 20% 50%, rgba(99,102,241,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(34,197,94,0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(99,102,241,0.05) 0%, transparent 50%);
+    animation: bgMove 20s ease-in-out infinite alternate;
+    z-index: 0; pointer-events: none;
+  }
+  @keyframes bgMove {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-2%, 2%) scale(1.05); }
+    100% { transform: translate(2%, -1%) scale(1); }
+  }
+
+  .panel-wrap { width: 100%; max-width: 480px; padding: 32px 20px; position: relative; z-index: 1; }
+
+  /* ===== Header Staggered ===== */
+  .header { text-align: center; margin-bottom: 48px; }
+  .logo-name {
+    font-family: 'DM Serif Display', serif; font-size: 28px;
+    opacity: 0; animation: fadeDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
   .logo-name span { color: var(--accent); }
-  .logo-tag { font-size: 11px; color: var(--text3); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 4px; }
-  .greeting { margin-top: 20px; }
+  .logo-tag {
+    font-size: 11px; color: var(--text3); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 4px;
+    opacity: 0; animation: fadeDown 0.6s 0.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .greeting {
+    margin-top: 20px;
+    opacity: 0; animation: fadeDown 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
   .greeting-sub { font-size: 11px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
   .greeting-title { font-family: 'DM Serif Display', serif; font-size: 32px; }
   .greeting-title em { font-style: italic; color: var(--accent); }
-  .panel { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; animation: fadeUp 0.5s 0.15s ease both; }
+
+  /* Typing cursor */
+  .typing-cursor::after {
+    content: '|'; animation: blink 1s step-end infinite; margin-left: 2px;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ===== Panel Staggered ===== */
+  .panel { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
   .module-btn {
     position: relative; overflow: hidden; border-radius: 20px;
     border: 1px solid var(--border); background: var(--surface);
     padding: 28px 22px 24px; cursor: pointer; text-align: left;
-    transition: transform 0.2s ease, border-color 0.2s, background 0.2s;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s, background 0.3s, box-shadow 0.3s;
     display: flex; flex-direction: column; gap: 14px; min-height: 190px;
     font-family: 'DM Sans', sans-serif; color: var(--text);
+    opacity: 0; transform: translateY(30px) scale(0.95);
   }
-  .module-btn:hover { transform: translateY(-4px); }
+  .module-btn.visible {
+    animation: cardEnter 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .module-btn:nth-child(1).visible { animation-delay: 0.35s; }
+  .module-btn:nth-child(2).visible { animation-delay: 0.5s; }
+
+  @keyframes cardEnter {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .module-btn:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  }
   .module-btn.mei  { border-color: var(--accent-border); }
-  .module-btn.mei:hover  { border-color: var(--accent); background: var(--accent-glow); }
+  .module-btn.mei:hover  { border-color: var(--accent); background: var(--accent-glow); box-shadow: 0 20px 40px rgba(99,102,241,0.15); }
   .module-btn.estoque { border-color: var(--green-border); }
-  .module-btn.estoque:hover { border-color: var(--green); background: var(--green-glow); }
-  .module-icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .module-btn.estoque:hover { border-color: var(--green); background: var(--green-glow); box-shadow: 0 20px 40px rgba(34,197,94,0.12); }
+
+  /* Ripple effect */
+  .ripple {
+    position: absolute; border-radius: 50%; transform: scale(0);
+    animation: rippleAnim 0.6s linear; pointer-events: none;
+    background: rgba(255,255,255,0.25);
+  }
+  @keyframes rippleAnim {
+    to { transform: scale(4); opacity: 0; }
+  }
+
+  /* ===== Ícone Flutuante ===== */
+  .module-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+    animation: float 3s ease-in-out infinite;
+  }
+  .module-btn:nth-child(2) .module-icon { animation-delay: 0.5s; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
   .mei     .module-icon { background: rgba(99,102,241,0.12); border: 1px solid rgba(99,102,241,0.2); }
   .estoque .module-icon { background: rgba(34,197,94,0.1);  border: 1px solid rgba(34,197,94,0.2); }
+
   .module-name { font-family: 'DM Serif Display', serif; font-size: 22px; }
   .module-desc { font-size: 12px; color: var(--text2); line-height: 1.5; flex: 1; }
+
+  /* ===== Badge Pulse ===== */
   .module-badge {
     font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
     padding: 4px 10px; border-radius: 20px; width: fit-content;
+    animation: badgePulse 2s ease-in-out infinite;
+  }
+  @keyframes badgePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.85; transform: scale(0.97); }
   }
   .mei     .module-badge { background: rgba(99,102,241,0.1);  border: 1px solid rgba(99,102,241,0.25); color: var(--accent); }
   .estoque .module-badge { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2);  color: #f59e0b; }
-  .toast {
+
+  /* ===== Toast Melhorado ===== */
+  .toast-wrap {
     position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+    z-index: 100; pointer-events: none;
+  }
+  .toast {
     background: #1a1a28; border: 1px solid rgba(245,158,11,0.3);
     color: rgba(245,158,11,0.9); font-size: 13px; font-weight: 500;
     padding: 12px 20px; border-radius: 12px; font-family: 'DM Sans', sans-serif;
-    animation: slideUp 0.3s ease;
+    animation: toastIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   }
-  @keyframes fadeUp  { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes slideUp { from { opacity: 0; transform: translateX(-50%) translateY(12px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+  .toast.exiting {
+    animation: toastOut 0.35s cubic-bezier(0.55, 0, 1, 0.45) forwards;
+  }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateY(20px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes toastOut {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to { opacity: 0; transform: translateY(20px) scale(0.95); }
+  }
+
+  /* ===== Partículas decorativas ===== */
+  .particle {
+    position: absolute; border-radius: 50%; background: var(--accent);
+    opacity: 0.15; pointer-events: none; z-index: 0;
+    animation: particleFloat 15s ease-in-out infinite;
+  }
+  @keyframes particleFloat {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.15; }
+    33% { transform: translate(20px, -30px) scale(1.2); opacity: 0.08; }
+    66% { transform: translate(-15px, 20px) scale(0.8); opacity: 0.2; }
+  }
 `;
 
 export default function Home({ onNavegar }) {
   const [toast, setToast] = useState(false);
+  const [toastExiting, setToastExiting] = useState(false);
+  const [displayName, setDisplayName] = useState("");
+  const [panelVisible, setPanelVisible] = useState(false);
+  const name = "Tassi";
+
+  // Typing effect
+  useEffect(() => {
+    let i = 0;
+    const timer = setInterval(() => {
+      setDisplayName(name.slice(0, i + 1));
+      i++;
+      if (i >= name.length) clearInterval(timer);
+    }, 150);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Trigger panel entrance
+  useEffect(() => {
+    const t = setTimeout(() => setPanelVisible(true), 100);
+    return () => clearTimeout(t);
+  }, []);
 
   const abrirEstoque = () => {
+    if (toast) return;
     setToast(true);
-    setTimeout(() => setToast(false), 2800);
-    // futuramente: onNavegar("estoque")
+    setToastExiting(false);
+    setTimeout(() => {
+      setToastExiting(true);
+      setTimeout(() => {
+        setToast(false);
+        setToastExiting(false);
+      }, 350);
+    }, 2500);
   };
+
+  // Ripple effect handler
+  const createRipple = (e, btnRef) => {
+    const btn = btnRef.current;
+    if (!btn) return;
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+    const ripple = document.createElement("span");
+    ripple.style.width = ripple.style.height = size + "px";
+    ripple.style.left = x + "px";
+    ripple.style.top = y + "px";
+    ripple.className = "ripple";
+    btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  };
+
+  const meiRef = useRef(null);
+  const estoqueRef = useRef(null);
 
   return (
     <>
       <style>{styles}</style>
       <div className="app">
+        {/* Partículas decorativas */}
+        <div className="particle" style={{ width: 120, height: 120, top: '10%', left: '5%', animationDelay: '0s' }} />
+        <div className="particle" style={{ width: 80, height: 80, top: '60%', right: '8%', animationDelay: '5s', background: 'var(--green)' }} />
+        <div className="particle" style={{ width: 60, height: 60, bottom: '15%', left: '15%', animationDelay: '10s' }} />
+
         <div className="panel-wrap">
           <div className="header">
             <div className="logo-name">Bridge<span>MEI</span></div>
             <div className="logo-tag">Gestão simplificada</div>
             <div className="greeting">
               <div className="greeting-sub">Bem-vinda de volta</div>
-              <div className="greeting-title">Olá, <em>Tassi</em> 👋</div>
+              <div className="greeting-title">
+                Olá, <em className="typing-cursor">{displayName}</em> 👋
+              </div>
             </div>
           </div>
 
           <div className="panel">
-            {/* ✅ Navega para "mei" */}
-            <button className="module-btn mei" onClick={() => onNavegar("mei")}>
+            <button
+              ref={meiRef}
+              className={`module-btn mei ${panelVisible ? "visible" : ""}`}
+              onClick={(e) => {
+                createRipple(e, meiRef);
+                setTimeout(() => onNavegar("mei"), 200);
+              }}
+            >
               <div className="module-icon">🧾</div>
               <div className="module-name">MEI</div>
               <div className="module-desc">DAS, declarações e faturamento do seu CNPJ.</div>
               <span className="module-badge">Ativo</span>
             </button>
 
-            {/* 🚧 Em breve */}
-            <button className="module-btn estoque" onClick={abrirEstoque}>
+            <button
+              ref={estoqueRef}
+              className={`module-btn estoque ${panelVisible ? "visible" : ""}`}
+              onClick={(e) => {
+                createRipple(e, estoqueRef);
+                setTimeout(() => abrirEstoque(), 200);
+              }}
+            >
               <div className="module-icon">📦</div>
               <div className="module-name">Estoque</div>
               <div className="module-desc">Produtos, entradas, saídas e inventário.</div>
@@ -101,9 +281,14 @@ export default function Home({ onNavegar }) {
         </div>
 
         {toast && (
-          <div className="toast">🚧 Estoque ainda não está disponível</div>
+          <div className="toast-wrap">
+            <div className={`toast ${toastExiting ? "exiting" : ""}`}>
+              🚧 Estoque ainda não está disponível
+            </div>
+          </div>
         )}
       </div>
     </>
   );
 }
+
