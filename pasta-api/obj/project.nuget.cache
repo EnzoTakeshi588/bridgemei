@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "qIFwLApVoNU=",
+  "success": true,
+  "projectFilePath": "/home/marcuss/Desktop/bridgemei/bridgemei/pasta-api/pasta-api.csproj",
+  "expectedPackageFiles": [
+    "/home/marcuss/.nuget/packages/bcrypt.net-next/4.1.0/bcrypt.net-next.4.1.0.nupkg.sha512",
+    "/home/marcuss/.nuget/packages/microsoft.aspnetcore.openapi/10.0.7/microsoft.aspnetcore.openapi.10.0.7.nupkg.sha512",
+    "/home/marcuss/.nuget/packages/microsoft.openapi/2.0.0/microsoft.openapi.2.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
