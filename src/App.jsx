@@ -1,11 +1,11 @@
 import { useState } from 'react'
 import Login from './Login'
 import Home from './Home'
-import MEI from './MEI'          // ✅ ADICIONADO
+import MEI from './Mei'          // ✅ ADICIONADO
 import Chat from './Chat'
 import Documentos from './Documentos'
 import Alertas from './Alertas'
-import Faturamento from './Faturamento'
+import Faturamento from './faturamento'
 import Aprendizado from './Aprendizado'
 
 const sidebarStyles = `
