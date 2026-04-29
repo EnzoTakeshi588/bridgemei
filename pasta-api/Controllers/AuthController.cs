@@ -15,7 +15,7 @@ namespace Controllers
             _authService = authService;
         }
         [HttpPost("register")]
-        public IActionResult Register(LoginRequest request)
+        public IActionResult Register(RegisterRequest request)
         {
            _authService.Register(request);
             return Ok(new { message = "User registered successfully" });

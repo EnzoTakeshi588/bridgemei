@@ -24,6 +24,8 @@ namespace Services
             }
             var user = new User
             {
+                Name = request.Name,
+                Surname = request.Surname,
                 Email = request.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password)
             };
