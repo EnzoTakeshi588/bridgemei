@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("pasta-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a27e7b64f981329e2a46ffcc5f8541682c7f873c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+48105c92549779bcb02af8feaf709fd374ea9ace")]
 [assembly: System.Reflection.AssemblyProductAttribute("pasta-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("pasta-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

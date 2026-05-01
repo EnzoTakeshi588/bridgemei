@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { getUserFromToken } from "./utils/auth";
 import {
   Chart, ArcElement, DoughnutController, LineController, LineElement,
   PointElement, LinearScale, CategoryScale, Filler, Tooltip,
@@ -454,6 +455,8 @@ function AIBox(){
 
 /* ══════════════ PAGES ══════════════ */
 function Dashboard({navigate}){
+  const user = getUserFromToken();
+  const nome = user?.nome || "Usuário";
   const sRef=useRef(null),cRef=useRef(null),bRef=useRef(null);
   const sVis=useVis(sRef),cVis=useVis(cRef),bVis=useVis(bRef);
   const [barAnim,setBarAnim]=useState(false);
@@ -466,7 +469,7 @@ function Dashboard({navigate}){
   ];
   return(<>
     <div className="page-eyebrow">Visão geral · Abril 2026</div>
-    <h1 className="page-h1">Bom dia, <em>João</em> 👋</h1>
+    <h1 className="page-h1">Bom dia, <em>{nome}</em> 👋</h1>
     <div className="alert-banner">
       <span>⚠️</span>
       <div><strong>Atenção:</strong> 2 faturas vencem nos próximos 3 dias. Total: <strong>R$ 4.820</strong></div>
@@ -657,7 +660,7 @@ function Documentos(){
 }
 
 /* ══════════════ APP SHELL ══════════════ */
-export default function App(){
+export default function App({ onLogout }){
   const [view,setView]=useState("dashboard"),[key,setKey]=useState(0);
   const navigate=(id)=>{setView(id);setKey(k=>k+1);window.scrollTo({top:0,behavior:"smooth"});};
 
@@ -685,7 +688,7 @@ export default function App(){
         </nav>
         <div className="hdr-right">
           <div className="hdr-avatar" title="Perfil">JD</div>
-          <button className="logout-btn" onClick={()=>alert("Saindo...")}>⎋ Sair</button>
+          <button className="logout-btn" onClick={onLogout}>⎋ Sair</button>
         </div>
       </header>
       <div key={key} className="page-wrap" style={view==="mensagens"?{paddingTop:0}:{paddingTop:4}}>
