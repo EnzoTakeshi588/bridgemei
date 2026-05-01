@@ -1,3 +1,52 @@
+# =========================
+# Node / React
+# =========================
 node_modules/
+build/
+dist/
+.next/
+out/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cache
+.cache/
+.parcel-cache/
+.vite/
+.eslintcache
+
+# =========================
+# .NET / C#
+# =========================
 bin/
 obj/
+
+# User-specific
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code / Visual Studio
+.vscode/
+.vs/
+
+# Logs
+*.log
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
