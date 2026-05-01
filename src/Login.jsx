@@ -515,13 +515,52 @@ export default function Login({ onLogin }) {
 
   const handleSubmit = async () => {
     const e = modo === "login" ? validateLogin() : validateCadastro();
-    if (Object.keys(e).length > 0) { setErrors(e); return; }
+
+    if (Object.keys(e).length > 0) {
+      setErrors(e);
+      return;
+    }
+
     setErrors({});
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1500));
-    setLoading(false);
-    setSuccess(true);
-    setTimeout(() => onLogin && onLogin(), 1000);
+
+    try {
+      let response;
+      if (modo === "login") {
+        response = await fetch("http://localhost:5009/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password }),
+        });
+      } else {
+        response = await fetch("http://localhost:5009/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ nome, sobrenome, email: emailC, password: passwordC }),
+        });
+      }
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSuccess(true);
+
+        if (modo === "login") {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("nome", data.name || data.nome || "");
+        }
+
+        setTimeout(() => {
+          onLogin && onLogin();
+        }, 1000);
+      } else {
+        setErrors({ geral: data.message || "Erro no login. Tente novamente." });
+      }
+    } catch (err) {
+      setErrors({ geral: "Ocorreu um erro ao conectar com o servidor." });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const leftContent = modo === "login" ? {
@@ -535,7 +574,6 @@ export default function Login({ onLogin }) {
     sub: "Gerencie seu CNPJ, DAS e faturamento de forma simples e inteligente.",
     features: ["Cadastro rápido em menos de 1 minuto", "Sem burocracia, sem custo", "Alertas automáticos de vencimento"],
   };
-
   return (
     <>
       <style>{styles}</style>
@@ -575,13 +613,19 @@ export default function Login({ onLogin }) {
             </div>
 
             <div className="card-header">
-              <h2 className="card-title">{modo === "login" ? "Bem-vinda de volta 👋" : "Crie sua conta 🚀"}</h2>
+              <h2 className="card-title">{modo === "login" ? "Bem-vindo de volta 👋" : "Crie sua conta 🚀"}</h2>
               <p className="card-subtitle">{modo === "login" ? "Use seu e-mail e senha para acessar" : "Preencha os dados abaixo para começar"}</p>
             </div>
 
             {success && (
               <div className="success-msg">
                 ✓ {modo === "login" ? "Login realizado com sucesso!" : "Conta criada com sucesso!"}
+              </div>
+            )}
+
+            {errors.geral && (
+              <div className="form-error" style={{ marginBottom: "15px"}}>
+                ✗ {errors.geral}
               </div>
             )}
 
@@ -695,5 +739,5 @@ export default function Login({ onLogin }) {
       </div>
     </>
   );
-}
-
+  }
+  

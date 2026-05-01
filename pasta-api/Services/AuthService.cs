@@ -2,19 +2,49 @@ using Models;
 using Repositories.Interfaces;
 using DTOs.Auth;
 using Services.Interfaces;
-
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Config;
 namespace Services
 {
     // Implementation of authentication service
     public class AuthService : IAuthService
     {
-        // Method to authenticate user
         private readonly IUserRepository _userRepository;
+        private readonly JwtSettings _jwtSettings;
 
-        public AuthService(IUserRepository userRepository)
+        public AuthService(IUserRepository userRepository, JwtSettings jwtSettings)
         {
             _userRepository = userRepository;
+            _jwtSettings = jwtSettings;
         }
+
+        private string GenerateToken(User user)
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
+                
+                var claims = new[]
+                {
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Email, user.Email)
+                };
+
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(claims),
+                    Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationMinutes),
+                    Issuer = _jwtSettings.Issuer,
+                    Audience = _jwtSettings.Audience,
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                return tokenHandler.WriteToken(token);
+            }
+
         public void Register(RegisterRequest request)
         {
             var existingUser = _userRepository.GetUserByEmail(request.Email);
@@ -39,10 +69,11 @@ namespace Services
             {
                 throw new Exception("Invalid email or password");
             }
-            // Generate JWT token here and return it
+            var token = GenerateToken(user);
             return new LoginResponse
             {
-                Token = "fake-jwt" // Replace with actual token generation logic
+                Token = token,
+                Name = user.Name
             };
         }
     }

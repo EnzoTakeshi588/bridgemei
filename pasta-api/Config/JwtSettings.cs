@@ -1,4 +1,10 @@
 namespace Config
 {
-    // This class represents the settings for JWT (JSON Web Token) authentication.
+    public class JwtSettings
+    {
+        public required string Secret { get; set; }
+        public required string Issuer { get; set; }
+        public required string Audience { get; set; }
+        public required int ExpirationMinutes { get; set; }
+    }
 }
