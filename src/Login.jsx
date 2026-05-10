@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { login, register } from "./services/api";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
@@ -526,41 +527,41 @@ export default function Login({ onLogin }) {
 
     try {
       let response;
+
       if (modo === "login") {
-        response = await fetch("http://localhost:5009/api/auth/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email, password }),
+        response = await login({
+          email,
+          password,
         });
-      } else {
-        response = await fetch("http://localhost:5009/api/auth/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ nome, sobrenome, email: emailC, password: passwordC }),
+
+        localStorage.setItem("token", response.token);
+
+        localStorage.setItem("nome", response.name || response.nome || "");
+      } 
+      
+      else {
+        response = await register({
+          name: nome,
+          surname: sobrenome,
+          email: emailC,
+          password: passwordC
         });
-      }
 
-      const data = await response.json();
-
-      if (response.ok) {
         setSuccess(true);
-
-        if (modo === "login") {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("nome", data.name || data.nome || "");
-        }
+      } 
+       setSuccess(true);
 
         setTimeout(() => {
-          onLogin && onLogin();
+          window.location.href = "/";
         }, 1000);
-      } else {
-        setErrors({ geral: data.message || "Erro no login. Tente novamente." });
-      }
     } catch (err) {
-      setErrors({ geral: "Ocorreu um erro ao conectar com o servidor." });
-    } finally {
-      setLoading(false);
-    }
+        setErrors({
+          geral: err.message,
+        });
+
+      } finally {
+        setLoading(false);
+      }
   };
 
   const leftContent = modo === "login" ? {

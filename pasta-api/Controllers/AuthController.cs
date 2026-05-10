@@ -19,7 +19,7 @@ namespace Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public IActionResult Register(RegisterRequest request)
+        public IActionResult Register([FromBody] RegisterRequest request)
         {
            _authService.Register(request);
             return Ok(new { message = "User registered successfully" });
@@ -27,10 +27,10 @@ namespace Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login(LoginRequest request)
+        public IActionResult Login([FromBody] LoginRequest request)
         {
-            var result = _authService.Login(request);
-            return Ok(result);
+            var response = _authService.Login(request);
+            return Ok(response);
         }
     }
 }
