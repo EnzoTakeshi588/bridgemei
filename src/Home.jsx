@@ -10,7 +10,6 @@ const styles = `
     --surface: rgba(255,255,255,0.04); --border: rgba(255,255,255,0.08);
   }
 
-  /* ===== Background Animado ===== */
   .app {
     font-family: 'DM Sans', sans-serif; background: var(--bg); min-height: 100vh;
     display: flex; align-items: center; justify-content: center; color: var(--text);
@@ -32,7 +31,6 @@ const styles = `
 
   .panel-wrap { width: 100%; max-width: 480px; padding: 32px 20px; position: relative; z-index: 1; }
 
-  /* ===== Header Staggered ===== */
   .header { text-align: center; margin-bottom: 48px; }
   .logo-name {
     font-family: 'DM Serif Display', serif; font-size: 28px;
@@ -51,7 +49,6 @@ const styles = `
   .greeting-title { font-family: 'DM Serif Display', serif; font-size: 32px; }
   .greeting-title em { font-style: italic; color: var(--accent); }
 
-  /* Typing cursor */
   .typing-cursor::after {
     content: '|'; animation: blink 1s step-end infinite; margin-left: 2px;
   }
@@ -62,7 +59,6 @@ const styles = `
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* ===== Panel Staggered ===== */
   .panel { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 
   .module-btn {
@@ -88,12 +84,11 @@ const styles = `
     transform: translateY(-6px) scale(1.02);
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   }
-  .module-btn.mei  { border-color: var(--accent-border); }
-  .module-btn.mei:hover  { border-color: var(--accent); background: var(--accent-glow); box-shadow: 0 20px 40px rgba(99,102,241,0.15); }
+  .module-btn.mei { border-color: var(--accent-border); }
+  .module-btn.mei:hover { border-color: var(--accent); background: var(--accent-glow); box-shadow: 0 20px 40px rgba(99,102,241,0.15); }
   .module-btn.estoque { border-color: var(--green-border); }
   .module-btn.estoque:hover { border-color: var(--green); background: var(--green-glow); box-shadow: 0 20px 40px rgba(34,197,94,0.12); }
 
-  /* Ripple effect */
   .ripple {
     position: absolute; border-radius: 50%; transform: scale(0);
     animation: rippleAnim 0.6s linear; pointer-events: none;
@@ -103,7 +98,6 @@ const styles = `
     to { transform: scale(4); opacity: 0; }
   }
 
-  /* ===== Ícone Flutuante ===== */
   .module-icon {
     width: 48px; height: 48px; border-radius: 12px;
     display: flex; align-items: center; justify-content: center; font-size: 22px;
@@ -121,7 +115,6 @@ const styles = `
   .module-name { font-family: 'DM Serif Display', serif; font-size: 22px; }
   .module-desc { font-size: 12px; color: var(--text2); line-height: 1.5; flex: 1; }
 
-  /* ===== Badge Pulse ===== */
   .module-badge {
     font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
     padding: 4px 10px; border-radius: 20px; width: fit-content;
@@ -132,33 +125,8 @@ const styles = `
     50% { opacity: 0.85; transform: scale(0.97); }
   }
   .mei     .module-badge { background: rgba(99,102,241,0.1);  border: 1px solid rgba(99,102,241,0.25); color: var(--accent); }
-  .estoque .module-badge { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2);  color: #f59e0b; }
+  .estoque .module-badge { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2);  color: #22c55e; }
 
-  /* ===== Toast Melhorado ===== */
-  .toast-wrap {
-    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-    z-index: 100; pointer-events: none;
-  }
-  .toast {
-    background: #1a1a28; border: 1px solid rgba(245,158,11,0.3);
-    color: rgba(245,158,11,0.9); font-size: 13px; font-weight: 500;
-    padding: 12px 20px; border-radius: 12px; font-family: 'DM Sans', sans-serif;
-    animation: toastIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  }
-  .toast.exiting {
-    animation: toastOut 0.35s cubic-bezier(0.55, 0, 1, 0.45) forwards;
-  }
-  @keyframes toastIn {
-    from { opacity: 0; transform: translateY(20px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  @keyframes toastOut {
-    from { opacity: 1; transform: translateY(0) scale(1); }
-    to { opacity: 0; transform: translateY(20px) scale(0.95); }
-  }
-
-  /* ===== Partículas decorativas ===== */
   .particle {
     position: absolute; border-radius: 50%; background: var(--accent);
     opacity: 0.15; pointer-events: none; z-index: 0;
@@ -172,13 +140,10 @@ const styles = `
 `;
 
 export default function Home({ onNavegar }) {
-  const [toast, setToast] = useState(false);
-  const [toastExiting, setToastExiting] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [panelVisible, setPanelVisible] = useState(false);
   const name = "Tassi";
 
-  // Typing effect
   useEffect(() => {
     let i = 0;
     const timer = setInterval(() => {
@@ -189,26 +154,11 @@ export default function Home({ onNavegar }) {
     return () => clearInterval(timer);
   }, []);
 
-  // Trigger panel entrance
   useEffect(() => {
     const t = setTimeout(() => setPanelVisible(true), 100);
     return () => clearTimeout(t);
   }, []);
 
-  const abrirEstoque = () => {
-    if (toast) return;
-    setToast(true);
-    setToastExiting(false);
-    setTimeout(() => {
-      setToastExiting(true);
-      setTimeout(() => {
-        setToast(false);
-        setToastExiting(false);
-      }, 350);
-    }, 2500);
-  };
-
-  // Ripple effect handler
   const createRipple = (e, btnRef) => {
     const btn = btnRef.current;
     if (!btn) return;
@@ -232,7 +182,6 @@ export default function Home({ onNavegar }) {
     <>
       <style>{styles}</style>
       <div className="app">
-        {/* Partículas decorativas */}
         <div className="particle" style={{ width: 120, height: 120, top: '10%', left: '5%', animationDelay: '0s' }} />
         <div className="particle" style={{ width: 80, height: 80, top: '60%', right: '8%', animationDelay: '5s', background: 'var(--green)' }} />
         <div className="particle" style={{ width: 60, height: 60, bottom: '15%', left: '15%', animationDelay: '10s' }} />
@@ -250,6 +199,7 @@ export default function Home({ onNavegar }) {
           </div>
 
           <div className="panel">
+            {/* Botão MEI */}
             <button
               ref={meiRef}
               className={`module-btn mei ${panelVisible ? "visible" : ""}`}
@@ -264,31 +214,23 @@ export default function Home({ onNavegar }) {
               <span className="module-badge">Ativo</span>
             </button>
 
+            {/* Botão Estoque */}
             <button
               ref={estoqueRef}
               className={`module-btn estoque ${panelVisible ? "visible" : ""}`}
               onClick={(e) => {
                 createRipple(e, estoqueRef);
-                setTimeout(() => abrirEstoque(), 200);
+                setTimeout(() => onNavegar("estoque"), 200);
               }}
             >
               <div className="module-icon">📦</div>
               <div className="module-name">Estoque</div>
               <div className="module-desc">Produtos, entradas, saídas e inventário.</div>
-              <span className="module-badge">Em breve</span>
+              <span className="module-badge">Disponível</span>
             </button>
           </div>
         </div>
-
-        {toast && (
-          <div className="toast-wrap">
-            <div className={`toast ${toastExiting ? "exiting" : ""}`}>
-              🚧 Estoque ainda não está disponível
-            </div>
-          </div>
-        )}
       </div>
     </>
   );
 }
-

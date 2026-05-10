@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import Login from './Login'
 import Home from './Home'
-import MEI from './Mei'          // ✅ ADICIONADO
+import MEI from './Mei'
 import Chat from './Chat'
 import Documentos from './Documentos'
 import Alertas from './Alertas'
 import Faturamento from './faturamento'
 import Aprendizado from './Aprendizado'
+import Estoque from './Estoque'
 
 const sidebarStyles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -43,12 +44,12 @@ const sidebarStyles = `
 `;
 
 const navItems = [
-  { id: "home", icon: "⊞", label: "Início" },
-  { id: "chat", icon: "💬", label: "Mensagens", badge: 2 },
-  { id: "docs", icon: "📁", label: "Documentos" },
-  { id: "alerts", icon: "🔔", label: "Alertas", badge: 1 },
+  { id: "home",      icon: "⊞",  label: "Início" },
+  { id: "chat",      icon: "💬", label: "Mensagens", badge: 2 },
+  { id: "docs",      icon: "📁", label: "Documentos" },
+  { id: "alerts",    icon: "🔔", label: "Alertas", badge: 1 },
   { id: "dashboard", icon: "📊", label: "Faturamento" },
-  { id: "edu", icon: "📚", label: "Aprendizado" },
+  { id: "edu",       icon: "📚", label: "Aprendizado" },
 ];
 
 function SharedLayout({ tela, onNavegar }) {
@@ -64,7 +65,11 @@ function SharedLayout({ tela, onNavegar }) {
           <nav className="sb-nav">
             <div className="sb-section">Menu</div>
             {navItems.map(item => (
-              <button key={item.id} className={`sb-item ${tela === item.id ? "active" : ""}`} onClick={() => onNavegar(item.id)}>
+              <button
+                key={item.id}
+                className={`sb-item ${tela === item.id ? "active" : ""}`}
+                onClick={() => onNavegar(item.id)}
+              >
                 <span className="sb-icon">{item.icon}</span>
                 {item.label}
                 {item.badge && <span className="sb-badge">{item.badge}</span>}
@@ -97,9 +102,10 @@ function App() {
   const [logado, setLogado] = useState(false);
   const [tela, setTela] = useState("home");
 
-  if (!logado) return <Login onLogin={() => setLogado(true)} />;
-  if (tela === "home") return <Home onNavegar={setTela} />;
-  if (tela === "mei")  return <MEI  onNavegar={setTela} />;  // ✅ ADICIONADO
+  if (!logado)            return <Login   onLogin={() => setLogado(true)} />;
+  if (tela === "home")    return <Home    onNavegar={setTela} />;
+  if (tela === "mei")     return <MEI     onNavegar={setTela} />;
+  if (tela === "estoque") return <Estoque onNavegar={setTela} />;
   return <SharedLayout tela={tela} onNavegar={setTela} />;
 }
 
