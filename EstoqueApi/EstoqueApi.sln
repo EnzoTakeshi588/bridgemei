@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstoqueApi", "EstoqueApi.csproj", "{DAC1C7EA-D927-6234-5A39-F5BF136C72B9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DAC1C7EA-D927-6234-5A39-F5BF136C72B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAC1C7EA-D927-6234-5A39-F5BF136C72B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAC1C7EA-D927-6234-5A39-F5BF136C72B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAC1C7EA-D927-6234-5A39-F5BF136C72B9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4C7D7D95-F453-4956-AD4E-545E11F2FA64}
+	EndGlobalSection
+EndGlobal
