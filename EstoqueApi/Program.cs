@@ -4,10 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ CORS aqui, antes do builder.Build()
-builder.Services.AddCors(o => o.AddDefaultPolicy(p =>
-    p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -23,9 +19,11 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
-// ✅ UseCors aqui, antes do MapControllers
-app.UseCors();
+app.UseCors(options => {
+    options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+});
 
+app.UseAuthorization();
 app.MapControllers();
 
 app.Run(); // ← nada depois daqui

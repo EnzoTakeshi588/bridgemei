@@ -25,7 +25,11 @@ BridgeMEI é um MVP(produto mínimo viável) de gestão financeira, o qual tem d
 ## Como testar
 ## Etapas do Projeto
 * ~~Criação da API de Login~~
-* **Criação da API de Estoque** 
-* ~~Conectar API ao Site~~
-* **Criação da tela de Estoque**
+* ~~Criação da API de Estoque~~
+* ~~Conectar as API's ao Site~~
+* ~~Criação da tela de Estoque~~  
+* **Publicar API Estoque**
+* Exibir os dados no Dashboard
+* Correção de Erros
+
 _O BridgeMEI é um projeto escolar, feito por estudantes da Etec-SP_

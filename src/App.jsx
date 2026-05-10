@@ -7,11 +7,8 @@ import Documentos from './Documentos'
 import Alertas from './Alertas'
 import Faturamento from './faturamento'
 import Aprendizado from './Aprendizado'
-<<<<<<< HEAD
 import Estoque from './Estoque'
-=======
 import { getUserFromToken, logout } from './utils/auth'
->>>>>>> 0459e8b2be6cbee46aafb239e045e8c8ee2e3d15
 
 const sidebarStyles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -117,16 +114,10 @@ function App() {
     setTela("home");
   };
 
-<<<<<<< HEAD
   if (!logado)            return <Login   onLogin={() => setLogado(true)} />;
   if (tela === "home")    return <Home    onNavegar={setTela} />;
   if (tela === "mei")     return <MEI     onNavegar={setTela} />;
   if (tela === "estoque") return <Estoque onNavegar={setTela} />;
-=======
-  if (!logado) return <Login onLogin={() => setLogado(true)} />;
-  if (tela === "home") return <Home onNavegar={setTela} />;
-  if (tela === "mei")  return <MEI onNavegar={setTela} onLogout={handleLogout} />;  // ✅ ADICIONADO
->>>>>>> 0459e8b2be6cbee46aafb239e045e8c8ee2e3d15
   return <SharedLayout tela={tela} onNavegar={setTela} />;
 }
 
