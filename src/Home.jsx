@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { getUserFromToken } from "./utils/auth";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -142,17 +143,18 @@ const styles = `
 export default function Home({ onNavegar }) {
   const [displayName, setDisplayName] = useState("");
   const [panelVisible, setPanelVisible] = useState(false);
-  const name = "Tassi";
+  const user = getUserFromToken();
+  const nome = user?.nome || "";
 
   useEffect(() => {
     let i = 0;
     const timer = setInterval(() => {
-      setDisplayName(name.slice(0, i + 1));
+      setDisplayName(nome.slice(0, i + 1));
       i++;
-      if (i >= name.length) clearInterval(timer);
+      if (i >= nome.length) clearInterval(timer);
     }, 150);
     return () => clearInterval(timer);
-  }, []);
+  }, [nome]);
 
   useEffect(() => {
     const t = setTimeout(() => setPanelVisible(true), 100);

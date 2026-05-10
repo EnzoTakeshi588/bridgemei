@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { login, register } from "./services/api";
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap');
@@ -515,13 +516,52 @@ export default function Login({ onLogin }) {
 
   const handleSubmit = async () => {
     const e = modo === "login" ? validateLogin() : validateCadastro();
-    if (Object.keys(e).length > 0) { setErrors(e); return; }
+
+    if (Object.keys(e).length > 0) {
+      setErrors(e);
+      return;
+    }
+
     setErrors({});
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1500));
-    setLoading(false);
-    setSuccess(true);
-    setTimeout(() => onLogin && onLogin(), 1000);
+
+    try {
+      let response;
+
+      if (modo === "login") {
+        response = await login({
+          email,
+          password,
+        });
+
+        localStorage.setItem("token", response.token);
+
+        localStorage.setItem("nome", response.name || response.nome || "");
+      } 
+      
+      else {
+        response = await register({
+          name: nome,
+          surname: sobrenome,
+          email: emailC,
+          password: passwordC
+        });
+
+        setSuccess(true);
+      } 
+       setSuccess(true);
+
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
+    } catch (err) {
+        setErrors({
+          geral: err.message,
+        });
+
+      } finally {
+        setLoading(false);
+      }
   };
 
   const leftContent = modo === "login" ? {
@@ -535,7 +575,6 @@ export default function Login({ onLogin }) {
     sub: "Gerencie seu CNPJ, DAS e faturamento de forma simples e inteligente.",
     features: ["Cadastro rápido em menos de 1 minuto", "Sem burocracia, sem custo", "Alertas automáticos de vencimento"],
   };
-
   return (
     <>
       <style>{styles}</style>
@@ -575,13 +614,19 @@ export default function Login({ onLogin }) {
             </div>
 
             <div className="card-header">
-              <h2 className="card-title">{modo === "login" ? "Bem-vinda de volta 👋" : "Crie sua conta 🚀"}</h2>
+              <h2 className="card-title">{modo === "login" ? "Bem-vindo de volta 👋" : "Crie sua conta 🚀"}</h2>
               <p className="card-subtitle">{modo === "login" ? "Use seu e-mail e senha para acessar" : "Preencha os dados abaixo para começar"}</p>
             </div>
 
             {success && (
               <div className="success-msg">
                 ✓ {modo === "login" ? "Login realizado com sucesso!" : "Conta criada com sucesso!"}
+              </div>
+            )}
+
+            {errors.geral && (
+              <div className="form-error" style={{ marginBottom: "15px"}}>
+                ✗ {errors.geral}
               </div>
             )}
 
@@ -695,5 +740,5 @@ export default function Login({ onLogin }) {
       </div>
     </>
   );
-}
-
+  }
+  
