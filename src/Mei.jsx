@@ -60,12 +60,13 @@ const BASE = `
     display: flex; align-items: center; gap: 14px;
     padding: 14px 32px; max-width: 1400px; width: 100%; margin: 0 auto;
     animation: fadeDown .6s cubic-bezier(.22,1,.36,1) both;
+    min-width:0;
   }
   .hdr-logo { font-family:'DM Serif Display',serif; font-size:20px; flex-shrink:0; }
   .hdr-logo span { color:var(--accent); }
 
   .hdr-nav {
-    display: flex; gap: 3px; align-items: center; flex: 1;
+    display: flex; gap: 3px; align-items: center; flex: 1; min-width:0;
     background: rgba(255,255,255,0.03); border: 1px solid var(--border);
     border-radius: 14px; padding: 5px; overflow-x: auto; scrollbar-width: none;
   }
@@ -90,14 +91,117 @@ const BASE = `
     display:flex; align-items:center; justify-content:center;
   }
 
-  .hdr-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+  .hdr-right { display:flex; align-items:center; gap:8px; flex-shrink:0; position:relative; }
   .hdr-avatar {
     width:34px; height:34px; background:var(--accent-glow); border:1px solid var(--accent-border);
     border-radius:10px; display:flex; align-items:center; justify-content:center;
     font-size:12px; font-weight:600; color:var(--accent); cursor:pointer; transition:all .2s;
   }
   .hdr-avatar:hover { transform:scale(1.07); box-shadow:0 0 16px rgba(99,102,241,.22); }
-  .logout-btn {
+  .user-menu-wrapper {
+    position:relative;
+  }
+  .user-menu{
+  position:absolute;
+  top:48px;
+  right:0;
+
+  width:260px;
+
+  background:rgba(15,15,25,.88);
+  backdrop-filter:blur(18px);
+
+  border:1px solid var(--border);
+  border-radius:18px;
+
+  overflow:hidden;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.45),
+    0 0 30px rgba(99,102,241,.08);
+
+  animation:menuIn .22s cubic-bezier(.22,1,.36,1);
+
+  z-index:999;
+}
+.user-menu-header {
+  display:flex; align-items:center; gap:14px; padding:18px;
+}
+.user-avatar-big{
+  width:48px;
+  height:48px;
+
+  border-radius:14px;
+
+  background:var(--accent-glow);
+  border:1px solid var(--accent-border);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-weight:700;
+  font-size:15px;
+
+  color:var(--accent);
+
+  flex-shrink:0;
+}
+
+.user-name {
+  font-size:14px; font-weight:600; color:var(--text);
+}
+
+.user-email {
+  font-size:12px; color:var(--text2); margin-top:2px;
+}
+
+.user-menu-divider {
+  height:1px; background:var(--border);
+}
+
+.user-menu-item{
+  width:100%;
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  padding:14px 18px;
+
+  background:none;
+  border:none;
+
+  color:var(--text2);
+
+  font-family:'DM Sans',sans-serif;
+  font-size:13px;
+  font-weight:500;
+
+  cursor:pointer;
+
+  transition:
+    background .18s,
+    color .18s,
+    padding-left .18s;
+}
+
+.user-menu-item:hover {
+  background:rgba(255,255,255,.04);
+  color:var(--text);
+  padding-left:22px;
+}
+
+.user-menu-item.danger{
+  color:rgba(239,68,68,.78);
+}
+
+.user-menu-item.danger:hover{
+  background:rgba(239,68,68,.08);
+  color:var(--danger);
+}
+
+.logout-btn {
     display:flex; align-items:center; gap:7px; padding:7px 14px; border-radius:10px;
     border:1px solid rgba(239,68,68,.22); background:rgba(239,68,68,.06);
     color:rgba(239,68,68,.8); font-family:'DM Sans',sans-serif; font-size:13px;
@@ -124,6 +228,7 @@ const BASE = `
   @keyframes floatY   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
   @keyframes pulseDot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.4);opacity:.7} }
   @keyframes blinkC   { 50%{opacity:0} }
+  @keyframes menuIn   { from{opacity:0;transform:translateY(-8px)scale(.97);} to{opacity:1;transform:translateY(0)scale(1);}}
 
   /* ── DASHBOARD ── */
   .alert-banner {
@@ -660,9 +765,12 @@ function Documentos(){
 }
 
 /* ══════════════ APP SHELL ══════════════ */
-export default function App({ onLogout }){
+export default function App({ onLogout, onNavegar }){
   const [view,setView]=useState("dashboard"),[key,setKey]=useState(0);
   const navigate=(id)=>{setView(id);setKey(k=>k+1);window.scrollTo({top:0,behavior:"smooth"});};
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const nomeUsuario = localStorage.getItem("nome") || "Usuário";
 
   const PAGES={
     dashboard:   <Dashboard navigate={navigate}/>,
@@ -687,8 +795,35 @@ export default function App({ onLogout }){
           ))}
         </nav>
         <div className="hdr-right">
-          <div className="hdr-avatar" title="Perfil">JD</div>
-          <button className="logout-btn" onClick={onLogout}>⎋ Sair</button>
+          <div className="user-menu-wrapper">
+          <div className="hdr-avatar" onClick={() => setMenuOpen(!menuOpen)}>
+            AD
+          </div>
+          {menuOpen && (
+            <div className="user-menu">
+              <div className="user-menu-header">
+                <div className="user-avatar-big">
+                  {nomeUsuario.charAt(0).toUpperCase()}
+                </div>
+                <div className="user-name">
+                  {nomeUsuario}
+                </div>
+                <div className="user-email">
+                  admin@email.com
+                </div>
+              </div>
+
+              <div className="user-menu-divider" />
+
+                <button className="user-menu-item" onClick={() => onNavegar("home")}>
+                  🏠 Início
+                </button>
+                <button className="user-menu-item danger" onClick={onLogout}>
+                  ⎋ Sair
+                </button>
+            </div>
+            )}
+          </div>
         </div>
       </header>
       <div key={key} className="page-wrap" style={view==="mensagens"?{paddingTop:0}:{paddingTop:4}}>

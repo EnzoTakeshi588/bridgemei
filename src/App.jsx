@@ -8,7 +8,8 @@ import Alertas from './Alertas'
 import Faturamento from './faturamento'
 import Aprendizado from './Aprendizado'
 import Estoque from './Estoque'
-import { getUserFromToken, logout } from './utils/auth'
+import { getUserFromToken } from './utils/auth'
+import { logout } from './services/api'
 
 const sidebarStyles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -109,14 +110,26 @@ function App() {
 
   const handleLogout = () => {
     logout();
+    
+    localStorage.removeItem("nome");
     localStorage.removeItem("ultimaPagina");
+
     setLogado(false);
-    setTela("home");
+    setTela("login");
   };
 
-  if (!logado)            return <Login   onLogin={() => setLogado(true)} />;
+  if (!logado) 
+    return (
+      <Login   
+      onLogin={() => {
+      setLogado(true); 
+      setTela("home"); 
+      localStorage.setItem("ultimaPagina", "home");
+    }} 
+  />
+);
   if (tela === "home")    return <Home    onNavegar={setTela} />;
-  if (tela === "mei")     return <MEI     onNavegar={setTela} />;
+  if (tela === "mei")     return <MEI     onNavegar={setTela} onLogout={handleLogout} />;
   if (tela === "estoque") return <Estoque onNavegar={setTela} />;
   return <SharedLayout tela={tela} onNavegar={setTela} />;
 }

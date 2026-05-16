@@ -17,8 +17,3 @@ export function getUserFromToken() {
     };
   }
 }
-
-export function logout() {
-  localStorage.removeItem("token");
-  localStorage.removeItem("nome");
-}
