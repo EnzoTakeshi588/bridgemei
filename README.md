@@ -1,5 +1,4 @@
-![name](https://img.shields.io/badge/BridgeMEI-purple)
-![status](https://img.shields.io/badge/online-brightgreen)
+![name](https://img.shields.io/badge/Project-BridgeMEI-purple?logo=github)
 
 # BridgeMEI
 _Desenvolvido por: Enzo e Marcus_
@@ -18,7 +17,7 @@ _Desenvolvido por: Enzo e Marcus_
 - [Próximos avanços](#-proximos-avanços)
 
 ## Sobre
-BridgeMEI é um MVP(produto mínimo viável) de gestão financeira, o qual tem diversas funcionalidades. Por exemplo: você pode olhar o faturamento do seu negócio de forma dinâmica, fazer o controle do
+BridgeMEI é um MVP(produto mínimo viável) de gestão financeira, o qual tem diversas funcionalidades. Por exemplo: você pode olhar o faturamento do seu negócio de forma dinâmica, fazer o controle do seu estoque e muito mais.
 ## Demonstrações
 ## O que vem nele?
 ## Tecnologias utilizadas

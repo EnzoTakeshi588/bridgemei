@@ -3,13 +3,16 @@ using EstoqueApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var cs = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+Console.WriteLine(cs);
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer("Server=.\\SQLEXPRESS;Database=EstoqueDb;Trusted_Connection=True;TrustServerCertificate=True;")
+    options.UseSqlServer(cs)
 );
 
 builder.Services.AddScoped<EstoqueService>();
