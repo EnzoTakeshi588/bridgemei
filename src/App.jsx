@@ -102,15 +102,22 @@ function SharedLayout({ tela, onNavegar }) {
 
 function App() {
   const [logado, setLogado] = useState(() => Boolean(getUserFromToken()));
-  const [tela, setTela] = useState(() => localStorage.getItem("ultimaPagina") || "home");
+  const [tela, setTela] = useState(() => (getUserFromToken() ? "mei" : "login"));
 
   useEffect(() => {
-    localStorage.setItem("ultimaPagina", tela);
-  }, [tela]);
+    if (!logado) {
+      localStorage.removeItem("ultimaPagina");
+      return;
+    }
+
+    if (tela && tela !== "login") {
+      localStorage.setItem("ultimaPagina", tela);
+    }
+  }, [logado, tela]);
 
   const handleLogout = () => {
     logout();
-    
+
     localStorage.removeItem("nome");
     localStorage.removeItem("ultimaPagina");
 
@@ -118,16 +125,16 @@ function App() {
     setTela("login");
   };
 
+  const handleLogin = () => {
+    setLogado(true);
+    setTela("mei");
+    localStorage.setItem("ultimaPagina", "mei");
+  };
+
   if (!logado) 
     return (
-      <Login   
-      onLogin={() => {
-      setLogado(true); 
-      setTela("home"); 
-      localStorage.setItem("ultimaPagina", "home");
-    }} 
-  />
-);
+      <Login onLogin={handleLogin} />
+    );
   if (tela === "home")    return <Home    onNavegar={setTela} />;
   if (tela === "mei")     return <MEI     onNavegar={setTela} onLogout={handleLogout} />;
   if (tela === "estoque") return <Estoque onNavegar={setTela} />;

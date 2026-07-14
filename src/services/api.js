@@ -9,25 +9,30 @@ export async function login({email, password}) {
             },
             body: JSON.stringify({ email, password })
         });
-        console.log(email, password);
-        const data = await response.json();
-        
-        console.log('ERRO BACKEND:', data);
+
+        const contentType = response.headers.get('content-type') || '';
+        const data = contentType.includes('application/json')
+            ? await response.json()
+            : { message: await response.text() };
+
         if (!response.ok) {
-            if (data.message?.toLowerCase().includes("not found")) {
-                throw new Error("Usuário não cadastrado");
+            const message = data.message || data.error || 'Erro ao fazer login';
+            const normalized = String(message).toLowerCase();
+
+            if (normalized.includes('not found') || normalized.includes('não cadastrado')) {
+                throw new Error('Usuário não cadastrado');
             }
 
-            if (data.message?.toLowerCase().includes("invalid")) {
-                throw new Error("Email ou Senha inválidos");
+            if (normalized.includes('invalid') || normalized.includes('senha') || normalized.includes('password')) {
+                throw new Error('Email ou Senha inválidos');
             }
 
-            throw new Error(data.message || JSON.stringify(data) || "Erro ao fazer login");
+            throw new Error(message || 'Erro ao fazer login');
         }
-        localStorage.setItem('token', data.token);
 
+        localStorage.setItem('token', data.token);
         return data;
-    } catch (error) {        
+    } catch (error) {
         console.error('Error logging in:', error);
         throw error;
     }

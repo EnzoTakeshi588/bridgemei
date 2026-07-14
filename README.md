@@ -3,8 +3,6 @@
 # BridgeMEI
 _Desenvolvido por: Enzo e Marcus_
 
-## Para ver os últimos lançamentos, veja em [Updates](updates.md).
-
 *O BridgeMEI ainda não foi publicado, mas continuaremos com o projeto aqui no github mesmo após o lançamento.*
 
 ##  Sumário
@@ -51,6 +49,5 @@ Após isso, siga as instruções:
 * **Publicar API Estoque**
 * Exibir os dados no Dashboard
 * Correção de Erros
-* Lançamento para Mobile
 
 _O BridgeMEI é um projeto escolar, feito por estudantes da Etec-SP_
