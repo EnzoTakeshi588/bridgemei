@@ -9,10 +9,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-Console.WriteLine(cs);
-
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(cs)
+    options.UseMySql(
+        cs,
+        ServerVersion.AutoDetect(cs)
+    )
 );
 
 builder.Services.AddScoped<EstoqueService>();
@@ -29,4 +30,4 @@ app.UseCors(options => {
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run(); // ← nada depois daqui
+app.Run();
