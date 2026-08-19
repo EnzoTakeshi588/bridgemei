@@ -24,7 +24,14 @@ namespace EstoqueApi.Controllers
         [HttpPost]
         public IActionResult Criar([FromBody] Produto produto)
         {
-            return Ok(_service.Criar(produto.Nome));
+           try
+           {
+             return Ok(_service.Criar(produto));
+           }
+           catch (ArgumentException e)
+           {
+            return BadRequest(e.Message);
+           }
         }
 
         [HttpPost("entrada")]
@@ -34,17 +41,27 @@ namespace EstoqueApi.Controllers
             {
                 return Ok(_service.Entrada(id, quantidade));
             }
-            catch (Exception e)
+            catch (ArgumentException e)
             {
                 return BadRequest(e.Message);
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound(e.Message);
             }
         }
 
         [HttpDelete("{id}")]
         public IActionResult Excluir(int id)
         {
-            try { return Ok(_service.Excluir(id)); }
-            catch (Exception e) { return BadRequest(e.Message);}
+            try 
+            { 
+                return Ok(_service.Excluir(id)); 
+            }
+            catch (KeyNotFoundException e) 
+            { 
+                return NotFound(e.Message);
+            }
         } 
 
         [HttpPost("saida")]
@@ -54,9 +71,17 @@ namespace EstoqueApi.Controllers
             {
                 return Ok(_service.Saida(id, quantidade));
             }
-            catch (Exception e)
+            catch (ArgumentException e)
             {
                 return BadRequest(e.Message);
+            }
+            catch (InvalidOperationException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (KeyNotFoundException e)
+            {
+                return NotFound(e.Message);
             }
         }
     }
