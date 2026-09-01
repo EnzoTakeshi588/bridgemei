@@ -12,12 +12,12 @@ namespace EstoqueApi.Services
             _context = context;
         }
 
-        public List<Produto> Listar()
+        public List<Produto> Listar(int usuarioId)
         {
-            return _context.Produtos.ToList();
+            return _context.Produtos.Where(p => p.UsuarioId == usuarioId).ToList();
         }
 
-        public Produto Criar(Produto produto)
+        public Produto Criar(Produto produto, int usuarioId)
         {
             if (string.IsNullOrWhiteSpace(produto.Nome))
                 throw new ArgumentException("O nome do produto é obrigatório");
@@ -29,6 +29,7 @@ namespace EstoqueApi.Services
                 throw new ArgumentException("O preço não pode ser negativo");
 
             produto.Id = 0;
+            produto.UsuarioId = usuarioId;
 
             _context.Produtos.Add(produto);
             _context.SaveChanges();
@@ -36,12 +37,12 @@ namespace EstoqueApi.Services
             return produto;
         }
 
-        public Produto Entrada(int id, int quantidade)
+        public Produto Entrada(int id, int quantidade, int usuarioId)
         {
             if(quantidade <= 0)
                 throw new ArgumentException("Quantidade deve ser maior que zero.");
 
-            var produto = _context.Produtos.Find(id);
+            var produto = _context.Produtos.FirstOrDefault(p => p.Id == id && p.UsuarioId == usuarioId);
 
             if (produto == null)
                 throw new KeyNotFoundException("Produto não encontrado");
@@ -53,12 +54,12 @@ namespace EstoqueApi.Services
             return produto;
         }
 
-        public Produto Saida(int id, int quantidade)
+        public Produto Saida(int id, int quantidade, int usuarioId)
         {
             if(quantidade <= 0)
                 throw new ArgumentException("Quantidade deve ser maior que zero");
 
-            var produto = _context.Produtos.Find(id);
+            var produto = _context.Produtos.FirstOrDefault(p => p.Id == id && p.UsuarioId == usuarioId);
 
             if (produto == null)
                 throw new KeyNotFoundException("Produto não encontrado");
@@ -72,9 +73,9 @@ namespace EstoqueApi.Services
 
             return produto;
         }
-        public Produto Excluir(int id)
+        public Produto Excluir(int id, int usuarioId)
         {
-            var produto = _context.Produtos.Find(id);
+            var produto = _context.Produtos.FirstOrDefault(p => p.Id == id && p.UsuarioId == usuarioId);
             
             if (produto == null)
              throw new KeyNotFoundException("Produto não encontrado");
