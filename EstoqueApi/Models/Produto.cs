@@ -6,4 +6,5 @@ public class Produto
     public string Nome { get; set; } = string.Empty;
     public int Quantidade { get; set; }
     public decimal Preco { get; set; }
+    public int UsuarioId { get; set; }
 }
