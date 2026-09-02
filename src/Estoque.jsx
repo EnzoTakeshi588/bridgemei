@@ -1,8 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-
-// ── Ajuste a URL base da sua API aqui ──────────────────────────────────────
-const API_BASE = "http://localhost:5017/api";
-// ──────────────────────────────────────────────────────────────────────────
+import { fetchEstoqueWithAuth } from "./services/api.js";
 
 const STYLES = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
@@ -518,13 +515,25 @@ export default function Estoque({ onNavegar }) {
 
   // ── API helpers ──────────────────────────────────────────────────────────
   const apiFetch = useCallback(async (path, options = {}) => {
-    const res = await fetch(`${API_BASE}${path}`, {
-      headers: { "Content-Type": "application/json" },
-      ...options,
-    });
-    if (!res.ok) {
-      const txt = await res.text().catch(() => "Erro desconhecido");
-      throw new Error(txt || `HTTP ${res.status}`);
+    const res = await fetchEstoqueWithAuth(path, options);
+
+    if (!res.ok) { 
+      let message = `Erro HTTP ${res.status}`
+
+      try {
+        const contentType = res.headers.get("content-type") || "";
+
+        if (contentType.includes("application/json")) {
+          const data = await res.json();
+          message = data.message || data.title || message;
+        } else {
+           const text = await res.text();
+            if (text) message = text;
+        }
+      } catch (error) {
+        
+      }
+      throw new Error(message);
     }
     return res.json();
   }, []);
@@ -532,7 +541,7 @@ export default function Estoque({ onNavegar }) {
   const carregarProdutos = useCallback(async () => {
     try {
       setErro("");
-      const data = await apiFetch("/produtos");
+      const data = await apiFetch("/api/Produtos");
       // A API retorna campos em PascalCase (Id, Nome, Quantidade, Preco)
       // Normalizamos para camelCase
       setProdutos(data.map((p) => ({
@@ -568,11 +577,16 @@ export default function Estoque({ onNavegar }) {
   const salvarProduto = async (form) => {
     setLA(true);
     try {
-      // POST /api/produtos  → body: { Nome: string }
-      await apiFetch("/produtos", {
+      // POST /api/produtos  → body: { Nome, Preco, Quantidade }
+      await apiFetch("/api/Produtos", {
         method: "POST",
-        body: JSON.stringify({ Nome: form.nome }),
+        body: JSON.stringify({ 
+          Nome: form.nome,
+          Preco: form.preco,
+          Quantidade: 0
+         }),
       });
+
       await carregarProdutos();
       setModal(null);
       showToast("✓ Produto adicionado!");
@@ -590,7 +604,7 @@ export default function Estoque({ onNavegar }) {
     try {
       // POST /api/produtos/entrada?id=X&quantidade=Y
       // POST /api/produtos/saida?id=X&quantidade=Y
-      await apiFetch(`/produtos/${tipo}?id=${produto.id}&quantidade=${quantidade}`, {
+      await apiFetch(`/api/Produtos/${tipo}?id=${produto.id}&quantidade=${quantidade}`, {
         method: "POST",
       });
       await carregarProdutos();
@@ -610,7 +624,7 @@ export default function Estoque({ onNavegar }) {
     setLA(true);
     try {
       // DELETE /api/produtos/{id}  ← precisa adicionar esse endpoint na API
-      await apiFetch(`/produtos/${p.id}`, { method: "DELETE" });
+      await apiFetch(`/api/Produtos/${p.id}`, { method: "DELETE" });
       await carregarProdutos();
       showToast("Produto removido.");
     } catch (e) {
@@ -635,7 +649,7 @@ export default function Estoque({ onNavegar }) {
     },
     {
       C:"est-sc est-sc1", I:"est-sico est-sico1", emoji:"💰",
-      lbl:"Valor total", val: `R$ ${(valorTotal / 1000).toFixed(1)}k`,
+      lbl:"Valor total", val: `R$ ${(valorTotal).toFixed(2)}`,
       sub: <><span className="est-tok">▲</span> em estoque</>,
       bwC:"est-bw est-bw1",
       bf: { width: anim ? "78%" : "0%", background:"linear-gradient(90deg,#4ade80,#22c55e)" },
@@ -664,8 +678,8 @@ export default function Estoque({ onNavegar }) {
         <div className="est-pw">
 
           {onNavegar && (
-            <button className="est-back" onClick={() => onNavegar("home")}>
-              ← Voltar ao início
+            <button className="est-back" onClick={() => onNavegar("mei")}>
+              ← Voltar para o Dashboard
             </button>
           )}
 

@@ -818,6 +818,9 @@ export default function App({ onLogout, onNavegar }){
                 <button className="user-menu-item" onClick={() => onNavegar("home")}>
                   🏠 Início
                 </button>
+                <button className="user-menu-item" onClick={() => onNavegar("estoque")}>
+                  Estoque
+                </button>
                 <button className="user-menu-item danger" onClick={onLogout}>
                   ⎋ Sair
                 </button>
