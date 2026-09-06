@@ -1,8 +1,9 @@
-const API_URL = import.meta.env.VITE_API_URL;
+const LOGIN_API = import.meta.env.VITE_LOGIN_URL;
+const ESTOQUE_API = import.meta.env.VITE_ESTOQUE_URL;
 
 export async function login({email, password}) {
     try {
-        const response = await fetch(`${API_URL}/api/Auth/login`, {
+        const response = await fetch(`${LOGIN_API}/api/Auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -46,7 +47,7 @@ export async function register({
 }) 
 {
     try {
-        const response = await fetch(`${API_URL}/api/Auth/register`, {
+        const response = await fetch(`${LOGIN_API}/api/Auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -74,7 +75,7 @@ export function getToken() {
 
 export async function resetPassword(email) {
     try {
-        const response = await fetch(`${API_URL}/api/Auth/reset-password`, {
+        const response = await fetch(`${LOGIN_API}/api/Auth/reset-password`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -94,7 +95,7 @@ export async function resetPassword(email) {
 
 export async function fetchWithAuth(url, options = {}) {
     const token = getToken();
-    return fetch(`${API_URL}${url}`, {
+    return fetch(`${LOGIN_API}${url}`, {
         ...options,
         headers: {
             "Content-Type": "application/json",
@@ -102,4 +103,17 @@ export async function fetchWithAuth(url, options = {}) {
             ...options.headers
         }
     });
+}
+
+export async function fetchEstoqueWithAuth(url, options = {}) {
+    const token = getToken();
+    
+    return fetch(`${ESTOQUE_API}${url}`, {
+        ... options,
+        headers: {
+            "Content-Type": "application/json",
+            ...(token ? {Authorization: `Bearer ${token}`} : {}),
+            ...options.headers
+        }
+    })
 }

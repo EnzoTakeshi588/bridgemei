@@ -1,11 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
 using EstoqueApi.Services;
 using EstoqueApi.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using EstoqueApi.Migrations;
 
 namespace EstoqueApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ProdutosController : ControllerBase
     {
         private readonly EstoqueService _service;
@@ -18,7 +22,14 @@ namespace EstoqueApi.Controllers
         [HttpGet]
         public IActionResult Listar()
         {
-            return Ok(_service.Listar());
+            var UsuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (UsuarioIdClaim == null)
+                return Unauthorized();
+
+            var usuarioId = int.Parse(UsuarioIdClaim);
+
+            return Ok(_service.Listar(usuarioId));
         }
 
         [HttpPost]
@@ -26,7 +37,14 @@ namespace EstoqueApi.Controllers
         {
            try
            {
-             return Ok(_service.Criar(produto));
+             var UsuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (UsuarioIdClaim == null)
+                    return Unauthorized();
+
+                var usuarioId = int.Parse(UsuarioIdClaim);
+
+             return Ok(_service.Criar(produto, usuarioId));
            }
            catch (ArgumentException e)
            {
@@ -39,7 +57,14 @@ namespace EstoqueApi.Controllers
         {
             try
             {
-                return Ok(_service.Entrada(id, quantidade));
+                var UsuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (UsuarioIdClaim == null)
+                    return Unauthorized();
+
+                var usuarioId = int.Parse(UsuarioIdClaim);
+
+                return Ok(_service.Entrada(id, quantidade, usuarioId));
             }
             catch (ArgumentException e)
             {
@@ -56,7 +81,14 @@ namespace EstoqueApi.Controllers
         {
             try 
             { 
-                return Ok(_service.Excluir(id)); 
+                var UsuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (UsuarioIdClaim == null)
+                    return Unauthorized();
+
+                var usuarioId = int.Parse(UsuarioIdClaim);
+
+                return Ok(_service.Excluir(id, usuarioId)); 
             }
             catch (KeyNotFoundException e) 
             { 
@@ -69,7 +101,14 @@ namespace EstoqueApi.Controllers
         {
             try
             {
-                return Ok(_service.Saida(id, quantidade));
+                var UsuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                if (UsuarioIdClaim == null)
+                    return Unauthorized();
+
+               var usuarioId = int.Parse(UsuarioIdClaim);
+
+                return Ok(_service.Saida(id, quantidade, usuarioId));
             }
             catch (ArgumentException e)
             {
