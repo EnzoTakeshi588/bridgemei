@@ -16,13 +16,13 @@ const sidebarStyles = `
   .layout { display: flex; min-height: 100vh; }
   .shared-sidebar {
     position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
-    background: #0d0d15; border-right: 1px solid rgba(255,255,255,0.08);
+    background: var(--color-bg-secondary); border-right: 1px solid var(--color-border);
     display: flex; flex-direction: column; padding: 28px 0; z-index: 100;
     font-family: 'DM Sans', sans-serif;
   }
-  .sb-logo { padding: 0 24px 28px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 16px; }
-  .sb-logo-name { font-family: 'DM Serif Display', serif; font-size: 22px; color: #f8f8ff; }
-  .sb-logo-name span { color: #6366f1; }
+  .sb-logo { padding: 0 24px 28px; border-bottom: 1px solid var(--color-border); margin-bottom: 16px; }
+  .sb-logo-name { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--color-text); }
+  .sb-logo-name span { color: var(--color-accent); }
   .sb-logo-tag { font-size: 10px; color: rgba(248,248,255,0.2); letter-spacing: 2px; text-transform: uppercase; margin-top: 3px; }
   .sb-nav { flex: 1; padding: 0 12px; }
   .sb-section { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(248,248,255,0.2); padding: 16px 12px 8px; }
@@ -33,14 +33,14 @@ const sidebarStyles = `
     border: 1px solid transparent; background: none;
     width: 100%; text-align: left; font-family: 'DM Sans', sans-serif;
   }
-  .sb-item:hover { background: rgba(255,255,255,0.07); color: #f8f8ff; }
-  .sb-item.active { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.3); color: #f8f8ff; font-weight: 500; }
+  .sb-item:hover { background: rgba(255,255,255,0.07); color: var(--color-text); }
+  .sb-item.active { background: rgba(99,102,241,0.08); border-color: rgba(99,102,241,0.3); color: var(--color-text); font-weight: 500; }
   .sb-icon { font-size: 15px; width: 20px; text-align: center; }
-  .sb-badge { margin-left: auto; background: #ef4444; color: white; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; }
-  .sb-footer { padding: 16px 12px 0; border-top: 1px solid rgba(255,255,255,0.08); margin: 0 12px; }
+  .sb-badge { margin-left: auto; background: var(--color-danger); color: white; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 10px; }
+  .sb-footer { padding: 16px 12px 0; border-top: 1px solid var(--color-border); margin: 0 12px; }
   .sb-user { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
-  .sb-avatar { width: 34px; height: 34px; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: #6366f1; flex-shrink: 0; }
-  .sb-name { font-size: 13px; color: #f8f8ff; font-weight: 500; }
+  .sb-avatar { width: 34px; height: 34px; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--color-accent); flex-shrink: 0; }
+  .sb-name { font-size: 13px; color: var(--color-text); font-weight: 500; }
   .sb-role { font-size: 11px; color: rgba(248,248,255,0.2); }
   .page-content { margin-left: 240px; flex: 1; }
 `;
