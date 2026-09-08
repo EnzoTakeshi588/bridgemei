@@ -1,0 +1,66 @@
+/* ── APRENDIZADO ── */
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .edu-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 0;
+  }
+  .edu-card.vis {
+    animation: scaleIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .edu-card:hover {
+    border-color: var(--color-accent-border);
+    background: var(--color-accent-bg);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+  }
+  .edu-card.open {
+    border-color: var(--color-accent-border);
+    background: var(--color-accent-bg);
+  }
+  .edu-emoji {
+    font-size: 26px;
+    margin-bottom: 12px;
+  }
+  .edu-titulo {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .edu-desc {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.5;
+    margin-bottom: 14px;
+  }
+  .edu-tag {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 6px;
+    background: var(--color-accent-glow);
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent-border);
+  }
+  .edu-content {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+    font-size: 13.5px;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+  }
+  .edu-content strong {
+    color: var(--color-text);
+    font-weight: 500;
+  }
