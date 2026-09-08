@@ -2,18 +2,11 @@ import { useState, useEffect, useRef } from "react";
 import { getUserFromToken } from "./utils/auth";
 
 const styles = `
-  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --bg: #0a0a0f; --text: #f8f8ff; --text2: rgba(248,248,255,0.45); --text3: rgba(248,248,255,0.2);
-    --accent: #6366f1; --accent-glow: rgba(99,102,241,0.1); --accent-border: rgba(99,102,241,0.35);
-    --green: #22c55e; --green-glow: rgba(34,197,94,0.1); --green-border: rgba(34,197,94,0.3);
-    --surface: rgba(255,255,255,0.04); --border: rgba(255,255,255,0.08);
-  }
 
   .app {
-    font-family: 'DM Sans', sans-serif; background: var(--bg); min-height: 100vh;
-    display: flex; align-items: center; justify-content: center; color: var(--text);
+    font-family: 'DM Sans', sans-serif; background: var(--color-bg); min-height: 100vh;
+    display: flex; align-items: center; justify-content: center; color: var(--color-text);
     position: relative; overflow: hidden;
   }
   .app::before {
@@ -37,18 +30,18 @@ const styles = `
     font-family: 'DM Serif Display', serif; font-size: 28px;
     opacity: 0; animation: fadeDown 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
-  .logo-name span { color: var(--accent); }
+  .logo-name span { color: var(--color-accent); }
   .logo-tag {
-    font-size: 11px; color: var(--text3); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 4px;
+    font-size: 11px; color: var(--color-text-muted); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 4px;
     opacity: 0; animation: fadeDown 0.6s 0.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
   .greeting {
     margin-top: 20px;
     opacity: 0; animation: fadeDown 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
-  .greeting-sub { font-size: 11px; color: var(--text3); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+  .greeting-sub { font-size: 11px; color: var(--color-text-muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
   .greeting-title { font-family: 'DM Serif Display', serif; font-size: 32px; }
-  .greeting-title em { font-style: italic; color: var(--accent); }
+  .greeting-title em { font-style: italic; color: var(--color-accent); }
 
   .typing-cursor::after {
     content: '|'; animation: blink 1s step-end infinite; margin-left: 2px;
@@ -64,11 +57,11 @@ const styles = `
 
   .module-btn {
     position: relative; overflow: hidden; border-radius: 20px;
-    border: 1px solid var(--border); background: var(--surface);
+    border: 1px solid var(--color-border); background: var(--color-surface);
     padding: 28px 22px 24px; cursor: pointer; text-align: left;
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s, background 0.3s, box-shadow 0.3s;
     display: flex; flex-direction: column; gap: 14px; min-height: 190px;
-    font-family: 'DM Sans', sans-serif; color: var(--text);
+    font-family: 'DM Sans', sans-serif; color: var(--color-text);
     opacity: 0; transform: translateY(30px) scale(0.95);
   }
   .module-btn.visible {
@@ -85,10 +78,10 @@ const styles = `
     transform: translateY(-6px) scale(1.02);
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   }
-  .module-btn.mei { border-color: var(--accent-border); }
-  .module-btn.mei:hover { border-color: var(--accent); background: var(--accent-glow); box-shadow: 0 20px 40px rgba(99,102,241,0.15); }
-  .module-btn.estoque { border-color: var(--green-border); }
-  .module-btn.estoque:hover { border-color: var(--green); background: var(--green-glow); box-shadow: 0 20px 40px rgba(34,197,94,0.12); }
+  .module-btn.mei { border-color: var(--color-accent-border); }
+  .module-btn.mei:hover { border-color: var(--color-accent); background: var(--color-accent-glow); box-shadow: 0 20px 40px rgba(99,102,241,0.15); }
+  .module-btn.estoque { border-color: var(--color-success-border); }
+  .module-btn.estoque:hover { border-color: var(--color-success); background: var(--color-success-glow); box-shadow: 0 20px 40px rgba(34,197,94,0.12); }
 
   .ripple {
     position: absolute; border-radius: 50%; transform: scale(0);
@@ -114,7 +107,7 @@ const styles = `
   .estoque .module-icon { background: rgba(34,197,94,0.1);  border: 1px solid rgba(34,197,94,0.2); }
 
   .module-name { font-family: 'DM Serif Display', serif; font-size: 22px; }
-  .module-desc { font-size: 12px; color: var(--text2); line-height: 1.5; flex: 1; }
+  .module-desc { font-size: 12px; color: var(--color-text-secondary); line-height: 1.5; flex: 1; }
 
   .module-badge {
     font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
@@ -125,11 +118,11 @@ const styles = `
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.85; transform: scale(0.97); }
   }
-  .mei     .module-badge { background: rgba(99,102,241,0.1);  border: 1px solid rgba(99,102,241,0.25); color: var(--accent); }
+  .mei     .module-badge { background: rgba(99,102,241,0.1);  border: 1px solid rgba(99,102,241,0.25); color: var(--color-accent); }
   .estoque .module-badge { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.2);  color: #22c55e; }
 
   .particle {
-    position: absolute; border-radius: 50%; background: var(--accent);
+    position: absolute; border-radius: 50%; background: var(--color-accent);
     opacity: 0.15; pointer-events: none; z-index: 0;
     animation: particleFloat 15s ease-in-out infinite;
   }
@@ -185,7 +178,7 @@ export default function Home({ onNavegar }) {
       <style>{styles}</style>
       <div className="app">
         <div className="particle" style={{ width: 120, height: 120, top: '10%', left: '5%', animationDelay: '0s' }} />
-        <div className="particle" style={{ width: 80, height: 80, top: '60%', right: '8%', animationDelay: '5s', background: 'var(--green)' }} />
+        <div className="particle" style={{ width: 80, height: 80, top: '60%', right: '8%', animationDelay: '5s', background: 'var(--color-success)' }} />
         <div className="particle" style={{ width: 60, height: 60, bottom: '15%', left: '15%', animationDelay: '10s' }} />
 
         <div className="panel-wrap">

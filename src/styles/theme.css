@@ -1,0 +1,43 @@
+:root {
+    /* Backgrounds */
+  --color-bg: #0a0a0a;
+  --color-bg-secondary: #111111;
+  --color-surface: rgba(255, 255, 255, 0.04);
+  --color-surface-hover: rgba(255, 255, 255, 0.07);
+
+  /* Borders */
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-hover: rgba(255, 255, 255, 0.15);
+
+  /* Text */
+  --color-text: #f5f5f5;
+  --color-text-secondary: rgba(245, 245, 245, 0.55);
+  --color-text-muted: rgba(245, 245, 245, 0.35);
+  --color-text-faint: rgba(245, 245, 245, 0.20);
+
+  /* Wine */
+  --color-accent: #8f1d3f;
+  --color-accent-hover: #a9234a;
+  --color-accent-bg: rgba(143, 29, 63, 0.10);
+  --color-accent-border: rgba(143, 29, 63, 0.35);
+  --color-accent-glow: rgba(143, 29, 63, 0.15);
+
+  /* Status */
+  --color-success: #22c55e;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-info: #3b82f6;
+  --color-success-glow: rgba(34, 197, 94, 0.08);
+  --color-success-border: rgba(34, 197, 94, 0.20);
+
+  /* Inputs */
+  --color-input-bg: rgba(255, 255, 255, 0.04);
+
+  /* Fonts */
+  --font-body: 'DM Sans', sans-serif;
+  --font-heading: 'DM Serif Display', serif;
+
+  /* Shadows */
+  --shadow-card: 0 20px 40px rgba(0, 0, 0, 0.30);
+  --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.45);
+}

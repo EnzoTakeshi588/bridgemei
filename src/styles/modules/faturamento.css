@@ -1,0 +1,118 @@
+/* ── FATURAMENTO ── */
+  .fat-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .fat-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 22px;
+    transition: border-color 0.2s;
+    opacity: 0;
+  }
+  .fat-card.vis {
+    animation: scaleIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .fat-card:nth-child(1).vis {
+    animation-delay: 0.1s;
+  }
+  .fat-card:nth-child(2).vis {
+    animation-delay: 0.2s;
+  }
+  .fat-card:nth-child(3).vis {
+    animation-delay: 0.3s;
+  }
+  .fat-card:hover {
+    border-color: var(--color-border-hover);
+  }
+  .fat-card-label {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+  .fat-card-value {
+    font-family: "DM Serif Display", serif;
+    font-size: 30px;
+    letter-spacing: -1px;
+    margin-bottom: 6px;
+  }
+  .fat-card-sub {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+  .big-bar-box {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .big-bar-label {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+  }
+  .big-bar-track {
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 8px;
+    height: 12px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .big-bar-fill {
+    height: 100%;
+    border-radius: 8px;
+    transition: width 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .big-bar-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--color-text-muted);
+  }
+  .meses-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+  .mes-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 14px 10px;
+    text-align: center;
+    opacity: 0;
+  }
+  .mes-card.vis {
+    animation: fadeUp 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .mes-nome {
+    font-size: 11px;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .mes-valor {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .mes-bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .mes-bar-fill {
+    background: var(--color-accent-bg);
+    height: 100%;
+    border-radius: 4px;
+  }
