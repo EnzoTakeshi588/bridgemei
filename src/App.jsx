@@ -2,16 +2,16 @@ import { useState, useEffect } from 'react'
 import Login from './Login'
 import Home from './Home'
 import MEI from './Mei'
-import Chat from './Chat'
+/* import Chat from './Chat'
 import Documentos from './Documentos'
 import Alertas from './Alertas'
 import Faturamento from './faturamento'
-import Aprendizado from './Aprendizado'
+import Aprendizado from './Aprendizado' */
 import Estoque from './Estoque'
 import { getUserFromToken } from './utils/auth'
 import { logout } from './services/api'
 
-const sidebarStyles = `
+/* const sidebarStyles = `
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
   .layout { display: flex; min-height: 100vh; }
   .shared-sidebar {
@@ -43,8 +43,9 @@ const sidebarStyles = `
   .sb-name { font-size: 13px; color: var(--color-text); font-weight: 500; }
   .sb-role { font-size: 11px; color: rgba(248,248,255,0.2); }
   .page-content { margin-left: 240px; flex: 1; }
-`;
+`; */
 
+/*
 const navItems = [
   { id: "home",      icon: "⊞",  label: "Início" },
   { id: "chat",      icon: "💬", label: "Mensagens", badge: 2 },
@@ -52,10 +53,10 @@ const navItems = [
   { id: "alerts",    icon: "🔔", label: "Alertas", badge: 1 },
   { id: "dashboard", icon: "📊", label: "Faturamento" },
   { id: "edu",       icon: "📚", label: "Aprendizado" },
-];
+]; */
 
 function SharedLayout({ tela, onNavegar }) {
-  return (
+  /*return (
     <>
       <style>{sidebarStyles}</style>
       <div className="layout">
@@ -97,10 +98,10 @@ function SharedLayout({ tela, onNavegar }) {
         </div>
       </div>
     </>
-  );
+  ); */
 }
 
-function App() {
+export default function App() {
   const [logado, setLogado] = useState(() => Boolean(getUserFromToken()));
   const [tela, setTela] = useState(() => (getUserFromToken() ? "mei" : "login"));
 
@@ -140,5 +141,3 @@ function App() {
   if (tela === "estoque") return <Estoque onNavegar={setTela} />;
   return <SharedLayout tela={tela} onNavegar={setTela} />;
 }
-
-export default App;

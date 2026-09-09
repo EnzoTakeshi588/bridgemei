@@ -1,0 +1,172 @@
+{
+  "login": {
+    "name": "Name", 
+    "surname": "Surname",
+    "email": "Email",
+    "password": "Password",
+    "login": "Sign in",
+    "register": "Create account",
+    "forgotPassword": "Forgot my password"
+  }, 
+
+   "nav": {
+    "inicio": "Home",
+    "faturamento": "Revenue",
+    "alertas": "Alerts",
+    "aprendizado": "Learning",
+    "documentos": "Documents"
+  },
+
+  "profile": {
+    "estoque": "Inventory",
+    "sair": "Log out"
+  },
+
+  "dashboard": {
+    "overview": "Overview",
+    "greetings": "Greetings, ",
+    "attention": "Attention",
+    "viewAlerts": "View alerts",
+    "revenueCategory": "Monthly Revenue (R$) — by category",
+    "thisMonth": "this month",
+    "alertsCard": "Alerts",
+    "viewAll": "View all",
+    "chatDisabled": "CHAT DISABLED",
+    "aiDisabled": "AI DISABLED"
+  },
+
+  "dash-stats": {
+    "revenue": "Monthly Revenue",
+    "activeOrders": "Active Orders",
+    "default": "Delinquency",
+    "Score": "NPS Score"
+  },
+
+   "alerts": {
+    "heading": "Notifications",
+    "title": "Your ",
+    "title-em": "alerts",
+    "attention": "Attention required",
+    "resolved": "Resolved and informational"
+  },
+
+  "learning": {
+    "heading": "Educational",
+    "title": "Learning",
+    "title-em": " ",
+    "serviceInfo": "Services",
+    "serviceTitle": "Insurance for",
+    "serviceTitle-em": "MEIs"
+  },
+
+  "revenue": {
+    "heading": "Financial",
+    "title": "Revenue ",
+    "title-em": "dashboard",
+    "accumulated": "Accumulated revenue",
+    "annualLimit": "Annual limit",
+    "annual-percent": " of annual limit",
+    "meiLimit": "MEI 2024 limit",
+    "remaining": "Remaining",
+    "bestMonth": "Best month",
+    "progress": "Annual limit progress",
+    "attentionZone": "Attention zone starts at 80%",
+    "byMonth": "Revenue by month"
+  },
+
+  "documents": {
+    "heading": "Docs",
+    "title": "Your ",
+    "title-em": "documents",
+    "uploadNew": "Upload new document",
+    "uploadType": "PDF, image or spreadsheet · Max. 10MB",
+    "selectFile": "Select file",
+    "documentsList": "All documents",
+    "uploadedSuccess": "Document uploaded successfully!"
+  },
+
+ "stock": {
+  "back": "Back to Dashboard",
+  "inventory": "Inventory",
+  "title": "Inventory Control",
+  "subtitle": "Manage products, quantities and alerts in real time",
+
+  "tryAgain": "Try again",
+
+  "attention": "Attention",
+  "outOfStock": "product(s) out of stock",
+  "critical": "with critical quantity",
+
+  "stats": {
+    "total": "Total",
+    "items": "items",
+    "totalValue": "Total value",
+    "inStock": "in stock",
+    "lowStock": "Low stock",
+    "criticalItems": "item(s)",
+    "critical": "critical",
+    "outOfStock": "Out of stock",
+    "withoutStock": " without stock"
+  },
+
+  "actions": {
+    "add": "Add product",
+    "movement": "Move",
+    "registerEntry": "Register entry",
+    "remove": "Remove product"
+  },
+
+  "products": {
+    "title": "Products in stock",
+    "product": "Product",
+    "quantity": "Quantity",
+    "unitPrice": "Unit price",
+    "status": "Status",
+    "actions": "Actions",
+    "none": "No products registered",
+    "loading": "Loading products…"
+  },
+
+  "status": {
+    "inStock": "In stock",
+    "low": "Low stock",
+    "out": "Out of stock"
+  },
+
+  "modal": {
+    "newProduct": "New product",
+    "editProduct": "Edit product",
+    "newProductDescription": "Enter the new product information",
+    "editProductDescription": "Update the item's name and price",
+    "productName": "Product name",
+    "productNamePlaceholder": "Ex: Dell i7 Laptop",
+    "unitPrice": "Unit price (R$)",
+    "pricePlaceholder": "0.00",
+    "cancel": "Cancel",
+    "save": "✓ Save",
+    "saving": "Saving…",
+
+    "movement": "Manage inventory",
+    "movementDescription": "Register incoming or outgoing units",
+    "entry": "▲ Entry",
+    "exit": "▼ Exit",
+    "quantity": "Quantity",
+    "quantityPlaceholder": "Ex: 10",
+    "processing": "Processing…",
+    "confirmEntry": "▲ Confirm entry",
+    "confirmExit": "▼ Confirm exit"
+  },
+
+  "messages": {
+    "nameRequired": "Name is required.",
+    "validQuantity": "Enter a valid quantity.",
+    "insufficientQuantity": "Insufficient quantity. Current stock: {{quantity}}",
+    "loadError": "Could not load products. {{error}}",
+    "addSuccess": "✓ Product added!",
+    "removeConfirm": "Remove \"{{name}}\"?",
+    "removeSuccess": "Product removed.",
+    "movementSuccess": "{{emoji}} {{type}} of {{quantity}} units registered!",
+    "error": "Error: {{error}}"
+    }
+  }
+}

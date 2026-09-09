@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { fetchEstoqueWithAuth } from "./services/api.js";
 import "./styles/Estoque.css";
 
@@ -9,7 +10,6 @@ const getStatus    = (p)  => (p.quantidade === 0 ? "out" : p.quantidade <= (p.mi
 const getBarW      = (p)  => { const m = Math.max(p.quantidade, (p.min ?? DEFAULT_MIN) * 2, 1); return Math.min(100, Math.round((p.quantidade / m) * 100)); };
 const getBarC      = (p)  => ({ out:"#ef4444", low:"#f59e0b", ok:"#22c55e" }[getStatus(p)]);
 const BADGE_CLS    = { ok:"est-badge est-bok", low:"est-badge est-blow", out:"est-badge est-bout" };
-const BADGE_LBL    = { ok:"Em estoque", low:"Estoque baixo", out:"Zerado" };
 
 // ── Hook: IntersectionObserver ─────────────────────────────────────────────
 function useVis(ref) {
@@ -30,47 +30,63 @@ function useVis(ref) {
 
 // ── Modal: Adicionar / Editar produto ─────────────────────────────────────
 function ModalProduto({ onClose, onSave, initial, loading }) {
+  const { t } = useTranslation();
   const [f, setF] = useState(
     initial
-      ? { nome: initial.nome, preco: initial.preco ?? 0 }
-      : { nome: "", preco: "" }
+      ? { nome: initial.nome, preco: initial.preco, quantidade: initial.quantidade ?? 0 }
+      : { nome: "", preco: "", quantidade: "" }
   );
-  const s = (k, v) => setF((x) => ({ ...x, [k]: v }));
+  const s = (j, k, l) => setF((x) => ({ ...x, [j]: k, l }));
 
   const save = () => {
-    if (!f.nome.trim()) return alert("Nome é obrigatório.");
-    onSave({ nome: f.nome.trim(), preco: parseFloat(f.preco) || 0 });
+    if (!f.nome.trim()) return alert(t("stock.messages.nameRequired"));
+    onSave({ nome: f.nome.trim(), preco: parseFloat(f.preco), quantidade: parseInt(f.quantidade)});
   };
 
   return (
     <div className="est-mbg" onClick={(e) => e.target === e.currentTarget && !loading && onClose()}>
       <div className="est-mo">
-        <div className="est-mt">{initial ? "Editar" : "Novo"} <em>produto</em></div>
+        <div className="est-mt">
+          {initial ? t("stock.modal.editProduct") : t("stock.modal.newProduct")}
+        </div>
         <div className="est-ms">
-          {initial ? "Atualize o nome e o preço do item" : "Informe os dados do novo produto"}
+          {initial
+            ? t("stock.modal.editProductDescription")
+            : t("stock.modal.newProductDescription")}
         </div>
         <div className="est-fg">
-          <label>Nome do produto</label>
+          <label>{t("stock.modal.productName")}</label>
           <input
-            placeholder="Ex: Notebook Dell i7"
+            placeholder={t("stock.modal.productNamePlaceholder")}
             value={f.nome}
             onChange={(e) => s("nome", e.target.value)}
             disabled={loading}
           />
         </div>
         <div className="est-fg">
-          <label>Preço unitário (R$)</label>
+          <label>{t("stock.modal.unitPrice")}</label>
           <input
-            type="number" min="0" step="0.01" placeholder="0,00"
+            type="number" min="0" step="0.10"
+            placeholder={t("stock.modal.pricePlaceholder")}
             value={f.preco}
             onChange={(e) => s("preco", e.target.value)}
             disabled={loading}
           />
         </div>
+        <div className="est-fg">
+          <label>{t("stock.modal.quantity")}</label>
+          <input type="number" min="0" step="1" placeholder="0"
+            value={f.quantidade}
+            onChange={(e) => s("quantidade", e.target.value)}
+            disabled={loading} 
+          />
+        </div>
         <div className="est-mbtns">
-          <button className="est-bcx" onClick={onClose} disabled={loading}>Cancelar</button>
+          <button className="est-bcx" onClick={onClose} disabled={loading}>
+            {t("stock.modal.cancel")}
+          </button>
           <button className="est-bsv" onClick={save} disabled={loading}>
-            {loading ? "Salvando…" : "✓ Salvar"}
+            {loading ? t("stock.modal.saving") : t("stock.modal.save")}
           </button>
         </div>
       </div>
@@ -80,22 +96,23 @@ function ModalProduto({ onClose, onSave, initial, loading }) {
 
 // ── Modal: Entrada / Saída de estoque ─────────────────────────────────────
 function ModalMovimento({ produto, onClose, onConfirm, loading }) {
-  const [tipo, setTipo]       = useState("entrada"); // "entrada" | "saida"
+  const { t } = useTranslation();
+  const [tipo, setTipo] = useState("entrada"); // "entrada" | "saida"
   const [quantidade, setQtd]  = useState("");
 
   const confirmar = () => {
     const q = parseInt(quantidade);
-    if (!q || q <= 0) return alert("Informe uma quantidade válida.");
+    if (!q || q <= 0) return alert(t("stock.messages.validQuantity"));
     if (tipo === "saida" && q > produto.quantidade)
-      return alert(`Quantidade insuficiente. Estoque atual: ${produto.quantidade}`);
+      return alert(t("stock.messages.insufficientQuantity", { quantity: produto.quantidade }));
     onConfirm(tipo, q);
   };
 
   return (
     <div className="est-mbg" onClick={(e) => e.target === e.currentTarget && !loading && onClose()}>
       <div className="est-mo">
-        <div className="est-mt">Movimentar <em>estoque</em></div>
-        <div className="est-ms">Registre entrada ou saída de unidades</div>
+        <div className="est-mt">{t("stock.modal.movement")}</div>
+        <div className="est-ms">{t("stock.modal.movementDescription")}</div>
 
         {/* Info do produto */}
         <div className="est-mpill">
@@ -125,9 +142,9 @@ function ModalMovimento({ produto, onClose, onConfirm, loading }) {
         </div>
 
         <div className="est-fg">
-          <label>Quantidade</label>
+          <label>{t("stock.modal.quantity")}</label>
           <input
-            type="number" min="1" placeholder="Ex: 10"
+            type="number" min="1" placeholder={t("stock.modal.quantityPlaceholder")}
             value={quantidade}
             onChange={(e) => setQtd(e.target.value)}
             disabled={loading}
@@ -136,17 +153,19 @@ function ModalMovimento({ produto, onClose, onConfirm, loading }) {
         </div>
 
         <div className="est-mbtns">
-          <button className="est-bcx" onClick={onClose} disabled={loading}>Cancelar</button>
+          <button className="est-bcx" onClick={onClose} disabled={loading}>
+            {t("stock.modal.cancel")}
+          </button>
           <button
             className={`est-bsv ${tipo}`}
             onClick={confirmar}
             disabled={loading}
           >
             {loading
-              ? "Processando…"
+              ? t("stock.modal.processing")
               : tipo === "entrada"
-                ? "▲ Confirmar entrada"
-                : "▼ Confirmar saída"}
+                ? t("stock.modal.confirmEntry")
+                : t("stock.modal.confirmExit")}
           </button>
         </div>
       </div>
@@ -154,8 +173,14 @@ function ModalMovimento({ produto, onClose, onConfirm, loading }) {
   );
 }
 
+// Modal: excluir
+function ModalExcluir({produto, onClose, onConfirm, loading}) {
+  const [d, setD] = useState("excluir");
+}
+
 // ── Componente principal ───────────────────────────────────────────────────
 export default function Estoque({ onNavegar }) {
+  const { t } = useTranslation();
   const [produtos,  setProdutos]  = useState([]);
   const [loadingPage, setLP]      = useState(true);
   const [loadingAct,  setLA]      = useState(false);
@@ -205,7 +230,7 @@ export default function Estoque({ onNavegar }) {
         preco:      p.Preco      ?? p.preco      ?? 0,
       })));
     } catch (e) {
-      setErro("Não foi possível carregar os produtos. " + e.message);
+      setErro(t("stock.messages.loadError", { error: e.message }));
     } finally {
       setLP(false);
     }
@@ -237,15 +262,15 @@ export default function Estoque({ onNavegar }) {
         body: JSON.stringify({ 
           Nome: form.nome,
           Preco: form.preco,
-          Quantidade: 0
+          Quantidade: form.quantidade
          }),
       });
 
       await carregarProdutos();
       setModal(null);
-      showToast("✓ Produto adicionado!");
+      showToast(t("stock.messages.addSuccess"));
     } catch (e) {
-      showToast("Erro: " + e.message, "err");
+      showToast(t("stock.messages.error", { error: e.message }), "err");
     } finally {
       setLA(false);
     }
@@ -264,9 +289,13 @@ export default function Estoque({ onNavegar }) {
       await carregarProdutos();
       setModal(null);
       const emoji = tipo === "entrada" ? "▲" : "▼";
-      showToast(`${emoji} ${tipo === "entrada" ? "Entrada" : "Saída"} de ${quantidade} un. registrada!`);
+      showToast(t("stock.messages.movementSuccess", {
+        emoji,
+        type: tipo === "entrada" ? "Entrada" : "Saída",
+        quantity,
+      }));
     } catch (e) {
-      showToast("Erro: " + e.message, "err");
+      showToast(t("stock.messages.error", { error: e.message }), "err");
     } finally {
       setLA(false);
     }
@@ -274,15 +303,15 @@ export default function Estoque({ onNavegar }) {
 
   // ── Excluir (requer endpoint DELETE na API — ver nota abaixo) ────────────
   const excluir = async (p) => {
-    if (!confirm(`Remover "${p.nome}"?`)) return;
+    if (!confirm(t("stock.messages.removeConfirm", { name: p.nome }))) return;
     setLA(true);
     try {
       // DELETE /api/produtos/{id}  ← precisa adicionar esse endpoint na API
       await apiFetch(`/api/Produtos/${p.id}`, { method: "DELETE" });
       await carregarProdutos();
-      showToast("Produto removido.");
+      showToast(t("stock.messages.removeSuccess"));
     } catch (e) {
-      showToast("Erro ao remover: " + e.message, "err");
+      showToast(t("stock.messages.error", { error: e.message }), "err");
     } finally {
       setLA(false);
     }
@@ -296,29 +325,33 @@ export default function Estoque({ onNavegar }) {
   const STATS = [
     {
       C:"est-sc est-sc0", I:"est-sico est-sico0", emoji:"📦",
-      lbl:"Total", val: produtos.length,
-      sub: <><span className="est-tok">▲ {produtos.length}</span> itens</>,
+      lbl: t("stock.stats.total"),
+      val: produtos.length,
+      sub: <><span className="est-tok">▲ {produtos.length}</span> {t("stock.stats.items")}</>,
       bwC:"est-bw est-bw0",
       bf: { width: anim ? `${Math.min(100, produtos.length * 8)}%` : "0%", background:"linear-gradient(90deg,#c084fc,#9333ea)" },
     },
     {
       C:"est-sc est-sc1", I:"est-sico est-sico1", emoji:"💰",
-      lbl:"Valor total", val: `R$ ${(valorTotal).toFixed(2)}`,
-      sub: <><span className="est-tok">▲</span> em estoque</>,
+      lbl: t("stock.stats.totalValue"),
+      val: `R$ ${(valorTotal).toFixed(2)}`,
+      sub: <><span className="est-tok">▲</span> {t("stock.stats.inStock")}</>,
       bwC:"est-bw est-bw1",
       bf: { width: anim ? "78%" : "0%", background:"linear-gradient(90deg,#4ade80,#22c55e)" },
     },
     {
       C:"est-sc est-sc2", I:"est-sico est-sico2", emoji:"⚠️",
-      lbl:"Estoque baixo", val: baixo,
-      sub: <><span className="est-twarn">{baixo} item(s)</span> críticos</>,
+      lbl: t("stock.stats.lowStock"),
+      val: baixo,
+      sub: <><span className="est-twarn">{baixo} {t("stock.stats.criticalItems")}</span> {t("stock.stats.critical")}</>,
       bwC:"est-bw est-bw2",
       bf: { width: anim ? `${Math.min(100, baixo * 20)}%` : "0%", background:"linear-gradient(90deg,#fbbf24,#f59e0b)" },
     },
     {
       C:"est-sc est-sc3", I:"est-sico est-sico3", emoji:"🔴",
-      lbl:"Zerados", val: zerados,
-      sub: <><span className="est-tdng">{zerados} item(s)</span> sem estoque</>,
+      lbl: t("stock.stats.outOfStock"),
+      val: zerados,
+      sub: <><span className="est-tdng">{zerados} {t("stock.stats.criticalItems")}</span> {t("stock.stats.withoutStock")}</>,
       bwC:"est-bw est-bw3",
       bf: { width: anim ? `${Math.min(100, zerados * 20)}%` : "0%", background:"linear-gradient(90deg,#f87171,#ef4444)" },
     },
@@ -332,27 +365,27 @@ export default function Estoque({ onNavegar }) {
 
           {onNavegar && (
             <button className="est-back" onClick={() => onNavegar("mei")}>
-              ← Voltar para o Dashboard
+              ← {t("stock.back")}
             </button>
           )}
 
           <div className="est-ey">
-            Inventário · {new Date().toLocaleDateString("pt-BR", { month:"long", year:"numeric" })}
+            {t("stock.inventory")} · {new Date().toLocaleDateString("pt-BR", { month:"long", year:"numeric" })}
           </div>
-          <h1 className="est-h1">Controle de <em>Estoque</em></h1>
-          <div className="est-sub">Gerencie produtos, quantidades e alertas em tempo real</div>
+          <h1 className="est-h1">{t("stock.title")}</h1>
+          <div className="est-sub">{t("stock.subtitle")}</div>
 
           {erro && (
             <div className="est-err">
               ⚠ {erro}
-              <button className="est-err-retry" onClick={carregarProdutos}>Tentar novamente</button>
+              <button className="est-err-retry" onClick={carregarProdutos}>{t("stock.tryAgain")}</button>
             </div>
           )}
 
           {(zerados > 0 || baixo > 0) && !loadingPage && (
             <div className="est-abanner">
               <span>🔴</span>
-              <div><strong>Atenção:</strong> {zerados} produto(s) sem estoque e {baixo} com quantidade crítica.</div>
+              <div><strong>{t("stock.attention")}:</strong> {zerados} {t("stock.outOfStock")} {t("stock.and")} {baixo} {t("stock.critical")}.</div>
             </div>
           )}
 
@@ -370,15 +403,15 @@ export default function Estoque({ onNavegar }) {
 
           <div className="est-tb">
             <button className="est-bp" onClick={() => setModal("novo")} disabled={loadingAct}>
-              ＋ Adicionar produto
+              ＋ {t("stock.actions.add")}
             </button>
           </div>
 
           <div className="est-tp">
             <div className="est-tp-inner">
               <div className="est-ph">
-                <div className="est-ptitle">Produtos em estoque</div>
-                <div className="est-pcnt">{produtos.length} itens</div>
+                <div className="est-ptitle">{t("stock.products.title")}</div>
+                <div className="est-pcnt">{produtos.length} {t("stock.stats.items")}</div>
               </div>
 
               {loadingPage ? (
@@ -390,16 +423,16 @@ export default function Estoque({ onNavegar }) {
                 <table className="est-table">
                   <thead>
                     <tr>
-                      <th>Produto</th>
-                      <th>Quantidade</th>
-                      <th>Preço unit.</th>
-                      <th>Status</th>
-                      <th>Ações</th>
+                      <th>{t("stock.products.product")}</th>
+                      <th>{t("stock.products.quantity")}</th>
+                      <th>{t("stock.products.unitPrice")}</th>
+                      <th>{t("stock.products.status")}</th>
+                      <th>{t("stock.products.actions")}</th>
                     </tr>
                   </thead>
                   <tbody>
                     {produtos.length === 0 ? (
-                      <tr><td colSpan={5} className="est-empty">Nenhum produto cadastrado</td></tr>
+                      <tr><td colSpan={5} className="est-empty">{t("stock.products.none")}</td></tr>
                     ) : (
                       produtos.map((p) => {
                         const st = getStatus(p);
@@ -422,20 +455,20 @@ export default function Estoque({ onNavegar }) {
                                 R$ {p.preco.toLocaleString("pt-BR", { minimumFractionDigits:2 })}
                               </span>
                             </td>
-                            <td><span className={BADGE_CLS[st]}>{BADGE_LBL[st]}</span></td>
+                            <td><span className={BADGE_CLS[st]}>{t(`stock.status.${st === "ok" ? "inStock" : st}`)}</span></td>
                             <td>
                               <div className="est-actions">
                                 {/* ▲ Entrada */}
                                 <button
                                   className="est-bi est-ben"
-                                  title="Registrar entrada"
+                                  title={t("stock.actions.registerEntry")}
                                   disabled={loadingAct}
                                   onClick={() => setModal({ mov: p })}
                                 >▲ Mov.</button>
                                 {/* ✕ Excluir */}
                                 <button
                                   className="est-bi est-bdl"
-                                  title="Remover produto"
+                                  title={t("stock.actions.remove")}
                                   disabled={loadingAct}
                                   onClick={() => excluir(p)}
                                 >✕</button>

@@ -4,6 +4,7 @@ import {
   Chart, ArcElement, DoughnutController, LineController, LineElement,
   PointElement, LinearScale, CategoryScale, Filler, Tooltip,
 } from "chart.js";
+import { useTranslation } from "react-i18next";
 import "./styles/Mei.css";
 
 Chart.register(
@@ -12,6 +13,7 @@ Chart.register(
 );
 
 /* ══════════════ DATA ══════════════ */
+
 const PIE_DATA  = [{label:"Serviços",value:58,color:"#8f1d3f"},{label:"Produtos",value:27,color:"#22c55e"},{label:"Outros",value:15,color:"#f59e0b"}];
 const MONTHS    = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago"];
 const REVENUE   = [4200,5100,6300,7200,6100,5900,6200,6800];
@@ -32,17 +34,21 @@ const CONTEUDOS = [
   {emoji:"📄",titulo:"Nota Fiscal do MEI",      desc:"Quando emitir, como emitir e diferença entre NF de serviço e produto.",tag:"Prática",   conteudo:<><strong>NFS-e:</strong> prefeitura, para serviços a PJ.<br/><strong>NF Produto:</strong> SEFAZ, para venda a empresas.<br/><br/>Para pessoas físicas não é obrigatória, mas é recomendada.</>},
   {emoji:"🔄",titulo:"IBS e CBS — Reforma",     desc:"O que muda com a reforma tributária e como o MEI é afetado.",tag:"Novo",       conteudo:<><strong>CBS</strong> substitui PIS/COFINS. <strong>IBS</strong> substitui ICMS/ISS.<br/><br/>O MEI está protegido por regras específicas. Transição: 2026–2032.</>},
   {emoji:"🛡️",titulo:"Benefícios do MEI",      desc:"Aposentadoria, auxílio-doença, salário-maternidade e outros direitos.",tag:"Direitos", conteudo:<>Pagando DAS em dia você tem:<br/><br/>✅ Aposentadoria por idade · ✅ Auxílio-doença (12 meses) · ✅ Salário-maternidade (10 meses) · ✅ Pensão por morte</>},
-  {emoji: "", titulo:"Seguros para MEI's", desc:"", tag:"Seguros", conteudo:<></>}
 ];
 
-const CONTATOS = [
+const SEGUROS = [
+  {emoji:"🛡️",title:"", desc:"",tag:"", content:<></>},
+  {emoji:"🏦",title:"",desc: "",tag:"",content:<></>},
+];
+
+/* const CONTATOS = [
   {id:1,init:"C", nome:"Contador Silva", status:"Online agora",      preview:"Enviei o boleto do DAS",      time:"10:42",unread:true},
   {id:2,init:"🤖",nome:"Assistente IA",  status:"Sempre disponível", preview:"Posso te ajudar com dúvidas", time:"09:15",unread:true},
 ];
 const MSGS_INIT = {
   1:[{de:"theirs",texto:"Olá! Enviei o boleto do DAS de maio para você.",hora:"10:30"},{de:"theirs",texto:"Lembre-se que vence no dia 20!",hora:"10:31"},{de:"mine",texto:"Obrigada! Vou pagar ainda hoje.",hora:"10:42"}],
   2:[{de:"theirs",texto:"Olá! Sou o assistente IA. Como posso ajudar?",hora:"09:00"},{de:"mine",texto:"Qual o prazo da DASN?",hora:"09:10"},{de:"theirs",texto:"A DASN-SIMEI deve ser entregue até 31 de maio. Está em dia! ✅",hora:"09:15"}],
-};
+}; */
 
 const MESES = [{nome:"Jan",valor:5200},{nome:"Fev",valor:4800},{nome:"Mar",valor:6100},{nome:"Abr",valor:7400},{nome:"Mai",valor:6300},{nome:"Jun",valor:8200},{nome:"Jul",valor:7100},{nome:"Ago",valor:5900},{nome:"Set",valor:4700},{nome:"Out",valor:5800},{nome:"Nov",valor:3900},{nome:"Dez",valor:3000}];
 const FAT_TOTAL=68400,FAT_LIMITE=81000,FAT_PCT=Math.round(FAT_TOTAL/FAT_LIMITE*100),MAIOR_MES=Math.max(...MESES.map(m=>m.valor));
@@ -58,11 +64,11 @@ const DOCS = [
 ];
 
 const NAV = [
-  {id:"dashboard",   icon:"🏠",label:"Início",      badge:0},
-  {id:"faturamento", icon:"📈",label:"Faturamento", badge:0},
-  {id:"alertas",     icon:"🔔",label:"Alertas",     badge:0},
-  {id:"aprendizado", icon:"📚",label:"Aprendizado", badge:0},
-  {id:"documentos",  icon:"📁",label:"Documentos",  badge:0},
+  {id:"dashboard",   icon:"🏠",key:"nav.inicio",      badge:0},
+  {id:"faturamento", icon:"📈",key:"nav.faturamento", badge:0},
+  {id:"alertas",     icon:"🔔",key:"nav.alertas",     badge:0},
+  {id:"aprendizado", icon:"📚",key:"nav.aprendizado", badge:0},
+  {id:"documentos",  icon:"📁",key:"nav.documentos",  badge:0},
 ];
 
 /* ══════════════ HOOKS ══════════════ */
@@ -139,36 +145,38 @@ function Dashboard({navigate}){
   const sRef=useRef(null),cRef=useRef(null),bRef=useRef(null);
   const sVis=useVis(sRef),cVis=useVis(cRef),bVis=useVis(bRef);
   const [barAnim,setBarAnim]=useState(false);
+  const { t } = useTranslation();
   useEffect(()=>{const t=setTimeout(()=>setBarAnim(true),500);return()=>clearTimeout(t);},[]);
   const STATS=[
-    {icon:"💰",cls:"si-0",label:"Receita Mensal", value:"R$ 6.800",sub:<><span className="tok">▲ 6,5%</span> vs. mês anterior</>,  bar:"84%",barColor:"#f59e0b"},
-    {icon:"📦",cls:"si-1",label:"Pedidos Ativos",  value:"142",      sub:<><span className="tok">✓ 97%</span> processados</>,         bar:"97%",barColor:"#22c55e"},
-    {icon:"🔴",cls:"si-2",label:"Inadimplência",   value:"R$ 1.240", sub:<><span className="twarn">▲ 2%</span> vs. mês anterior</>,  bar:"18%",barColor:"#ef4444"},
-    {icon:"⭐",cls:"si-3",label:"NPS Score",        value:"87",       sub:<><span className="tok">▲ 3pts</span> — Excelente</>,       bar:"87%",barColor:"#8f1d3f"},
+    {icon:"💰",cls:"si-0",key:"dash-stats.revenue", value:"R$ 6.800",sub:<><span className="tok">▲ 6,5%</span> vs. mês anterior</>,  bar:"84%",barColor:"#f59e0b"},
+    {icon:"📦",cls:"si-1",key:"dash-stats.activeOrders",  value:"142",      sub:<><span className="tok">✓ 97%</span> processados</>,         bar:"97%",barColor:"#22c55e"},
+    {icon:"🔴",cls:"si-2",key:"dash-stats.default",   value:"R$ 1.240", sub:<><span className="twarn">▲ 2%</span> vs. mês anterior</>,  bar:"18%",barColor:"#ef4444"},
+    {icon:"⭐",cls:"si-3",key:"dash-stats.Score",        value:"87",       sub:<><span className="tok">▲ 3pts</span> — Excelente</>,       bar:"87%",barColor:"#8f1d3f"},
   ];
   return(<>
-    <div className="page-eyebrow">Visão geral · Abril 2026</div>
-    <h1 className="page-h1">Bom dia, <em>{nome}</em> 👋</h1>
+    <div className="page-eyebrow">{t("dashboard.overview")}</div>
+    <h1 className="page-h1">{t("dashboard.greetings")} <em>{nome}</em></h1>
     <div className="alert-banner">
       <span>⚠️</span>
-      <div><strong>Atenção:</strong> 2 faturas vencem nos próximos 3 dias. Total: <strong>R$ 4.820</strong></div>
-      <button className="alert-action" onClick={()=>navigate("alertas")}>Ver alertas</button>
+      <div><strong>{t("dashboard.attention")}: </strong>
+        2 faturas vencem nos próximos 3 dias. Total: <strong>R$ 4.820</strong></div>
+      <button className="alert-action" onClick={()=>navigate("alertas")}>{t("dashboard.viewAlerts")}</button>
     </div>
     <div className="stats-grid" ref={sRef}>
       {STATS.map((s,i)=>(
         <div key={i} className={`stat-card${sVis?" vis":""}`}>
           <div className={`stat-icon ${s.cls}`}>{s.icon}</div>
-          <div className="stat-label">{s.label}</div>
+          <div className="stat-label">{t(s.key)}</div>
           <div className="stat-value">{s.value}</div>
           <div className="bar-wrap"><div className="bar-fill" style={{width:barAnim?s.bar:"0%",background:s.barColor}}/></div>
-          <div className="stat-sub">{s.sub}</div>
+          <div className="stat-sub">{s.sub}</div> 
         </div>
       ))}
     </div>
     <div className={`chart-panel${cVis?" vis":""}`} ref={cRef}>
       <div className="panel-header">
-        <div className="panel-title">Receita Mensal (R$) — por categoria</div>
-        <div className="panel-badge">▲ 6,5% este mês</div>
+        <div className="panel-title">{t("dashboard.revenueCategory")}</div>
+        <div className="panel-badge">▲ 6,5% {t("dashboard.thisMonth")}</div>
       </div>
       <div className="charts-inner">
         <div className="line-wrap"><LineChart/></div>
@@ -177,7 +185,7 @@ function Dashboard({navigate}){
     </div>
     <div className="bottom-grid" ref={bRef}>
       <div className={`info-card${bVis?" vis":""}`}>
-        <div className="card-hdr"><div className="card-title">Alertas</div><button className="card-link" onClick={()=>navigate("alertas")}>Ver todos →</button></div>
+        <div className="card-hdr"><div className="card-title">{t("dashboard.alertsCard")}</div><button className="card-link" onClick={()=>navigate("alertas")}>{t("dashboard.viewAll")} →</button></div>
         <div className="mini-alert-list">
           {ALERTAS.slice(0,3).map((a,i)=>(
             <div key={i} className={`mini-alert ${a.tipo==="danger"||a.tipo==="warn"?"warn":"ok"}${bVis?" vis":""}`}>
@@ -188,11 +196,11 @@ function Dashboard({navigate}){
         </div>
       </div>
       <div className={`info-card${bVis?" vis":""}`}>
-        <div className="card-hdr"><div className="card-title">CHAT DESATIVADO</div></div>
+        <div className="card-hdr"><div className="card-title">{t("dashboard.chatDisabled")}</div></div>
         <div className="mini-chat-list"></div>
       </div>
       <div className={`info-card${bVis?" vis":""}`}>
-        <div className="card-hdr"><div className="card-title">IA DESATIVADA</div></div>
+        <div className="card-hdr"><div className="card-title">{t("dashboard.aiDisabled")}</div></div>
       </div>
     </div>
   </>);
@@ -201,21 +209,23 @@ function Dashboard({navigate}){
 function Alertas(){
   const ativos=ALERTAS.filter(a=>a.tipo==="danger"||a.tipo==="warn");
   const resolvidos=ALERTAS.filter(a=>a.tipo==="ok"||a.tipo==="info");
+  const { t } = useTranslation();
   return(<>
-    <div className="page-eyebrow">Notificações</div>
-    <h1 className="page-h1">Seus <em>alertas</em></h1>
-    <div className="a-section-label">Atenção necessária ({ativos.length})</div>
+    <div className="page-eyebrow">{t("alerts.heading")}</div>
+    <h1 className="page-h1">{t("alerts.title")} <em>{t("alerts.title-em")}</em></h1>
+    <div className="a-section-label">{t("alerts.attention")} ({ativos.length})</div>
     <div className="a-list">{ativos.map((a,i)=><div key={i} className={`a-card ${a.tipo} vis`} style={{animationDelay:`${i*.1}s`}}><span className="a-emoji">{a.emoji}</span><div><div className="a-title">{a.titulo}</div><div className="a-desc">{a.desc}</div><div className="a-date">{a.data}</div></div></div>)}</div>
-    <div className="a-section-label">Resolvidos e informativos ({resolvidos.length})</div>
+    <div className="a-section-label">{t("alerts.resolved")} ({resolvidos.length})</div>
     <div className="a-list">{resolvidos.map((a,i)=><div key={i} className={`a-card ${a.tipo} vis`} style={{animationDelay:`${(i+ativos.length)*.1}s`}}><span className="a-emoji">{a.emoji}</span><div><div className="a-title">{a.titulo}</div><div className="a-desc">{a.desc}</div><div className="a-date">{a.data}</div></div></div>)}</div>
   </>);
 }
 
 function Aprendizado(){
   const [aberto,setAberto]=useState(null);
+  const { t } = useTranslation();
   return(<>
-    <div className="page-eyebrow">Conteúdo</div>
-    <h1 className="page-h1">Módulo de <em>aprendizado</em></h1>
+    <div className="page-eyebrow">{t("learning.heading")}</div>
+    <h1 className="page-h1">{t("learning.title-em")} <em>{t("learning.title")}</em></h1>
     <div className="edu-grid">
       {CONTEUDOS.map((c,i)=>(
         <div key={i} className={`edu-card vis${aberto===i?" open":""}`} style={{animationDelay:`${i*.07}s`}} onClick={()=>setAberto(aberto===i?null:i)}>
@@ -227,6 +237,16 @@ function Aprendizado(){
         </div>
       ))}
     </div>
+    <div className="page-eyebrow-2">{t("learning.serviceInfo")}</div>
+    <h2 className="page-h2">{t("learning.serviceTitle")} <em>{t("learning.serviceTitle-em")}</em></h2>
+      <div className="service-info-grid">
+        {SEGUROS.map((c,i,j)=>(<div key={i} className={`edu-card vis${aberto===i?" open":""}`} style={{animationDelay:`${i*.07}s`}} onClick={()=>setAberto(aberto===i?null:i)}>
+          <div className="edu-emoji">{c.emoji}</div>
+          <div className="edu-titulo">{c.title}</div>
+          <div className="edu-desc">{c.desc}</div>
+          <span className="edu-tag">{c.tag}</span>
+        {aberto===i&&<div className="edu-content">{c.content}</div>}</div>))}
+      </div>
   </>);
 }
 
@@ -234,22 +254,23 @@ function Faturamento(){
   const ref=useRef(null);const vis=useVis(ref,.05);
   const [barAnim,setBarAnim]=useState(false);
   useEffect(()=>{const t=setTimeout(()=>setBarAnim(true),300);return()=>clearTimeout(t);},[]);
+  const { t } = useTranslation();
   return(<>
-    <div className="page-eyebrow">Financeiro</div>
-    <h1 className="page-h1">Dashboard de <em>faturamento</em></h1>
+    <div className="page-eyebrow">{t("revenue.heading")}</div>
+    <h1 className="page-h1">{t("revenue.title")} <em>{t("revenue.title-em")}</em></h1>
     <div className="fat-cards" ref={ref}>
       {[
-        {label:"Faturamento acumulado",value:"R$ 68.400",sub:<><span className="twarn">{FAT_PCT}% do limite anual</span></>},
-        {label:"Limite MEI 2024",       value:"R$ 81.000",sub:<>Restam <span className="tok">R$ 12.600</span></>},
-        {label:"Melhor mês",            value:"R$ 8.200", sub:"Junho/2024"},
+        {label:t("revenue.accumulated"),value:"R$ 68.400",sub:<><span className="twarn">{FAT_PCT}% {t("revenue.annual-percent")}</span></>},
+        {label:t("revenue.meiLimit"),value:"R$ 81.000",sub:<>{t("revenue.remaining")} <span className="tok">R$ 12.600</span></>},
+        {label:t("revenue.bestMonth"),value:"R$ 8.200",sub:"Junho/2024"},
       ].map((c,i)=><div key={i} className={`fat-card${vis?" vis":""}`} style={{animationDelay:`${i*.1}s`}}><div className="fat-card-label">{c.label}</div><div className="fat-card-value">{c.value}</div><div className="fat-card-sub">{c.sub}</div></div>)}
     </div>
     <div className="big-bar-box">
-      <div className="big-bar-label"><span>Progresso do limite anual</span><span className="twarn">{FAT_PCT}%</span></div>
+      <div className="big-bar-label"><span>{t("revenue.progress")}</span><span className="twarn">{FAT_PCT}%</span></div>
       <div className="big-bar-track"><div className="big-bar-fill" style={{width:barAnim?`${FAT_PCT}%`:"0%",background:FAT_PCT>85?"#ef4444":"#8f1d3f"}}/></div>
-      <div className="big-bar-info"><span>R$ 0</span><span>⚠️ Zona de atenção a partir de 80%</span><span>R$ 81.000</span></div>
+      <div className="big-bar-info"><span>R$ 0</span><span>⚠️ {t("revenue.attentionZone")}</span><span>R$ 81.000</span></div>
     </div>
-    <div className="page-eyebrow" style={{marginBottom:14}}>Faturamento por mês</div>
+    <div className="page-eyebrow" style={{marginBottom:14}}>{t("revenue.byMonth")}</div>
     <div className="meses-grid">
       {MESES.map((m,i)=>(
         <div key={i} className={`mes-card${vis?" vis":""}`} style={{animationDelay:`${.3+i*.04}s`}}>
@@ -266,20 +287,21 @@ function Documentos(){
   const [toast,setToast]=useState(false);
   const ref=useRef(null);const vis=useVis(ref,.05);
   const simular=()=>{setToast(true);setTimeout(()=>setToast(false),3000);};
+  const { t } = useTranslation();
   return(<>
-    <div className="page-eyebrow">Gestão</div>
-    <h1 className="page-h1">Seus <em>documentos</em></h1>
+    <div className="page-eyebrow">{t("documents.heading")}</div>
+    <h1 className="page-h1">{t("documents.title")} <em>{t("documents.title-em")}</em></h1>
     <div className="upload-area" onClick={simular}>
       <div className="upload-icon">📤</div>
-      <div className="upload-title">Enviar novo documento</div>
-      <div className="upload-sub">PDF, imagem ou planilha · Máx. 10MB</div>
-      <button className="upload-btn">Selecionar arquivo</button>
+      <div className="upload-title">{t("documents.uploadNew")}</div>
+      <div className="upload-sub">{t("documents.uploadType")}</div>
+      <button className="upload-btn">{t("documents.selectFile")}</button>
     </div>
-    <div className="page-eyebrow" style={{marginBottom:14}}>Todos os documentos ({DOCS.length})</div>
+    <div className="page-eyebrow">{t("documents.documentsList")} ({DOCS.length})</div>
     <div className="docs-grid" ref={ref}>
       {DOCS.map((d,i)=><div key={i} className={`doc-card${vis?" vis":""}`} style={{animationDelay:`${i*.06}s`}}><div className="doc-icon-big">{d.icon}</div><div className="doc-name">{d.nome}</div><div className="doc-meta">{d.meta}</div><span className={`doc-tag ${d.tag}`}>{d.tagLabel}</span></div>)}
     </div>
-    {toast&&<div className="toast">✓ Documento enviado com sucesso!</div>}
+    {toast&&<div className="toast">✓ {t("documents.uploadedSuccess")}</div>}
   </>);
 }
 
@@ -287,6 +309,7 @@ function Documentos(){
 export default function App({ onLogout, onNavegar }){
   const [view,setView]=useState("dashboard"),[key,setKey]=useState(0);
   const navigate=(id)=>{setView(id);setKey(k=>k+1);window.scrollTo({top:0,behavior:"smooth"});};
+  const { t } = useTranslation();
 
   const [menuOpen, setMenuOpen] = useState(false);
   const user = getUserFromToken();
@@ -306,10 +329,11 @@ export default function App({ onLogout, onNavegar }){
       <header className="hdr">
         <div className="hdr-logo">bridge<span>.</span>mei</div>
         <nav className="hdr-nav">
-          {NAV.map(n=>(
+          {NAV.map(n =>(
             <button key={n.id} className={`npill${view===n.id?" active":""}`} onClick={()=>navigate(n.id)}>
-              <span>{n.icon}</span>{n.label}
+              <span>{n.icon}</span>
               {n.badge>0&&<span className="npill-badge">{n.badge}</span>}
+              {t(n.key)}
             </button>
           ))}
         </nav>
@@ -334,10 +358,10 @@ export default function App({ onLogout, onNavegar }){
 
               <div className="user-menu-divider" />
                 <button className="user-menu-item" onClick={() => onNavegar("estoque")}>
-                 📦 Estoque
+                 📦 {t("profile.estoque")}
                 </button>
                 <button className="user-menu-item danger" onClick={onLogout}>
-                  ⎋ Sair
+                  ⎋  {t("profile.sair")}
                 </button>
             </div>
             )}

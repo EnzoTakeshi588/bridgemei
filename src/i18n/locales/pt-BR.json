@@ -1,0 +1,170 @@
+{
+    "login": { 
+        "name": "Nome", 
+        "surname": "Sobrenome",
+        "email": "Email", 
+        "password": "Senha", 
+        "login": "Entrar", 
+        "register": "Criar conta", 
+        "forgotPassword": "Esqueci minha senha"
+    },
+
+    "nav": {
+    "inicio": "Início",
+    "faturamento": "Faturamento",
+    "alertas": "Alertas",
+    "aprendizado": "Aprendizado",
+    "documentos": "Documentos"
+  },
+
+  "profile": {
+    "estoque": "Estoque",
+    "sair": "Sair"
+  },
+
+  "dashboard": {
+    "overview": "Visão geral",
+    "greetings": "Bom dia, ",
+    "attention": "Atenção",
+    "viewAlerts": "Ver alertas",
+    "revenueCategory": "Receita Mensal (R$) — por categoria",
+    "thisMonth": "este mês",
+    "alertsCard": "Alertas",
+    "viewAll": "Ver todos",
+    "chatDisabled": "CHAT DESATIVADO",
+    "aiDisabled": "IA DESATIVADA"
+  },
+
+  "dash-stats": {
+    "revenue": "Receita Mensal",
+    "activeOrders": "Pedidos Ativos",
+    "default": "Inadimplência",
+    "Score": "NPS Score"
+  },
+
+  "alerts": {
+    "heading": "Notificações",
+    "title": "Seus ",
+    "title-em": "alertas",
+    "attention": "Atenção necessária",
+    "resolved": "Resolvidos e informativos"
+  },
+
+  "learning": {
+    "heading": "Educacional",
+    "title-em": "Módulo de ",
+    "title": "aprendizado",
+    "serviceInfo": "Serviços",
+    "serviceTitle": "Seguros para",
+    "serviceTitle-em": "MEIs"
+  },
+
+  "revenue": {
+    "heading": "Financeiro",
+    "title": "Dashboard de ",
+    "title-em": "faturamento",
+    "accumulated": "Faturamento acumulado",
+    "annualLimit": "Limite anual",
+    "annual-percent": " do limite anual",
+    "meiLimit": "Limite MEI 2024",
+    "remaining": "Restam",
+    "bestMonth": "Melhor mês",
+    "progress": "Progresso do limite anual",
+    "attentionZone": "Zona de atenção a partir de 80%",
+    "byMonth": "Faturamento por mês"
+  },
+
+  "documents": {
+    "heading": "Docs",
+    "title": "Seus ",
+    "title-em": "documentos",
+    "uploadNew": "Enviar novo documento",
+    "uploadType": "PDF, imagem ou planilha · Máx. 10MB",
+    "selectFile": "Selecionar arquivo",
+    "documentsList": "Todos os documentos",
+    "uploadedSuccess": "Documento enviado com sucesso!"
+  }, 
+
+  "stock": {
+  "back": "Voltar para o Dashboard",
+  "inventory": "Inventário",
+  "title": "Controle de Estoque",
+  "subtitle": "Gerencie produtos, quantidades e alertas em tempo real",
+
+  "tryAgain": "Tentar novamente",
+
+  "attention": "Atenção",
+  "outOfStock": "produto(s) sem estoque",
+  "and": "e",
+  "critical": "com quantidade crítica",
+
+  "stats": {
+    "total": "Total",
+    "items": "itens",
+    "totalValue": "Valor total",
+    "inStock": "em estoque",
+    "lowStock": "Estoque baixo",
+    "criticalItems": "item(s)",
+    "critical": "críticos",
+    "outOfStock": "Zerados",
+    "withoutStock": " sem estoque"
+  },
+
+  "actions": {
+    "add": "Adicionar produto",
+    "movement": "Mov.",
+    "registerEntry": "Registrar entrada",
+    "remove": "Remover produto"
+  },
+
+  "products": {
+    "title": "Produtos em estoque",
+    "product": "Produto",
+    "quantity": "Quantidade",
+    "unitPrice": "Preço unit.",
+    "status": "Status",
+    "actions": "Ações",
+    "none": "Nenhum produto cadastrado",
+    "loading": "Carregando produtos…"
+  },
+
+  "status": {
+    "inStock": "Em estoque",
+    "low": "Estoque baixo",
+    "out": "Zerado"
+  },
+
+  "modal": {
+    "newProduct": "Novo produto",
+    "editProduct": "Editar produto",
+    "newProductDescription": "Informe os dados do novo produto",
+    "editProductDescription": "Atualize o nome e o preço do item",
+    "productName": "Nome do produto",
+    "unitPrice": "Preço unitário (R$)",
+    "cancel": "Cancelar",
+    "save": "✓ Salvar",
+    "saving": "Salvando…",
+
+    "movement": "Movimentar estoque",
+    "movementDescription": "Registre entrada ou saída de unidades",
+    "entry": "▲ Entrada",
+    "exit": "▼ Saída",
+    "quantity": "Quantidade",
+    "processing": "Processando…",
+    "confirmEntry": "▲ Confirmar entrada",
+    "confirmExit": "▼ Confirmar saída"
+  },
+
+  "messages": {
+    "nameRequired": "Nome é obrigatório.",
+    "validQuantity": "Informe uma quantidade válida.",
+    "insufficientQuantity": "Quantidade insuficiente. Estoque atual: {{quantity}}",
+    "loadError": "Não foi possível carregar os produtos. {{error}}",
+    "addSuccess": "✓ Produto adicionado!",
+    "removeConfirm": "Remover \"{{name}}\"?",
+    "removeSuccess": "Produto removido.",
+    "movementSuccess": "{{emoji}} {{type}} de {{quantity}} un. registrada!",
+    "error": "Erro: {{error}}"
+    }
+  }
+}

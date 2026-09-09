@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { login, register } from "./services/api";
+import { useTranslation } from "react-i18next";
 import "./styles/Login.css";
 
 const GoogleIcon = () => (
@@ -30,6 +31,7 @@ export default function Login({ onLogin }) {
   const [success, setSuccess] = useState(false);
   const [errors, setErrors] = useState({});
   const [formKey, setFormKey] = useState(0);
+  const { t }  = useTranslation();
 
   // Login
   const [email, setEmail] = useState("");
@@ -41,7 +43,7 @@ export default function Login({ onLogin }) {
   const [sobrenome, setSobrenome] = useState("");
   const [emailC, setEmailC] = useState("");
   const [passwordC, setPasswordC] = useState("");
-  const [termos, setTermos] = useState(false);
+  // const [termos, setTermos] = useState(false);
 
   const strength = getStrength(passwordC);
 
@@ -68,7 +70,7 @@ export default function Login({ onLogin }) {
     else if (!/\S+@\S+\.\S+/.test(emailC)) e.emailC = "E-mail inválido";
     if (!passwordC) e.passwordC = "Digite uma senha";
     else if (passwordC.length < 6) e.passwordC = "Mínimo 6 caracteres";
-    if (!termos) e.termos = "Aceite os termos para continuar";
+    // if (!termos) e.termos = "Aceite os termos para continuar";
     return e;
   };
 
@@ -163,10 +165,10 @@ export default function Login({ onLogin }) {
             {/* Tabs */}
             <div className="tabs">
               <button className={`tab-btn ${modo === "login" ? "active" : ""}`} onClick={() => trocarModo("login")}>
-                Entrar
+                {t("login.login")}
               </button>
               <button className={`tab-btn ${modo === "cadastro" ? "active" : ""}`} onClick={() => trocarModo("cadastro")}>
-                Criar conta
+                {t("login.register")}
               </button>
             </div>
 
@@ -192,13 +194,13 @@ export default function Login({ onLogin }) {
               {modo === "login" && (
                 <>
                   <div className="form-group">
-                    <label className="form-label">E-mail</label>
+                    <label className="form-label">{t("login.email")}</label>
                     <input className={`form-input ${errors.email ? "error" : ""}`} type="email" placeholder="seu@email.com" value={email} onChange={e => setEmail(e.target.value)} />
                     {errors.email && <span className="form-error">{errors.email}</span>}
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Senha</label>
+                    <label className="form-label">{t("login.password")}</label>
                     <input className={`form-input ${errors.password ? "error" : ""}`} type="password" placeholder="••••••••" value={password} onChange={e => setPassword(e.target.value)} onKeyDown={e => e.key === "Enter" && handleSubmit()} />
                     {errors.password && <span className="form-error">{errors.password}</span>}
                   </div>
@@ -208,7 +210,7 @@ export default function Login({ onLogin }) {
                       <input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)} />
                       Lembrar de mim
                     </label>
-                    <button className="forgot-link">Esqueci a senha</button>
+                    <button className="forgot-link">{t("login.forgotPassword")}</button>
                   </div>
                 </>
               )}
@@ -218,24 +220,24 @@ export default function Login({ onLogin }) {
                 <>
                   <div className="form-row">
                     <div>
-                      <label className="form-label">Nome</label>
+                      <label className="form-label">{t("login.name")}</label>
                       <input className={`form-input ${errors.nome ? "error" : ""}`} type="text" placeholder="Tassi" value={nome} onChange={e => setNome(e.target.value)} />
                       {errors.nome && <span className="form-error">{errors.nome}</span>}
                     </div>
                     <div>
-                      <label className="form-label">Sobrenome</label>
+                      <label className="form-label">{t("login.surname")}</label>
                       <input className="form-input" type="text" placeholder="Takeshi" value={sobrenome} onChange={e => setSobrenome(e.target.value)} />
                     </div>
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">E-mail</label>
+                    <label className="form-label">{t("login.email")}</label>
                     <input className={`form-input ${errors.emailC ? "error" : ""}`} type="email" placeholder="seu@email.com" value={emailC} onChange={e => setEmailC(e.target.value)} />
                     {errors.emailC && <span className="form-error">{errors.emailC}</span>}
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Senha</label>
+                    <label className="form-label">{t("login.password")}</label>
                     <input className={`form-input ${errors.passwordC ? "error" : ""}`} type="password" placeholder="••••••••" value={passwordC} onChange={e => setPasswordC(e.target.value)} />
                     {errors.passwordC && <span className="form-error">{errors.passwordC}</span>}
                     {passwordC && (
@@ -251,14 +253,6 @@ export default function Login({ onLogin }) {
                       </>
                     )}
                   </div>
-
-                  <div className="terms-row">
-                    <input type="checkbox" checked={termos} onChange={e => setTermos(e.target.checked)} />
-                    <span>
-                      Concordo com os <a href="#" className="terms-link">Termos de Uso</a> e a <a href="#" className="terms-link">Política de Privacidade</a>
-                    </span>
-                  </div>
-                  {errors.termos && <span className="form-error" style={{ marginTop: -8, marginBottom: 12, display: "block" }}>{errors.termos}</span>}
                 </>
               )}
             </div>
@@ -276,14 +270,7 @@ export default function Login({ onLogin }) {
 
             <div className="divider-row">
               <div className="divider-line" />
-              <span className="divider-text">ou continue com</span>
-              <div className="divider-line" />
             </div>
-
-            <button className="btn-google">
-              <GoogleIcon />
-              {modo === "login" ? "Entrar com Google" : "Cadastrar com Google"}
-            </button>
 
             <p className="switch-row">
               {modo === "login" ? "Não tem conta?" : "Já tem conta?"}
