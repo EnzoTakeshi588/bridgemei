@@ -129,7 +129,7 @@ export default function App() {
   const handleLogin = () => {
     setLogado(true);
     setTela("mei");
-    localStorage.setItem("ultimaPagina", "mei");
+    localStorage.setItem("ultimaPagina", tela);
   };
 
   if (!logado) 

@@ -309,9 +309,11 @@ function Documentos(){
 export default function App({ onLogout, onNavegar }){
   const [view,setView]=useState("dashboard"),[key,setKey]=useState(0);
   const navigate=(id)=>{setView(id);setKey(k=>k+1);window.scrollTo({top:0,behavior:"smooth"});};
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
+  const changeLanguage = (language) => { i18n.changeLanguage(language); localStorage.getItem("language", language); }
   const [menuOpen, setMenuOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false)
   const user = getUserFromToken();
   const usuarioNome = user?.nome || "Usuário";
   const usuarioEmail = user?.email || "E-mail";
@@ -338,33 +340,47 @@ export default function App({ onLogout, onNavegar }){
           ))}
         </nav>
         <div className="hdr-right">
-          <div className="user-menu-wrapper">
-          <div className="hdr-avatar" onClick={() => setMenuOpen(!menuOpen)}>
-            {usuarioNome.charAt(0).toUpperCase()}
+          {/* idioma*/}
+          <div className="lang-switcher">
+            <button className={i18n.language === "pt-BR" ? "language-btn active" : "language-btn"} 
+            onClick={() => changeLanguage("pt-BR")}
+            title="Português">
+              🇧🇷 PT
+              </button>
+            <button className={i18n.language === "en-US" ? "language-btn active" : "language-btn"} 
+            onClick={() => changeLanguage("en-US")}
+            title="English">
+              🇺🇸 EN
+            </button>
           </div>
-          {menuOpen && (
-            <div className="user-menu">
-              <div className="user-menu-header">
-                <div className="user-avatar-big">
-                  {usuarioNome.charAt(0).toUpperCase()}
-                </div>
-                <div className="user-name">
-                  {usuarioNome}
-                </div>
-                <div className="user-email">
-                  {usuarioEmail}
-                </div>
-              </div>
-
-              <div className="user-menu-divider" />
-                <button className="user-menu-item" onClick={() => onNavegar("estoque")}>
-                 📦 {t("profile.estoque")}
-                </button>
-                <button className="user-menu-item danger" onClick={onLogout}>
-                  ⎋  {t("profile.sair")}
-                </button>
+          {/* perfil*/}
+          <div className="user-menu-wrapper">
+            <div className="hdr-avatar" onClick={() => setMenuOpen(!menuOpen)}>
+              {usuarioNome.charAt(0).toUpperCase()}
             </div>
-            )}
+            {menuOpen && (
+              <div className="user-menu">
+                <div className="user-menu-header">
+                  <div className="user-avatar-big">
+                    {usuarioNome.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="user-name">
+                    {usuarioNome}
+                  </div>
+                  <div className="user-email">
+                    {usuarioEmail}
+                  </div>
+                </div>
+
+                <div className="user-menu-divider" />
+                  <button className="user-menu-item" onClick={() => onNavegar("estoque")}>
+                  📦 {t("profile.estoque")}
+                  </button>
+                  <button className="user-menu-item danger" onClick={onLogout}>
+                    ⎋  {t("profile.sair")}
+                  </button>
+              </div>
+             )}
           </div>
         </div>
       </header>

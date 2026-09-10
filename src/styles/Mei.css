@@ -311,6 +311,40 @@
     transform: translateY(-1px);
   }
 
+  .language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-surface);
+  }
+
+  .language-btn {
+    border: none;
+    background: transparent;
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 8px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .language-btn:hover {
+    color: var(--color-text);
+    background: var(--color-surface-hover);
+  }
+
+  .language-btn.active {
+    color: var(--color-text);
+    background: var(--color-accent-bg);
+    border: 1px solid var(--color-accent-border);
+  }
+
   .page-wrap {
     position: relative;
     z-index: 1;
