@@ -280,7 +280,7 @@
 
   .est-sc:hover {
     transform: translateY(-4px) scale(1.01);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, .5);
+    box-shadow: var(--shadow-card);
   }
 
   /* Cards semânticos */
@@ -288,32 +288,32 @@
   .est-sc0 {
     background: linear-gradient(
       135deg,
-      var(--color-accent-bg) 0%,
-      rgba(0, 0, 0, .40) 100%
+      var(--color-accent-bg) 25%,
+      var(--color-card-fade) 75%
     );
   }
 
   .est-sc1 {
     background: linear-gradient(
       135deg,
-      rgba(34, 197, 94, .14) 0%,
-      rgba(0, 0, 0, .40) 100%
+      var(--color-card-success-bg) 25%,
+      var(--color-card-fade) 75%
     );
   }
 
   .est-sc2 {
     background: linear-gradient(
       135deg,
-      rgba(245, 158, 11, .14) 0%,
-      rgba(0, 0, 0, .40) 100%
+      var(--color-card-warning-bg) 25%,
+      var(--color-card-fade) 75%
     );
   }
 
   .est-sc3 {
     background: linear-gradient(
       135deg,
-      rgba(239, 68, 68, .14) 0%,
-      rgba(0, 0, 0, .40) 100%
+      var(--color-card-danger-bg) 25%,
+      var(--color-card-fade) 75%
     );
   }
 
@@ -328,15 +328,15 @@
   }
 
   .est-sc1 .est-sval {
-    color: #4ade80;
+    color: var(--color-success);
   }
 
   .est-sc2 .est-sval {
-    color: #fbbf24;
+    color: var(--color-warning);
   }
 
   .est-sc3 .est-sval {
-    color: #f87171;
+    color: var(--color-danger);
   }
 
   .est-sico {
@@ -427,7 +427,7 @@
   }
 
   .est-bw3 {
-    background: rgba(239, 68, 68, .10);
+    background: var(--color-card-danger-bg);
   }
 
   .est-bf {
@@ -682,6 +682,59 @@
     transition: all .2s;
   }
 
+  .est-bi {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1;
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    color .2s ease,
+    transform .2s ease;
+}
+
+/* Movimentar */
+.est-ben {
+  color: var(--color-accent);
+  background: var(--color-accent-bg);
+  border: 1px solid var(--color-accent-border);
+}
+
+.est-ben:hover {
+  color: var(--color-accent-hover);
+  background: var(--color-accent-bg);
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+/* Excluir */
+.est-bdl {
+  color: var(--color-danger);
+  background: rgba(239, 68, 68, .05);
+  border: 1px solid rgba(239, 68, 68, .20);
+}
+
+.est-bdl:hover {
+  color: var(--color-danger);
+  background: rgba(239, 68, 68, .10);
+  border-color: var(--color-danger);
+  transform: translateY(-1px);
+}
+
+.est-bi:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/*
   .est-act:hover {
     background: var(--color-surface-hover);
     border-color: var(--color-border-hover);
@@ -702,6 +755,7 @@
     border-color: rgba(239, 68, 68, .35);
     color: var(--color-danger);
   }
+*/
 
   .est-badge {
     display: inline-flex;
