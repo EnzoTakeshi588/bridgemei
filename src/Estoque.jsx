@@ -329,7 +329,7 @@ export default function Estoque({ onNavegar }) {
       val: produtos.length,
       sub: <><span className="est-tok">▲ {produtos.length}</span> {t("stock.stats.items")}</>,
       bwC:"est-bw est-bw0",
-      bf: { width: anim ? `${Math.min(100, produtos.length * 8)}%` : "0%", background:"linear-gradient(90deg,#c084fc,#9333ea)" },
+      bf: { width: anim ? `${Math.min(100, produtos.length * 8)}%` : "0%", background:"linear-gradient(90deg, var(--color-card-accent-bg), var(--color-accent))" },
     },
     {
       C:"est-sc est-sc1", I:"est-sico est-sico1", emoji:"💰",
@@ -337,7 +337,7 @@ export default function Estoque({ onNavegar }) {
       val: `R$ ${(valorTotal).toFixed(2)}`,
       sub: <><span className="est-tok">▲</span> {t("stock.stats.inStock")}</>,
       bwC:"est-bw est-bw1",
-      bf: { width: anim ? "78%" : "0%", background:"linear-gradient(90deg,#4ade80,#22c55e)" },
+      bf: { width: anim ? "78%" : "0%", background:"linear-gradient(90deg, var(--color-card-success-bg), #22c55e)" },
     },
     {
       C:"est-sc est-sc2", I:"est-sico est-sico2", emoji:"⚠️",
@@ -345,7 +345,7 @@ export default function Estoque({ onNavegar }) {
       val: baixo,
       sub: <><span className="est-twarn">{baixo} {t("stock.stats.criticalItems")}</span> {t("stock.stats.critical")}</>,
       bwC:"est-bw est-bw2",
-      bf: { width: anim ? `${Math.min(100, baixo * 20)}%` : "0%", background:"linear-gradient(90deg,#fbbf24,#f59e0b)" },
+      bf: { width: anim ? `${Math.min(100, baixo * 20)}%` : "0%", background:"linear-gradient(90deg, var(--color-card-warning-bg) ,#f59e0b)" },
     },
     {
       C:"est-sc est-sc3", I:"est-sico est-sico3", emoji:"🔴",
@@ -353,7 +353,7 @@ export default function Estoque({ onNavegar }) {
       val: zerados,
       sub: <><span className="est-tdng">{zerados} {t("stock.stats.criticalItems")}</span> {t("stock.stats.withoutStock")}</>,
       bwC:"est-bw est-bw3",
-      bf: { width: anim ? `${Math.min(100, zerados * 20)}%` : "0%", background:"linear-gradient(90deg,#f87171,#ef4444)" },
+      bf: { width: anim ? `${Math.min(100, zerados * 20)}%` : "0%", background:"linear-gradient(90deg, var(--color-card-danger-bg), #f87171)" },
     },
   ];
 
@@ -372,7 +372,7 @@ export default function Estoque({ onNavegar }) {
           <div className="est-ey">
             {t("stock.inventory")} · {new Date().toLocaleDateString("pt-BR", { month:"long", year:"numeric" })}
           </div>
-          <h1 className="est-h1">{t("stock.title")}</h1>
+          <div className="est-h1">{t("stock.title")} <em>{t("stock.title-em")}</em></div>
           <div className="est-sub">{t("stock.subtitle")}</div>
 
           {erro && (
@@ -458,13 +458,13 @@ export default function Estoque({ onNavegar }) {
                             <td><span className={BADGE_CLS[st]}>{t(`stock.status.${st === "ok" ? "inStock" : st}`)}</span></td>
                             <td>
                               <div className="est-actions">
-                                {/* ▲ Entrada */}
+                                {/* Movimentar */}
                                 <button
                                   className="est-bi est-ben"
                                   title={t("stock.actions.registerEntry")}
                                   disabled={loadingAct}
                                   onClick={() => setModal({ mov: p })}
-                                >▲ Mov.</button>
+                                >✎</button>
                                 {/* ✕ Excluir */}
                                 <button
                                   className="est-bi est-bdl"

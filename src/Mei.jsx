@@ -6,6 +6,7 @@ import {
 } from "chart.js";
 import { useTranslation } from "react-i18next";
 import "./styles/Mei.css";
+import { createPortal } from "react-dom";
 
 Chart.register(
   ArcElement, DoughnutController, LineController, LineElement,
@@ -14,7 +15,11 @@ Chart.register(
 
 /* ══════════════ DATA ══════════════ */
 
-const PIE_DATA  = [{label:"Serviços",value:58,color:"#8f1d3f"},{label:"Produtos",value:27,color:"#22c55e"},{label:"Outros",value:15,color:"#f59e0b"}];
+const PIE_DATA = [
+  { label: "Serviços", value: 58, color: "--color-accent" },
+  { label: "Produtos", value: 27, color: "--color-success" },
+  { label: "Outros", value: 15, color: "--color-warning" }
+];
 const MONTHS    = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago"];
 const REVENUE   = [4200,5100,6300,7200,6100,5900,6200,6800];
 
@@ -115,27 +120,219 @@ function useVis(ref, threshold = 0.1) {
 
   return visible;
 }
+
+function getThemeColor(variable) {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(variable)
+    .trim();
+}
+
 /* ══════════════ CHARTS ══════════════ */
 function LineChart(){
-  const r=useRef(null),inst=useRef(null);
-  useEffect(()=>{
-    if(!r.current)return; inst.current?.destroy();
-    const ctx=r.current.getContext("2d"),g=ctx.createLinearGradient(0,0,0,220);
-    g.addColorStop(0,"rgba(99,102,241,.28)");g.addColorStop(1,"rgba(99,102,241,0)");
-    inst.current=new Chart(r.current,{type:"line",data:{labels:MONTHS,datasets:[{data:REVENUE,borderColor:"rgba(143, 29, 63, 0.35)",backgroundColor:"rgba(143, 29, 63, 0.20)",borderWidth:2.5,tension:.45,fill:true,pointBackgroundColor:"rgba(143, 29, 63, 0.40)",pointBorderColor:"rgba(143, 29, 63, 0.35)",pointBorderWidth:2,pointRadius:5,pointHoverRadius:8,pointHoverBackgroundColor:"#fff"}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:1600,easing:"easeInOutQuart",delay:(c)=>c.dataIndex*70},interaction:{mode:"index",intersect:false},scales:{x:{grid:{color:"rgba(255,255,255,.04)"},ticks:{color:"rgba(240,240,255,.3)",font:{family:"DM Sans",size:11}}},y:{grid:{color:"rgba(255,255,255,.04)"},ticks:{color:"rgba(240,240,255,.3)",font:{family:"DM Sans",size:11},callback:(v)=>`R$${(v/1000).toFixed(0)}k`}}},plugins:{legend:{display:false},tooltip:{backgroundColor:"rgba(12,12,22,.95)",titleColor:"#f0f0ff",bodyColor:"rgba(240,240,255,.55)",borderColor:"rgba(99,102,241,.3)",borderWidth:1,padding:12,callbacks:{label:(c)=>` R$ ${c.parsed.y.toLocaleString("pt-BR")}`}}}}});
-    return()=>inst.current?.destroy();
-  },[]);
+  const r = useRef(null);
+  const inst = useRef(null);
+  useEffect(() => {
+    if (!r.current) return;
+
+    inst.current?.destroy();
+
+    const accent = getThemeColor("--color-accent");
+    const accentGlow = getThemeColor("--color-accent-glow");
+    const border = getThemeColor("--color-border");
+    const textMuted = getThemeColor("--color-text-muted");
+    const text = getThemeColor("--color-text");
+    const surface = getThemeColor("--color-bg-secondary");
+
+    inst.current = new Chart(r.current, {
+      type: "line",
+
+      data: {
+        labels: MONTHS,
+
+        datasets: [{
+          data: REVENUE,
+          borderColor: accent,
+          backgroundColor: accentGlow,
+          borderWidth: 2.5,
+          tension: .45,
+          fill: true,
+          pointBackgroundColor: accent,
+          pointBorderColor: accent,
+          pointBorderWidth: 2,
+          pointRadius: 5,
+          pointHoverRadius: 8,
+          pointHoverBackgroundColor: text
+        }]
+      },
+
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        animation: {
+          duration: 1600,
+          easing: "easeInOutQuart",
+          delay: (c) => c.dataIndex * 70
+        },
+        
+        interaction: {
+          mode: "index",
+          intersect: false
+        },
+        
+        scales: {
+          x: {
+            grid: {
+              color: border
+            },
+            
+            ticks: {
+              color: textMuted,
+              font: {
+                family: "DM Sans",
+                size: 11
+              }
+            }
+          },
+
+          y: {
+            grid: {
+              color: border
+            },
+            
+            ticks: {
+              color: textMuted,
+              font: {
+                family: "DM Sans",
+                size: 11
+              },
+
+              callback: (v) => `R$${(v / 1000).toFixed(0)}k`
+            }
+          }
+        },
+
+        plugins: {
+          legend: {
+            display: false
+          },
+
+          tooltip: {
+            backgroundColor: surface,
+            titleColor: text,
+            bodyColor: textMuted,
+            borderColor: accent,
+            borderWidth: 1,
+            padding: 12,
+            callbacks: {
+              label: (c) =>
+                ` R$ ${c.parsed.y.toLocaleString("pt-BR")} `
+            }
+          }
+        }
+      }
+    });
+
+    return () => inst.current?.destroy();
+  }, []);
+
   return <canvas ref={r}/>;
 }
 
 function DonutChart(){
-  const r=useRef(null),inst=useRef(null);
-  useEffect(()=>{
-    if(!r.current)return; inst.current?.destroy();
-    inst.current=new Chart(r.current,{type:"doughnut",data:{labels:PIE_DATA.map(d=>d.label),datasets:[{data:PIE_DATA.map(d=>d.value),backgroundColor:PIE_DATA.map(d=>d.color+"bb"),borderColor:PIE_DATA.map(d=>d.color),borderWidth:2,hoverOffset:12}]},options:{responsive:true,maintainAspectRatio:false,cutout:"70%",animation:{animateRotate:true,animateScale:false,duration:1800,easing:"easeInOutQuart"},plugins:{legend:{display:false},tooltip:{backgroundColor:"rgba(12,12,22,.95)",titleColor:"#f0f0ff",bodyColor:"rgba(240,240,255,.55)",borderColor:"rgba(99,102,241,.3)",borderWidth:1,padding:10,callbacks:{label:(c)=>` ${c.parsed.toFixed(1)}%`}}}}});
-    return()=>inst.current?.destroy();
-  },[]);
-  return(<div><div className="donut-canvas-wrap"><canvas ref={r}/><div className="donut-center"><div className="donut-center-val">85%</div><div className="donut-center-sub">Meta</div></div></div><div className="pie-legend">{PIE_DATA.map(d=><div className="pie-row" key={d.label}><div className="pie-dot" style={{background:d.color}}/>{d.label}<span className="pie-val">{d.value}%</span></div>)}</div></div>);
+  const r = useRef(null);
+  const inst = useRef(null);
+
+  useEffect(() => {
+    if (!r.current) return;
+
+    inst.current?.destroy();
+
+    const colors = PIE_DATA.map(d => getThemeColor(d.color));
+
+    const text = getThemeColor("--color-text");
+    const textMuted = getThemeColor("--color-text-muted");
+    const surface = getThemeColor("--color-bg-secondary");
+    const accent = getThemeColor("--color-accent");
+
+    inst.current = new Chart(r.current, {
+      type: "doughnut",
+
+      data: {
+        labels: PIE_DATA.map(d => d.label),
+        
+        datasets: [{
+          data: PIE_DATA.map(d => d.value),
+          backgroundColor: colors.map(color => color + "bb"),
+          borderColor: colors,
+          borderWidth: 2,
+          hoverOffset: 12
+        }]
+      },
+
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: "70%",
+        
+        animation: {
+          animateRotate: true,
+          animateScale: false,
+          duration: 1800,
+          easing: "easeInOutQuart"
+        },
+        
+        plugins: {
+          legend: {
+            display: false
+          },
+          
+          tooltip: {
+            backgroundColor: surface,
+            titleColor: text,
+            bodyColor: textMuted,
+            borderColor: accent,
+            borderWidth: 1,
+            padding: 10,
+            callbacks: {
+              label: (c) => ` ${c.parsed.toFixed(1)}%`
+            }
+          }
+        }
+      }
+    });
+
+    return () => inst.current?.destroy();
+  }, []);
+  return (
+    <div>
+      <div className="donut-canvas-wrap">
+        <canvas ref={r}/>
+
+        <div className="donut-center">
+          <div className="donut-center-val">85%</div>
+          <div className="donut-center-sub">Meta</div>
+        </div>
+      </div>
+
+      <div className="pie-legend">
+        {PIE_DATA.map((d, i) => (
+          <div className="pie-row" key={d.label}>
+            <div
+              className="pie-dot"
+              style={{ background: getThemeColor(d.color) }}
+            />
+
+            {d.label}
+
+            <span className="pie-val">
+              {d.value}%
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
 
 /* ══════════════ PAGES ══════════════ */
@@ -148,10 +345,10 @@ function Dashboard({navigate}){
   const { t } = useTranslation();
   useEffect(()=>{const t=setTimeout(()=>setBarAnim(true),500);return()=>clearTimeout(t);},[]);
   const STATS=[
-    {icon:"💰",cls:"si-0",key:"dash-stats.revenue", value:"R$ 6.800",sub:<><span className="tok">▲ 6,5%</span> vs. mês anterior</>,  bar:"84%",barColor:"#f59e0b"},
-    {icon:"📦",cls:"si-1",key:"dash-stats.activeOrders",  value:"142",      sub:<><span className="tok">✓ 97%</span> processados</>,         bar:"97%",barColor:"#22c55e"},
-    {icon:"🔴",cls:"si-2",key:"dash-stats.default",   value:"R$ 1.240", sub:<><span className="twarn">▲ 2%</span> vs. mês anterior</>,  bar:"18%",barColor:"#ef4444"},
-    {icon:"⭐",cls:"si-3",key:"dash-stats.Score",        value:"87",       sub:<><span className="tok">▲ 3pts</span> — Excelente</>,       bar:"87%",barColor:"#8f1d3f"},
+    {icon:"💰",cls:"si-0",key:"dash-stats.revenue", value:"R$ 6.800",sub:<><span className="tok">▲ 6,5%</span> vs. mês anterior</>,  bar:"84%",barColor:"var(--color-warning)"},
+    {icon:"📦",cls:"si-1",key:"dash-stats.activeOrders",  value:"142",      sub:<><span className="tok">✓ 97%</span> processados</>,         bar:"97%",barColor:"var(--color-success)"},
+    {icon:"🔴",cls:"si-2",key:"dash-stats.default",   value:"R$ 1.240", sub:<><span className="twarn">▲ 2%</span> vs. mês anterior</>,  bar:"18%",barColor:"var(--color-danger)"},
+    {icon:"⭐",cls:"si-3",key:"dash-stats.Score",        value:"87",       sub:<><span className="tok">▲ 3pts</span> — Excelente</>,       bar:"87%",barColor: "var(--color-accent)"},
   ];
   return(<>
     <div className="page-eyebrow">{t("dashboard.overview")}</div>
@@ -225,7 +422,7 @@ function Aprendizado(){
   const { t } = useTranslation();
   return(<>
     <div className="page-eyebrow">{t("learning.heading")}</div>
-    <h1 className="page-h1">{t("learning.title-em")} <em>{t("learning.title")}</em></h1>
+    <h1 className="page-h1">{t("learning.titleBefore")} <em>{t("learning.titleEm")}</em> {t("learning.titleAfter")}</h1>
     <div className="edu-grid">
       {CONTEUDOS.map((c,i)=>(
         <div key={i} className={`edu-card vis${aberto===i?" open":""}`} style={{animationDelay:`${i*.07}s`}} onClick={()=>setAberto(aberto===i?null:i)}>
@@ -267,7 +464,7 @@ function Faturamento(){
     </div>
     <div className="big-bar-box">
       <div className="big-bar-label"><span>{t("revenue.progress")}</span><span className="twarn">{FAT_PCT}%</span></div>
-      <div className="big-bar-track"><div className="big-bar-fill" style={{width:barAnim?`${FAT_PCT}%`:"0%",background:FAT_PCT>85?"#ef4444":"#8f1d3f"}}/></div>
+      <div className="big-bar-track"><div className="big-bar-fill" style={{width:barAnim?`${FAT_PCT}%`:"0%",background:FAT_PCT>85?"var(--color-danger)":"var(--color-accent)"}}/></div>
       <div className="big-bar-info"><span>R$ 0</span><span>⚠️ {t("revenue.attentionZone")}</span><span>R$ 81.000</span></div>
     </div>
     <div className="page-eyebrow" style={{marginBottom:14}}>{t("revenue.byMonth")}</div>
@@ -275,8 +472,8 @@ function Faturamento(){
       {MESES.map((m,i)=>(
         <div key={i} className={`mes-card${vis?" vis":""}`} style={{animationDelay:`${.3+i*.04}s`}}>
           <div className="mes-nome">{m.nome}</div>
-          <div className="mes-valor" style={{color:m.valor<4500?"rgba(240,240,255,.4)":undefined}}>R$ {(m.valor/1000).toFixed(1)}k</div>
-          <div className="mes-bar"><div className="mes-bar-fill" style={{width:barAnim?`${(m.valor/MAIOR_MES)*100}%`:"0%",background:m.valor<4500?"#f59e0b":"#8f1d3f",transition:"width 1.2s cubic-bezier(.22,1,.36,1)"}}/></div>
+          <div className="mes-valor" style={{color:m.valor<4500?"var(--color-text)":undefined}}>R$ {(m.valor/1000).toFixed(1)}k</div>
+          <div className="mes-bar"><div className="mes-bar-fill" style={{width:barAnim?`${(m.valor/MAIOR_MES)*100}%`:"0%",background:m.valor<4500?"var(--color-warning)":"var(--color-accent)",transition:"width 1.2s cubic-bezier(.22,1,.36,1)"}}/></div>
         </div>
       ))}
     </div>
@@ -313,7 +510,6 @@ export default function App({ onLogout, onNavegar }){
 
   const changeLanguage = (language) => { i18n.changeLanguage(language); localStorage.getItem("language", language); }
   const [menuOpen, setMenuOpen] = useState(false);
-  const [langOpen, setLangOpen] = useState(false)
   const user = getUserFromToken();
   const usuarioNome = user?.nome || "Usuário";
   const usuarioEmail = user?.email || "E-mail";

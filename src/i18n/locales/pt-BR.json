@@ -45,15 +45,16 @@
   "alerts": {
     "heading": "Notificações",
     "title": "Seus ",
-    "title-em": "alertas",
+    "title-em": "Alertas",
     "attention": "Atenção necessária",
     "resolved": "Resolvidos e informativos"
   },
 
   "learning": {
     "heading": "Educacional",
-    "title-em": "Módulo de ",
-    "title": "aprendizado",
+    "titleBefore": "Módulo de ",
+    "titleEm": "Aprendizado",
+    "titleAfter": " ",
     "serviceInfo": "Serviços",
     "serviceTitle": "Seguros para",
     "serviceTitle-em": "MEIs"
@@ -62,7 +63,7 @@
   "revenue": {
     "heading": "Financeiro",
     "title": "Dashboard de ",
-    "title-em": "faturamento",
+    "title-em": "Faturamento",
     "accumulated": "Faturamento acumulado",
     "annualLimit": "Limite anual",
     "annual-percent": " do limite anual",
@@ -77,7 +78,7 @@
   "documents": {
     "heading": "Docs",
     "title": "Seus ",
-    "title-em": "documentos",
+    "title-em": "Documentos",
     "uploadNew": "Enviar novo documento",
     "uploadType": "PDF, imagem ou planilha · Máx. 10MB",
     "selectFile": "Selecionar arquivo",
@@ -88,7 +89,8 @@
   "stock": {
   "back": "Voltar para o Dashboard",
   "inventory": "Inventário",
-  "title": "Controle de Estoque",
+  "title": "Controle de ",
+  "title-em": "Estoque",
   "subtitle": "Gerencie produtos, quantidades e alertas em tempo real",
 
   "tryAgain": "Tentar novamente",
@@ -112,7 +114,6 @@
 
   "actions": {
     "add": "Adicionar produto",
-    "movement": "Mov.",
     "registerEntry": "Registrar entrada",
     "remove": "Remover produto"
   },
@@ -140,7 +141,9 @@
     "newProductDescription": "Informe os dados do novo produto",
     "editProductDescription": "Atualize o nome e o preço do item",
     "productName": "Nome do produto",
+    "productNamePlaceholder": "Ex: Dell i7 Laptop",
     "unitPrice": "Preço unitário (R$)",
+    "pricePlaceholder": "0.00",
     "cancel": "Cancelar",
     "save": "✓ Salvar",
     "saving": "Salvando…",
@@ -150,6 +153,7 @@
     "entry": "▲ Entrada",
     "exit": "▼ Saída",
     "quantity": "Quantidade",
+    "quantityPlaceholder": "Ex: 10",
     "processing": "Processando…",
     "confirmEntry": "▲ Confirmar entrada",
     "confirmExit": "▼ Confirmar saída"

@@ -45,15 +45,16 @@
    "alerts": {
     "heading": "Notifications",
     "title": "Your ",
-    "title-em": "alerts",
+    "title-em": "Alerts",
     "attention": "Attention required",
     "resolved": "Resolved and informational"
   },
 
   "learning": {
     "heading": "Educational",
-    "title": "Learning",
-    "title-em": " ",
+    "titleBefore": " ",
+    "titleEm": "Learning ",
+    "titleAfter": "Module",
     "serviceInfo": "Services",
     "serviceTitle": "Insurance for",
     "serviceTitle-em": "MEIs"
@@ -62,7 +63,7 @@
   "revenue": {
     "heading": "Financial",
     "title": "Revenue ",
-    "title-em": "dashboard",
+    "title-em": "Dashboard",
     "accumulated": "Accumulated revenue",
     "annualLimit": "Annual limit",
     "annual-percent": " of annual limit",
@@ -77,7 +78,7 @@
   "documents": {
     "heading": "Docs",
     "title": "Your ",
-    "title-em": "documents",
+    "title-em": "Documents",
     "uploadNew": "Upload new document",
     "uploadType": "PDF, image or spreadsheet · Max. 10MB",
     "selectFile": "Select file",
@@ -88,7 +89,8 @@
  "stock": {
   "back": "Back to Dashboard",
   "inventory": "Inventory",
-  "title": "Inventory Control",
+  "title": "Inventory ",
+  "title-em": "Control",
   "subtitle": "Manage products, quantities and alerts in real time",
 
   "tryAgain": "Try again",
@@ -111,7 +113,6 @@
 
   "actions": {
     "add": "Add product",
-    "movement": "Move",
     "registerEntry": "Register entry",
     "remove": "Remove product"
   },
