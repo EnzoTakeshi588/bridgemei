@@ -64,7 +64,6 @@ dotnet run
 ```  
 4. Abra um outro terminal dentro de ` EstoqueApi ` e rode os mesmos comandos do passo 3  
 5. Faça o primeiro cadastro e depois faça o Login para entrar no site.  
-_Importante: A API de Login funciona com banco em memória, isso significa que você tem que fazer o cadastro toda vez que ligar a API_
 
 ## Etapas
 Projeto Inteiro:
@@ -75,10 +74,15 @@ Projeto Inteiro:
 * ~~Criação da API Estoque~~
 * ~~Tabela do estoque relacional~~
 * ~~Adição de temas novos~~
-* **Importação de arquivos (Excel e .csv)**
+* **Docker Compose**
+* Implementacao Controle de Vendas
+* [...]
 * [...]
 * Publicacao App BridgeMEI
 
-Branch: [...]
+Branch docker: 
+* chore: add Docker files and compose.yml
+* [...]
+* [...]
 
 _O BridgeMEI é um projeto escolar, feito por estudantes da Etec-SP_
