@@ -461,7 +461,7 @@ export default function Estoque({ onNavegar }) {
                                 {/* Movimentar */}
                                 <button
                                   className="est-bi est-ben"
-                                  title={t("stock.actions.registerEntry")}
+                                  title={t("stock.actions.movement")}
                                   disabled={loadingAct}
                                   onClick={() => setModal({ mov: p })}
                                 >✎</button>

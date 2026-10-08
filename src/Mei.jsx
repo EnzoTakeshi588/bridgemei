@@ -508,7 +508,7 @@ export default function App({ onLogout, onNavegar }){
   const navigate=(id)=>{setView(id);setKey(k=>k+1);window.scrollTo({top:0,behavior:"smooth"});};
   const { t, i18n } = useTranslation();
 
-  const changeLanguage = (language) => { i18n.changeLanguage(language); localStorage.getItem("language", language); }
+  const changeLanguage = (language) => { i18n.changeLanguage(language); localStorage.setItem("language", language); }
   const [menuOpen, setMenuOpen] = useState(false);
   const user = getUserFromToken();
   const usuarioNome = user?.nome || "Usuário";

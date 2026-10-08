@@ -12,8 +12,6 @@ using Services.Interfaces;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-var useInMemoryDatabase = builder.Configuration.GetValue<bool>("UseInMemoryDatabase") ||
-    string.IsNullOrWhiteSpace(connectionString);
 
 var jwtSettings = builder.Configuration.GetRequiredSection("JwtSettings").Get<JwtSettings>()!;
 
@@ -40,16 +38,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-if (useInMemoryDatabase)
-{
-    builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseInMemoryDatabase("pasta-api"));
-}
-else
-{
-    builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseMySql(connectionString!, ServerVersion.AutoDetect(connectionString!)));
-}
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseMySql(connectionString!, ServerVersion.AutoDetect(connectionString!)));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -79,14 +70,7 @@ using (var scope = app.Services.CreateScope())
 
     try
     {
-        if (useInMemoryDatabase)
-        {
-            db.Database.EnsureCreated();
-        }
-        else
-        {
-            db.Database.Migrate();
-        }
+        db.Database.Migrate();
     }
     catch (Exception ex)
     {

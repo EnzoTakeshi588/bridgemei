@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import Login from './Login'
-import Home from './Home'
+// import Home from './Home'
 import MEI from './Mei'
 /* import Chat from './Chat'
 import Documentos from './Documentos'

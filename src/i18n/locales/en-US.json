@@ -113,8 +113,8 @@
 
   "actions": {
     "add": "Add product",
-    "registerEntry": "Register entry",
-    "remove": "Remove product"
+    "movement": "Edit",
+    "remove": "Remove"
   },
 
   "products": {
