@@ -1,6 +1,7 @@
-![name](https://img.shields.io/badge/Project-BridgeMEI-purple?logo=github)
+![name](https://img.shields.io/badge/Project-BridgeMEI-purple?logo=github) 
 
-# BridgeMEI | Gestão Financeira
+# BridgeMEI | Gestão Financeira <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="30" alt="React"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" width="30" alt="C-Sharp"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" width="30" alt="MySQL"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" width="30" alt="Docker"/>
+
 _Desenvolvido por: Enzo e Marcus_
 
 *O BridgeMEI ainda não foi publicado, mas continuaremos com o projeto aqui no github mesmo após o lançamento.*
@@ -22,7 +23,7 @@ Por exemplo: você pode olhar o faturamento do seu negócio de forma dinâmica, 
 ## Novidades
 O BridgeMEI agora possui suporte ao Docker. 
 
-Com o Docker, e possivel rodar os componentes do projeto usando apenas um comando no terminal.
+Com o Docker, é possivel rodar os componentes do projeto usando apenas um comando no terminal. Isso elimina a necessidade de baixar as ferramentas de desenvolvimento e facilita os testes.
 
 ## O que vem nele?
 O BridgeMEI possui alguns recursos para facilitar a vida de um MEI, como:
@@ -42,36 +43,38 @@ Outras Ferramentas:
 * Docker e Docker Compose
 
 ## Como testar
-Pre-requisitos:
+Pré-requisitos:
 - Git
 - Docker Engine ou Docker Desktop
 - Docker Compose
 
-1- Clone o repositório
+Para garantir que o site abra sem dificuldades, siga o passo-a-passo na ordem correta.
+
+### 1- Clone o repositório
 ```
 git clone https://github.com/EnzoTakeshi588/bridgemei
 cd bridgemei
 ```
-2- Altere o ```.env```
+### 2- Altere o ```.env```
 
-Renomeie o arquivo ```.env.example``` para ```.env```
+Renomeie o arquivo ```.env.example``` para ```.env```.
 
-Edite o arquivo .env e defina senhas fortes para ```MYSQL_ROOT_PASSWORD``` e ```MYSQL_APP_PASSWORD```.
+O arquivo ```.env``` possui as senhas do MySQL predefinidas, você pode alterá-las ou manter como está.
 
-3- Inicialize o projeto
+### 3- Inicialize o projeto
 
 Na raiz do projeto, execute:
 ```
 docker compose up -d --build
 ```
-O Docker Compose ira carregar os componentes necessarios do projeto.
+O Docker Compose irá carregar os componentes necessários do projeto.
 
-4- Acesse o site
+### 4- Acesse o site
 
-Apos os servicos serem iniciados, acesse no seu navegador:  
+Após os serviços serem inicializados, acesse no seu navegador:  
 http://localhost:5173
 
-5- Primeiro acesso
+### 5- Primeiro acesso
 
 Abra o site, realize o cadastro e entre com as suas credenciais.
 
