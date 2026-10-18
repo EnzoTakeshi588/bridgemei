@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+// vars
 var builder = WebApplication.CreateBuilder(args);
-var cs = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 var jwtSettings = builder.Configuration.GetRequiredSection("JwtSettings");
 
@@ -67,17 +67,21 @@ builder.Services.AddSwaggerGen(options =>
         }
     });
 });
-
+// database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(
-        cs,
-        ServerVersion.AutoDetect(cs)
-    )
-);
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+); 
 
 builder.Services.AddScoped<EstoqueService>();
 
 var app = builder.Build();
+
+// Apply pending database migrations
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    db.Database.Migrate();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();

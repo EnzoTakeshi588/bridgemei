@@ -14,7 +14,7 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Env
-# .env
+.env
 
 # Cache
 .cache/
@@ -33,6 +33,7 @@ pnpm-debug.log*
 *.suo
 *.userosscache
 *.sln.docstates
+backups/
 
 # VS Code / Visual Studio
 .vscode/

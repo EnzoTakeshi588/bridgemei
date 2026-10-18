@@ -14,19 +14,15 @@ _Desenvolvido por: Enzo e Marcus_
   - [Etapas de Desenvolvimento](#etapas)
 
 ## Sobre
-BridgeMEI é um MVP(produto mínimo viável) de gestão financeira, o qual tem diversas funcionalidades. Por exemplo: você pode olhar o faturamento do seu negócio de forma dinâmica, fazer o controle do seu estoque e muito mais.
+BridgeMEI é um MVP(produto mínimo viável) de gestão financeira, o qual tem diversas funcionalidades.  
+Por exemplo: você pode olhar o faturamento do seu negócio de forma dinâmica, fazer o controle do seu estoque e muito mais.
 
-## Novidades
-O BridgeMEI agora vem com três adições: 
-- Identidade Visual nova;
-- Tema novo;
-- Tradução para o inglês  
-
-Tema Escuro:  
 <img src="assets/dark-theme.png" width="400"/>
 
-Tema Claro:  
-<img src="assets/light-theme.png" width="400"/>
+## Novidades
+O BridgeMEI agora possui suporte ao Docker. 
+
+Com o Docker, e possivel rodar os componentes do projeto usando apenas um comando no terminal.
 
 ## O que vem nele?
 O BridgeMEI possui alguns recursos para facilitar a vida de um MEI, como:
@@ -34,36 +30,60 @@ O BridgeMEI possui alguns recursos para facilitar a vida de um MEI, como:
 - Aba de Faturamento
 - Guia de Aprendizado
 - Controle de Estoque
+- Controle de Vendas (em breve)
 
 ## Tecnologias utilizadas
-* Front-end em React.js
-* Back-end em C# (ASP.NET Core)
-* Banco de Dados em MySQL
-* Autenticação em JWT
+* Front-end: React.js
+* Back-end: C# (ASP.NET Core)
+* Banco de Dados: MySQL
+
+Outras Ferramentas:
+* JWT authenticator
+* Docker e Docker Compose
+
 ## Como testar
-Para testar o projeto, você precisa verificar primeiro se as dependências
-abaixo estão instaladas no seu computador:
-- .NET (versão 10.0)
-- Node.js (24.15 LTS)
-- MySQL 8.0.46
+Pre-requisitos:
+- Git
+- Docker Engine ou Docker Desktop
+- Docker Compose
 
-Usando os seguintes comandos no PowerShell ou no seu terminal:
+1- Clone o repositório
+```
+git clone https://github.com/EnzoTakeshi588/bridgemei
+cd bridgemei
+```
+2- Altere o ```.env```
+
+Renomeie o arquivo ```.env.example``` para ```.env```
+
+Edite o arquivo .env e defina senhas fortes para ```MYSQL_ROOT_PASSWORD``` e ```MYSQL_APP_PASSWORD```.
+
+3- Inicialize o projeto
+
+Na raiz do projeto, execute:
+```
+docker compose up -d --build
+```
+O Docker Compose ira carregar os componentes necessarios do projeto.
+
+4- Acesse o site
+
+Apos os servicos serem iniciados, acesse no seu navegador:  
+http://localhost:5173
+
+5- Primeiro acesso
+
+Abra o site, realize o cadastro e entre com as suas credenciais.
+
+Para rodar o projeto, use:
+```
+docker compose up
 ``` 
-dotnet --list-sdks (.NET)
-node -v npm -v (Node.js)
-mysql --version 
-```
 
-Instruções para rodar:
-1. Abra um terminal na pasta do projeto e digite ` npm install ` para os pacotes do ` .jsx `  
-2. Depois, rode ` npm run dev ` para carregar o visual do site  
-3. Abra um novo terminal dentro de ` pasta-api ` e rode:
+Para parar, use:
 ```
-dotnet restore
-dotnet run
-```  
-4. Abra um outro terminal dentro de ` EstoqueApi ` e rode os mesmos comandos do passo 3  
-5. Faça o primeiro cadastro e depois faça o Login para entrar no site.  
+docker compose down
+```
 
 ## Etapas
 Projeto Inteiro:
@@ -74,15 +94,9 @@ Projeto Inteiro:
 * ~~Criação da API Estoque~~
 * ~~Tabela do estoque relacional~~
 * ~~Adição de temas novos~~
-* **Docker Compose**
-* Implementacao Controle de Vendas
+* ~~Docker Compose~~
+* **Implementacao Controle de Vendas**
 * [...]
-* [...]
-* Publicacao App BridgeMEI
-
-Branch docker: 
-* chore: add Docker files and compose.yml
-* [...]
-* [...]
+* Release BridgeMEI v1.0
 
 _O BridgeMEI é um projeto escolar, feito por estudantes da Etec-SP_

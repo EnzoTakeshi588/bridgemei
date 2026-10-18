@@ -8,7 +8,7 @@ using Repositories;
 using Repositories.Interfaces;
 using Services;
 using Services.Interfaces;
-
+// vars
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -38,7 +38,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
+// database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(connectionString!, ServerVersion.AutoDetect(connectionString!)));
 
