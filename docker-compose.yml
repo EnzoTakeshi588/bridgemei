@@ -3,10 +3,11 @@ services:
   mysql:
     image: mysql:8.0
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Defina MYSQL_ROOT_PASSWORD no .env}
-      MYSQL_DATABASE: LoginDb
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: bridgemei_app
-      MYSQL_PASSWORD: ${MYSQL_APP_PASSWORD:?Defina MYSQL_APP_PASSWORD no .env}
+      MYSQL_PASSWORD: ${MYSQL_APP_PASSWORD}
+    ports:
+      - "127.0.0.1:3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./docker/mysql/init/01-create-databases.sql:/docker-entrypoint-initdb.d/01-create-databases.sql:ro,Z

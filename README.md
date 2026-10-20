@@ -99,7 +99,6 @@ Projeto Inteiro:
 * ~~Adição de temas novos~~
 * ~~Docker Compose~~
 * **Implementacao Controle de Vendas**
-* [...]
 * Release BridgeMEI v1.0
 
 _O BridgeMEI é um projeto escolar, feito por estudantes da Etec-SP_
