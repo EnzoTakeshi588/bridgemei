@@ -25,8 +25,8 @@ Chegou uma funcionalidade nova no BridgeMEI!
 
 **Controle de Vendas**
 
-Agora, e possivel registrar as vendas do seu negocio pelo site, e ele mostra todos os itens em estoque e o historico das vendas.
-Quando uma venda e registrada o site faz a baixa no estoque automaticamente, sem que o usuario precise fazer isso.
+Agora, é possivel registrar as vendas do seu negócio pelo site, e ele mostra todos os itens em estoque e o histórico das vendas.
+Quando uma venda é registrada o site faz a baixa no estoque automaticamente, sem que o usuário precise fazer isso.
 
 <img src="assets/modal-vendas.png" width="500"/>
 
@@ -55,7 +55,7 @@ Pré-requisitos:
 
 Para garantir que o site abra sem dificuldades, siga o passo-a-passo na ordem correta.
 
-Links para a instalacao das ferramentas: 
+Links para a instalação das ferramentas: 
 
 * [Git](https://git-scm.com/install/windows) 
 * [Docker](https://www.docker.com/products/docker-desktop/)
