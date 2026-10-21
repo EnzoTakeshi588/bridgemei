@@ -6,6 +6,7 @@ import {
 } from "chart.js";
 import { useTranslation } from "react-i18next";
 import "./styles/Mei.css";
+import Vendas from "./Vendas";
 import { createPortal } from "react-dom";
 
 Chart.register(
@@ -71,6 +72,7 @@ const DOCS = [
 const NAV = [
   {id:"dashboard",   icon:"🏠",key:"nav.inicio",      badge:0},
   {id:"faturamento", icon:"📈",key:"nav.faturamento", badge:0},
+  {id: "vendas", icon: "🛒", key: "nav.vendas", badge: 0},
   {id:"alertas",     icon:"🔔",key:"nav.alertas",     badge:0},
   {id:"aprendizado", icon:"📚",key:"nav.aprendizado", badge:0},
   {id:"documentos",  icon:"📁",key:"nav.documentos",  badge:0},
@@ -517,6 +519,7 @@ export default function App({ onLogout, onNavegar }){
   const PAGES={
     dashboard:   <Dashboard navigate={navigate}/>,
     faturamento: <Faturamento/>,
+    vendas: <Vendas/>,
     alertas:     <Alertas/>,
     aprendizado: <Aprendizado/>,
     documentos:  <Documentos/>,

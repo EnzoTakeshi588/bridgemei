@@ -1,5 +1,6 @@
 {
   "login": {
+    "welcome": "Welcome back",
     "name": "Name", 
     "surname": "Surname",
     "email": "Email",
@@ -12,6 +13,7 @@
    "nav": {
     "inicio": "Home",
     "faturamento": "Revenue",
+    "vendas": "Sales",
     "alertas": "Alerts",
     "aprendizado": "Learning",
     "documentos": "Documents"
@@ -168,6 +170,76 @@
     "removeSuccess": "Product removed.",
     "movementSuccess": "{{emoji}} {{type}} of {{quantity}} units registered!",
     "error": "Error: {{error}}"
+    }
+  },
+
+    "vendas": {
+    "eyebrow": "INVENTORY / SALES",
+    "titleBefore": " ",
+    "title-em": "Sales ",
+    "titleAfter": "Control",
+    "subtitle": "Record sales and keep track of your history.",
+    "cards": {
+      "totalSales": "Total Sales",
+      "totalSalesHint": "Number of sales recorded",
+      "totalRevenue": "Total Revenue",
+      "totalRevenueHint": "Sum of all sales"
+    },
+    "actions": {
+      "newSale": "New Sale",
+      "register": "Register",
+      "cancel": "Cancel",
+      "close": "Close",
+      "saving": "Registering..."
+    },
+    "history": {
+      "title": "Sales History",
+      "subtitle": "Review your sales and the items in each record.",
+      "count_one": "{{count}} sale",
+      "count_other": "{{count}} sales",
+      "emptyTitle": "No sales recorded yet",
+      "emptyDescription": "Once you register a sale, it will appear here.",
+      "columns": {
+        "sale": "Sale",
+        "date": "Date",
+        "items": "Units",
+        "total": "Total",
+        "details": "Details"
+      },
+      "itemCount_one": "{{count}} unit",
+      "itemCount_other": "{{count}} units",
+      "viewDetails": "View items",
+      "deletedProduct": "Deleted product",
+      "noItems": "No items available."
+    },
+    "form": {
+      "kicker": "NEW SALE",
+      "title": "Register ",
+      "title-em": " sale",
+      "subtitle": "Select products and enter quantities.",
+      "itemNumber": "Product {{number}}",
+      "product": "Product",
+      "chooseProduct": "Select a product",
+      "stock_one": "{{count}} in stock",
+      "stock_other": "{{count}} in stock",
+      "quantity": "Quantity",
+      "subtotal": "Subtotal",
+      "addProduct": "Add another product",
+      "removeItem": "Remove product",
+      "saleTotal": "Sale total",
+      "errors": {
+        "addProduct": "Add at least one product to the sale.",
+        "invalidItem": "Check the selected products and quantities.",
+        "insufficientStock": "The requested quantity exceeds available stock.",
+        "saveFailed": "The sale could not be registered. Please try again."
+      }
+    },
+    "confirm": {
+      "title": "Confirm sale?",
+      "description": "Do you want to register this sale? Review the details before proceeding.",
+      "products_one": "{{count}} product selected",
+      "products_other": "{{count}} products selected",
+      "confirm": "Confirm"
     }
   }
 }

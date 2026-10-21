@@ -50,7 +50,13 @@ Pré-requisitos:
 
 Para garantir que o site abra sem dificuldades, siga o passo-a-passo na ordem correta.
 
+Links para a instalacao das ferramentas: 
+[Git]()
+[Docker]()
+
 ### 1- Clone o repositório
+No computador, abra o terminal e digite:
+
 ```
 git clone https://github.com/EnzoTakeshi588/bridgemei
 cd bridgemei
