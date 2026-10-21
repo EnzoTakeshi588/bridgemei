@@ -30,11 +30,18 @@ namespace EstoqueApi.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("NomeProduto")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<decimal>("PrecoUnitario")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProdutoId")
+                    b.Property<int?>("ProdutoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProdutoIdHistorico")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantidade")
@@ -67,7 +74,14 @@ namespace EstoqueApi.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("ProdutoId")
+                    b.Property<string>("NomeProduto")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("ProdutoId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProdutoIdHistorico")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantidade")
@@ -86,8 +100,6 @@ namespace EstoqueApi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProdutoId");
-
-                    b.HasIndex("VendaId");
 
                     b.ToTable("MovimentarEstoque");
                 });
@@ -146,8 +158,7 @@ namespace EstoqueApi.Migrations
                     b.HasOne("EstoqueApi.Models.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("EstoqueApi.Models.Venda", "Venda")
                         .WithMany("Itens")
@@ -165,13 +176,7 @@ namespace EstoqueApi.Migrations
                     b.HasOne("EstoqueApi.Models.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("ProdutoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EstoqueApi.Models.Venda", null)
-                        .WithMany()
-                        .HasForeignKey("VendaId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Produto");
                 });

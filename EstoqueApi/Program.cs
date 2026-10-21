@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+
 // vars
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -73,6 +74,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 ); 
 
 builder.Services.AddScoped<EstoqueService>();
+
+builder.Services.AddScoped<VendasService>();
 
 var app = builder.Build();
 

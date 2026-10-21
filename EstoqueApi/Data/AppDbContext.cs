@@ -34,7 +34,7 @@ namespace EstoqueApi.Data
                 .HasOne(i => i.Produto)
                 .WithMany()
                 .HasForeignKey(i => i.ProdutoId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
 
             // Valores monetários
             modelBuilder.Entity<Venda>()
@@ -54,14 +54,7 @@ namespace EstoqueApi.Data
                 .HasOne(m => m.Produto)
                 .WithMany()
                 .HasForeignKey(m => m.ProdutoId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            // Venda -> Movimentações (vínculo opcional)
-            modelBuilder.Entity<MovimentarEstoque>()
-                .HasOne<Venda>()
-                .WithMany()
-                .HasForeignKey(m => m.VendaId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.SetNull);
         
         }
     }
