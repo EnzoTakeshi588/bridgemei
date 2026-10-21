@@ -39,7 +39,7 @@ namespace EstoqueApi.Controllers
                     Itens = venda.Itens.Select(item => new ItemVendaResponse
                     {
                         ProdutoId = item.ProdutoId,
-                        NomeProduto = item.Produto?.Nome ?? string.Empty,
+                        NomeProduto = item.NomeProduto,
                         Quantidade = item.Quantidade,
                         PrecoUnitario = item.PrecoUnitario,
                         Subtotal = item.Subtotal
@@ -58,6 +58,19 @@ namespace EstoqueApi.Controllers
             {
                 return Conflict(new {message = ex.Message});
             }
+        }
+
+        [HttpGet]
+        public IActionResult Listar()
+        {
+            var usuarioIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (!int.TryParse(usuarioIdClaim, out var usuarioId))
+                return Unauthorized();
+
+            var vendas = _vendasService.ListarPorUsuario(usuarioId);
+
+            return Ok(vendas);
         }
     }
 }

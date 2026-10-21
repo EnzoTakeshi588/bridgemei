@@ -226,6 +226,7 @@
       "subtotal": "Subtotal",
       "addProduct": "Add another product",
       "removeItem": "Remove product",
+      "onThisSale": "Products in this sale",
       "saleTotal": "Sale total",
       "errors": {
         "addProduct": "Add at least one product to the sale.",

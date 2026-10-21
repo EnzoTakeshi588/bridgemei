@@ -188,6 +188,12 @@ export default function Estoque({ onNavegar }) {
   const [modal,     setModal]     = useState(null); // null | "novo" | produto (editar) | { mov: produto }
   const [toast,     setToast]     = useState(null); // { msg, tipo }
   const [anim,      setAnim]      = useState(false);
+  /*
+   const historicoMovimentacoes = useMemo(
+        () => [...historico].sort((a, b) => new produtos(b.produtoId ?? b.ProdutoId ?? 0) - new produtos(a.produtoId ?? a.ProdutoId ?? 0)),
+      [historico]
+    ); 
+  */
 
   const sRef = useRef(null);
   const sVis = useVis(sRef);
@@ -481,6 +487,9 @@ export default function Estoque({ onNavegar }) {
                   </tbody>
                 </table>
               )}
+              <section className="est-history">
+                {/**/}
+              </section>
             </div>
           </div>
 

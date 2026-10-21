@@ -1,5 +1,6 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { fetchEstoqueWithAuth } from "./services/api.js";
 import "./styles/Vendas.css";
 
 /**
@@ -68,8 +69,10 @@ export default function Vendas({
   const { t, i18n } = useTranslation();
   const locale = i18n.language?.startsWith("en") ? "en-US" : "pt-BR";
 
-  const [vendasLocais, setVendasLocais] = useState(vendasDemo);
-  const [produtosLocais, setProdutosLocais] = useState(produtosDemo);
+  const [vendasLocais, setVendasLocais] = useState([]);
+  const [produtosLocais, setProdutosLocais] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erroCarregamento, setErroCarregamento] = useState("");
   const [modalAberto, setModalAberto] = useState(false);
   const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
   const [itens, setItens] = useState([{ produtoId: "", quantidade: 1 }]);
@@ -78,6 +81,78 @@ export default function Vendas({
 
   const produtos = produtosProp ?? produtosLocais;
   const vendas = vendasProp ?? vendasLocais;
+
+  const apiFetch = useCallback(async (path, options = {}) => {
+  const res = await fetchEstoqueWithAuth(path, options);
+
+  if (!res.ok) {
+    let message = `Erro HTTP ${res.status}`;
+
+    try {
+      const contentType = res.headers.get("content-type") || "";
+
+      if (contentType.includes("application/json")) {
+        const data = await res.json();
+        message = data.message || data.title || message;
+      } else {
+        const text = await res.text();
+        if (text) message = text;
+      }
+    } catch {
+      // Mantém a mensagem HTTP original.
+    }
+
+    throw new Error(message);
+  }
+
+  if (res.status === 204) return null;
+
+  return res.json();
+}, []);
+
+const carregarDados = useCallback(async () => {
+
+  try {
+    const [produtosApi, vendasApi] = await Promise.all([
+      apiFetch("/api/Produtos"),
+      apiFetch("/api/Vendas"),
+    ]);
+
+    setProdutosLocais(
+      (produtosApi || []).map((p) => ({
+        id: p.Id ?? p.id,
+        nome: p.Nome ?? p.nome,
+        quantidade: p.Quantidade ?? p.quantidade ?? 0,
+        preco: p.Preco ?? p.preco ?? 0,
+      }))
+    );
+
+    setVendasLocais(
+      (vendasApi || []).map((v) => ({
+        id: v.Id ?? v.id,
+        data: v.Data ?? v.data,
+        valorTotal: v.ValorTotal ?? v.valorTotal ?? 0,
+        itens: (v.Itens ?? v.itens ?? []).map((i) => ({
+          produtoId: i.ProdutoId ?? i.produtoId,
+          nomeProduto: i.NomeProduto ?? i.nomeProduto,
+          quantidade: i.Quantidade ?? i.quantidade ?? 0,
+          precoUnitario: i.PrecoUnitario ?? i.precoUnitario ?? 0,
+          subtotal: i.Subtotal ?? i.subtotal ?? 0,
+        })),
+      }))
+    );
+  } catch (e) {
+    setErroCarregamento(
+      e.message || "Não foi possível carregar os dados."
+    );
+  } finally {
+    setCarregando(false);
+  }
+}, [apiFetch]);
+
+useEffect(() => {
+  carregarDados();
+}, [carregarDados]);
 
   const vendasOrdenadas = useMemo(
     () => [...vendas].sort((a, b) => new Date(b.data ?? b.Data ?? 0) - new Date(a.data ?? a.Data ?? 0)),
@@ -160,29 +235,22 @@ export default function Vendas({
           })),
         });
       } else {
-        // Modo demonstrativo local; substitua por onRegistrarVenda ao integrar a API.
-        const novaVenda = {
-          id: Math.max(0, ...vendasLocais.map((v) => Number(v.id) || 0)) + 1,
-          data: new Date().toISOString(),
-          valorTotal: itensValidos.reduce((sum, item) => sum + item.subtotal, 0),
-          itens: itensValidos.map((item) => ({
-            produtoId: Number(item.produtoId),
-            nomeProduto: item.nomeProduto,
-            quantidade: item.quantidade,
-            precoUnitario: item.preco,
-            subtotal: item.subtotal,
-          })),
-        };
-        setVendasLocais((atual) => [novaVenda, ...atual]);
-        setProdutosLocais((atual) =>
-          atual.map((produto) => {
-            const quantidadeVendida = itensValidos
-              .filter((item) => String(item.produtoId) === String(getId(produto)))
-              .reduce((sum, item) => sum + item.quantidade, 0);
-            return { ...produto, quantidade: getStock(produto) - quantidadeVendida };
-          })
-        );
+        await apiFetch("/api/Vendas", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(
+            itensValidos.map((item) => ({
+              ProdutoId: Number(item.produtoId),
+              Quantidade: item.quantidade,
+            }))
+          ),
+        });
+
+        await carregarDados();
       }
+
       setConfirmacaoAberta(false);
       setModalAberto(false);
       setItens([{ produtoId: "", quantidade: 1 }]);
@@ -203,6 +271,17 @@ export default function Vendas({
           <p className="vendas-subtitle">{t("vendas.subtitle")}</p>
         </div>
       </header>
+      
+      {erroCarregamento && (
+      <div className="vendas-error" role="alert">
+        {erroCarregamento}
+        <button type="button" onClick={carregarDados}>
+          Tentar novamente
+        </button>
+      </div>
+      )}
+
+      {carregando && (<p role="status">Carregando produtos e histórico de vendas...</p>)}
 
       <div className="vendas-summary">
         
@@ -217,7 +296,7 @@ export default function Vendas({
 
         <div className="vendas-revenue-column">
           <div className="vendas-new-sale-row">
-            <button className="vendas-primary-btn" type="button" onClick={abrirModal}>
+            <button className="vendas-primary-btn" type="button" onClick={abrirModal} disabled={carregando || !!erroCarregamento}>
               <span aria-hidden="true">＋</span> {t("vendas.actions.newSale")}
             </button>
           </div>
@@ -248,7 +327,7 @@ export default function Vendas({
             <span className="vendas-empty-emoji" aria-hidden="true">🛍️</span>
             <h3>{t("vendas.history.emptyTitle")}</h3>
             <p>{t("vendas.history.emptyDescription")}</p>
-            <button className="vendas-primary-btn" type="button" onClick={abrirModal}>
+            <button className="vendas-primary-btn" type="button" onClick={abrirModal}  disabled={carregando || !!erroCarregamento}>
               <span aria-hidden="true">＋</span> {t("vendas.actions.newSale")}
             </button>
           </div>
@@ -387,8 +466,32 @@ export default function Vendas({
             <h2 id="vendas-confirm-title">{t("vendas.confirm.title")}</h2>
             <p id="vendas-confirm-description">{t("vendas.confirm.description")}</p>
             <div className="vendas-confirm-summary">
-              <span>{t("vendas.confirm.products", { count: itensCalculados.filter((item) => item.produtoId !== "").length })}</span>
-              <strong>{money(totalFormulario, locale)}</strong>
+              <div className="vendas-confirm-products">
+                <strong>{t("vendas.form.onThisSale")}</strong>
+
+                {itensCalculados
+                  .filter((item) => item.produtoId !== "")
+                  .map((item, index) => (
+                    <div
+                      className="vendas-confirm-product"
+                      key={`${item.produtoId}-${index}`}
+                    >
+                      <span>
+                        {item.nomeProduto}
+                        <small>
+                          {item.quantidade} × {money(item.preco, locale)}
+                        </small>
+                      </span>
+
+                      <strong>{money(item.subtotal, locale)}</strong>
+                    </div>
+                ))}
+              </div>
+
+              <div className="vendas-confirm-total">
+                <span>{t("vendas.form.salesTotal")}</span>
+                <strong>{money(totalFormulario, locale)}</strong>
+              </div>
             </div>
             {erro && <p className="vendas-error" role="alert">⚠️ {erro}</p>}
             <footer className="vendas-modal-actions">

@@ -627,6 +627,49 @@
   margin-top: 1.2rem;
 }
 
+.vendas-confirm-products {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.vendas-confirm-product {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.vendas-confirm-product > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.vendas-confirm-product small {
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.85rem;
+}
+
+.vendas-confirm-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 8px;
+  /* border-top: 1px solid var(--color-border, #e5e7eb); */
+}
+
+.vendas-confirm-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 @media (max-width: 720px) {
   .vendas-summary {
     grid-template-columns: minmax(0, 1fr);

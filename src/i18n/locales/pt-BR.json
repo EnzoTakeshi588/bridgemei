@@ -230,6 +230,7 @@
       "subtotal": "Subtotal",
       "addProduct": "Adicionar outro produto",
       "removeItem": "Remover produto",
+      "onThisSale": "Produtos desta venda",
       "saleTotal": "Total da venda",
       "errors": {
         "addProduct": "Adicione pelo menos um produto à venda.",
