@@ -1,5 +1,6 @@
 {
     "login": { 
+        "welcome": "Bem-vindo de volta",
         "name": "Nome", 
         "surname": "Sobrenome",
         "email": "Email", 
@@ -12,6 +13,7 @@
     "nav": {
     "inicio": "Início",
     "faturamento": "Faturamento",
+    "vendas": "Vendas",
     "alertas": "Alertas",
     "aprendizado": "Aprendizado",
     "documentos": "Documentos"
@@ -169,6 +171,81 @@
     "removeSuccess": "Produto removido.",
     "movementSuccess": "{{emoji}} {{type}} de {{quantity}} un. registrada!",
     "error": "Erro: {{error}}"
+    }
+  },
+    
+  "vendas": {
+    "eyebrow": "ESTOQUE / VENDAS",
+    "titleBefore": "Controle de ",
+    "title-em": "Vendas",
+    "titleAfter": " ",
+    "subtitle": "Registre suas vendas e acompanhe o histórico.",
+    "cards": {
+      "totalSales": "Vendas no Total",
+      "totalSalesHint": "Quantidade de vendas registradas",
+      "totalRevenue": "Receita Total",
+      "totalRevenueHint": "Soma de todas as vendas"
+    },
+
+    "actions": {
+      "newSale": "Nova Venda",
+      "register": "Registrar",
+      "cancel": "Cancelar",
+      "close": "Fechar",
+      "saving": "Registrando..."
+    },
+
+    "history": {
+      "title": "Histórico de Vendas",
+      "subtitle": "Consulte suas vendas e os itens de cada registro.",
+      "count_one": "{{count}} venda",
+      "count_other": "{{count}} vendas",
+      "emptyTitle": "Nenhuma venda registrada ainda",
+      "emptyDescription": "Quando você registrar uma venda, ela aparecerá aqui.",
+      "columns": {
+        "sale": "Venda",
+        "date": "Data",
+        "items": "Unidades",
+        "total": "Valor total",
+        "details": "Detalhes"
+      },
+      "itemCount_one": "{{count}} unidade",
+      "itemCount_other": "{{count}} unidades",
+      "viewDetails": "Ver itens",
+      "deletedProduct": "Produto excluído",
+      "noItems": "Nenhum item disponível."
+    },
+
+    "form": {
+      "kicker": "NOVA VENDA",
+      "title": "Registrar ",
+      "title-em": " venda",
+      "subtitle": "Selecione os produtos e informe as quantidades.",
+      "itemNumber": "Produto {{number}}",
+      "product": "Produto",
+      "chooseProduct": "Selecione um produto",
+      "stock_one": "{{count}} em estoque",
+      "stock_other": "{{count}} em estoque",
+      "quantity": "Quantidade",
+      "subtotal": "Subtotal",
+      "addProduct": "Adicionar outro produto",
+      "removeItem": "Remover produto",
+      "onThisSale": "Produtos desta venda",
+      "saleTotal": "Total da venda",
+      "errors": {
+        "addProduct": "Adicione pelo menos um produto à venda.",
+        "invalidItem": "Confira os produtos e as quantidades informadas.",
+        "insufficientStock": "A quantidade solicitada ultrapassa o estoque disponível.",
+        "saveFailed": "Não foi possível registrar a venda. Tente novamente."
+      }
+    },
+
+    "confirm": {
+      "title": "Confirmar venda?",
+      "description": "Deseja registrar essa venda? Confira os dados antes de prosseguir.",
+      "products_one": "{{count}} produto selecionado",
+      "products_other": "{{count}} produtos selecionados",
+      "confirm": "Confirmar"
     }
   }
 }

@@ -48,6 +48,16 @@ namespace EstoqueApi.Services
                 throw new KeyNotFoundException("Produto não encontrado");
 
             produto.Quantidade += quantidade;
+            
+            _context.MovimentarEstoque.Add(new MovimentarEstoque
+            {
+                ProdutoId = produto.Id,
+                NomeProduto = produto.Nome,
+                UsuarioId = usuarioId,
+                Tipo = "Entrada",
+                Quantidade = produto.Quantidade,
+                Data = DateTime.Now
+            });
 
             _context.SaveChanges();
 
@@ -69,6 +79,16 @@ namespace EstoqueApi.Services
 
             produto.Quantidade -= quantidade;
 
+            _context.MovimentarEstoque.Add(new MovimentarEstoque
+            {
+                ProdutoId = produto.Id,
+                NomeProduto = produto.Nome,
+                UsuarioId = usuarioId,
+                Tipo = "Saida",
+                Quantidade = quantidade,
+                Data = DateTime.UtcNow
+            });
+
             _context.SaveChanges();
 
             return produto;
@@ -77,8 +97,19 @@ namespace EstoqueApi.Services
         {
             var produto = _context.Produtos.FirstOrDefault(p => p.Id == id && p.UsuarioId == usuarioId);
             
-            if (produto == null)
-             throw new KeyNotFoundException("Produto não encontrado");
+            if (produto == null){
+            throw new KeyNotFoundException("Produto não encontrado");}
+
+            _context.MovimentarEstoque.Add(new MovimentarEstoque
+            {
+                ProdutoId = produto.Id,
+                ProdutoIdHistorico = produto.Id,
+                NomeProduto = produto.Nome,
+                UsuarioId = usuarioId,
+                Tipo = "Exclusao",
+                Quantidade = produto.Quantidade,
+                Data = DateTime.UtcNow
+            });
 
             _context.Produtos.Remove(produto);
             _context.SaveChanges();

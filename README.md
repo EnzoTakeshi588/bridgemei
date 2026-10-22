@@ -18,12 +18,17 @@ _Desenvolvido por: Enzo e Marcus_
 BridgeMEI é um MVP(produto mínimo viável) de gestão financeira, o qual tem diversas funcionalidades.  
 Por exemplo: você pode olhar o faturamento do seu negócio de forma dinâmica, fazer o controle do seu estoque e muito mais.
 
-<img src="assets/dark-theme.png" width="400"/>
+<img src="assets/dark-theme.png" width="500"/>
 
 ## Novidades
-O BridgeMEI agora possui suporte ao Docker. 
+Chegou uma funcionalidade nova no BridgeMEI!
 
-Com o Docker, é possivel rodar os componentes do projeto usando apenas um comando no terminal. Isso elimina a necessidade de baixar as ferramentas de desenvolvimento e facilita os testes.
+**Controle de Vendas**
+
+Agora, é possivel registrar as vendas do seu negócio pelo site, e ele mostra todos os itens em estoque e o histórico das vendas.
+Quando uma venda é registrada o site faz a baixa no estoque automaticamente, sem que o usuário precise fazer isso.
+
+<img src="assets/modal-vendas.png" width="500"/>
 
 ## O que vem nele?
 O BridgeMEI possui alguns recursos para facilitar a vida de um MEI, como:
@@ -50,7 +55,14 @@ Pré-requisitos:
 
 Para garantir que o site abra sem dificuldades, siga o passo-a-passo na ordem correta.
 
+Links para a instalação das ferramentas: 
+
+* [Git](https://git-scm.com/install/windows) 
+* [Docker](https://www.docker.com/products/docker-desktop/)
+
 ### 1- Clone o repositório
+No computador, abra o terminal e digite:
+
 ```
 git clone https://github.com/EnzoTakeshi588/bridgemei
 cd bridgemei
@@ -98,8 +110,8 @@ Projeto Inteiro:
 * ~~Tabela do estoque relacional~~
 * ~~Adição de temas novos~~
 * ~~Docker Compose~~
-* **Implementacao Controle de Vendas**
-* [...]
+* ~~Implementacao Controle de Vendas~~
+* Tela de Faturamento funcional 
 * Release BridgeMEI v1.0
 
 _O BridgeMEI é um projeto escolar, feito por estudantes da Etec-SP_

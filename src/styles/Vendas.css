@@ -1,0 +1,730 @@
+/* Vendas.css — cores herdadas do theme.css do BridgeMEI */
+.vendas-shell {
+  width: 100%;
+  min-width: 0;
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.vendas-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.vendas-eyebrow {
+  margin: 0 0 .35rem;
+  color: var(--color-text-muted);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+/* Cabeçalho no mesmo padrão das outras páginas */
+.vendas-heading h1 {
+  margin: 0;
+}
+
+/* Cards de resumo: o card da esquerda acompanha a altura do botão + espaçamento */
+.vendas-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.vendas-card-total,
+.vendas-card-revenue {
+  height: 130px;
+  min-height: 130px;
+  box-sizing: border-box;
+}
+
+.vendas-card-total {
+  margin-top: calc(2.75rem + 0.75rem);
+  align-self: start;
+}
+
+.vendas-revenue-column {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.vendas-new-sale-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 2.75rem;
+}
+
+.vendas-subtitle,
+.vendas-section-heading p {
+  margin: .45rem 0 0;
+  color: var(--color-text-secondary);
+  font-size: .92rem;
+  line-height: 1.55;
+}
+
+.vendas-card {
+  min-width: 0;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-surface);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .08);
+}
+
+.vendas-card-revenue {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1rem;
+}
+
+.vendas-revenue-body {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.vendas-card-icon {
+  flex: 0 0 3rem;
+  width: 3rem;
+  height: 3rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-accent-border);
+  border-radius: .9rem;
+  background: var(--color-accent-bg);
+  font-size: 1.35rem;
+}
+
+.vendas-card-content {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+}
+
+.vendas-card-label {
+  color: var(--color-text-secondary);
+  font-size: .85rem;
+  font-weight: 600;
+}
+
+.vendas-card-value {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: clamp(1.45rem, 2.5vw, 2rem);
+  font-weight: 750;
+  letter-spacing: -.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.vendas-card-hint {
+  color: var(--color-text-muted);
+  font-size: .76rem;
+}
+
+.vendas-primary-btn,
+.vendas-secondary-btn,
+.vendas-add-item {
+  min-height: 42px;
+  padding: .7rem 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  border-radius: .7rem;
+  font: inherit;
+  font-size: .88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease, transform .18s ease, opacity .18s ease;
+}
+
+.vendas-primary-btn {
+  border: 1px solid var(--color-accent);
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.vendas-primary-btn:hover:not(:disabled) {
+  border-color: var(--color-accent-hover);
+  background: var(--color-accent-hover);
+  transform: translateY(-1px);
+}
+
+.vendas-secondary-btn,
+.vendas-add-item {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.vendas-secondary-btn:hover:not(:disabled),
+.vendas-add-item:hover:not(:disabled) {
+  border-color: var(--color-border-hover);
+  background: var(--color-surface-hover);
+}
+
+.vendas-primary-btn:disabled,
+.vendas-secondary-btn:disabled,
+.vendas-add-item:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+.vendas-history {
+  min-width: 0;
+  overflow: visible;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  background: var(--color-surface);
+}
+
+.vendas-section-heading {
+  padding: 1.25rem 1.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.vendas-section-heading h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.1rem;
+  font-weight: 720;
+}
+
+.vendas-history-count {
+  padding: .35rem .65rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  font-size: .78rem;
+  white-space: nowrap;
+}
+
+.vendas-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.vendas-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: .88rem;
+}
+
+.vendas-table th {
+  padding: .9rem 1.35rem;
+  background: var(--color-surface-hover);
+  color: var(--color-text-muted);
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.vendas-table td {
+  padding: 1rem 1.35rem;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  vertical-align: middle;
+}
+
+.vendas-table tbody tr {
+  transition: background .15s ease;
+}
+
+.vendas-table tbody tr:hover {
+  background: var(--color-surface-hover);
+}
+
+.vendas-sale-id {
+  color: var(--color-text);
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.vendas-money-cell {
+  color: var(--color-text) !important;
+  font-weight: 750;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.vendas-details {
+  position: relative;
+  min-width: 95px;
+}
+
+.vendas-details summary {
+  width: fit-content;
+  color: var(--color-accent-hover);
+  font-size: .82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.vendas-details-popover {
+  position: relative;
+  z-index: 2;
+  min-width: 230px;
+  margin-top: .65rem;
+  padding: .75rem;
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+  background: var(--color-bg-secondary);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .2);
+}
+
+.vendas-detail-line {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .6rem 0;
+  color: var(--color-text);
+}
+
+.vendas-detail-line + .vendas-detail-line {
+  border-top: 1px solid var(--color-border);
+}
+
+.vendas-detail-line span {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+}
+
+.vendas-detail-line strong,
+.vendas-detail-line b {
+  color: var(--color-text);
+  font-size: .82rem;
+}
+
+.vendas-detail-line small,
+.vendas-details-empty {
+  color: var(--color-text-muted);
+  font-size: .75rem;
+}
+
+.vendas-details-empty {
+  margin: .35rem;
+}
+
+.vendas-empty {
+  padding: 3.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+.vendas-empty-emoji {
+  margin-bottom: .7rem;
+  font-size: 2.2rem;
+}
+
+.vendas-empty h3 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.05rem;
+}
+
+.vendas-empty p {
+  max-width: 380px;
+  margin: .5rem 0 1.2rem;
+  color: var(--color-text-secondary);
+  font-size: .88rem;
+  line-height: 1.55;
+}
+
+.vendas-modal-backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  padding: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, .68);
+  backdrop-filter: blur(5px);
+}
+
+.vendas-modal {
+  width: min(100%, 610px);
+  max-height: min(90vh, 850px);
+  overflow-y: auto;
+  padding: 1.4rem;
+  border: 1px solid var(--color-border-hover);
+  border-radius: 1.1rem;
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .35);
+  animation: vendas-modal-enter .18s ease-out;
+}
+
+@keyframes vendas-modal-enter {
+  from { opacity: 0; transform: translateY(8px) scale(.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.vendas-modal-header {
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.vendas-modal-kicker {
+  display: inline-block;
+  margin-bottom: .45rem;
+  color: var(--color-text-secondary);
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+.vendas-modal-header h2,
+.vendas-confirm-modal h2 {
+  margin: 0;
+  color: var(--color-text);
+  font-size: 1.35rem;
+  letter-spacing: -.025em;
+}
+
+.vendas-modal-header p,
+.vendas-confirm-modal > p {
+  margin: .45rem 0 0;
+  color: var(--color-text-secondary);
+  font-size: .88rem;
+  line-height: 1.55;
+}
+
+.vendas-icon-btn {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--color-border);
+  border-radius: .65rem;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.vendas-form-items {
+  display: flex;
+  flex-direction: column;
+  gap: .85rem;
+}
+
+.vendas-form-item {
+  padding: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: .85rem;
+  background: var(--color-surface);
+}
+
+.vendas-form-item-top {
+  margin-bottom: .8rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.vendas-item-number {
+  color: var(--color-text-secondary);
+  font-size: .78rem;
+  font-weight: 750;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.vendas-remove-item {
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--color-border);
+  border-radius: .55rem;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.vendas-remove-item:hover:not(:disabled) {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.vendas-remove-item:disabled {
+  cursor: not-allowed;
+  opacity: .35;
+}
+
+.vendas-form-item label {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  color: var(--color-text-secondary);
+  font-size: .82rem;
+  font-weight: 650;
+}
+
+.vendas-form-item select,
+.vendas-form-item input {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  padding: .65rem .75rem;
+  border: 1px solid var(--color-border);
+  border-radius: .6rem;
+  outline: none;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  font-size: .88rem;
+}
+
+.vendas-form-item select:focus,
+.vendas-form-item input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
+}
+
+.vendas-form-item-bottom {
+  margin-top: .85rem;
+  display: grid;
+  grid-template-columns: minmax(100px, .7fr) minmax(0, 1fr);
+  align-items: end;
+  gap: 1rem;
+}
+
+.vendas-item-subtotal {
+  min-height: 42px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: .2rem;
+}
+
+.vendas-item-subtotal span {
+  color: var(--color-text-muted);
+  font-size: .76rem;
+}
+
+.vendas-item-subtotal strong {
+  color: var(--color-text);
+  font-size: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.vendas-add-item {
+  width: 100%;
+  margin-top: .9rem;
+  border-style: dashed;
+}
+
+.vendas-form-total {
+  margin-top: 1rem;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.vendas-form-total span {
+  color: var(--color-text-secondary);
+  font-weight: 650;
+}
+
+.vendas-form-total strong {
+  color: var(--color-text);
+  font-size: 1.45rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.vendas-error {
+  margin: .8rem 0 0;
+  padding: .75rem .85rem;
+  border: 1px solid var(--color-danger);
+  border-radius: .65rem;
+  background: var(--color-surface);
+  color: var(--color-danger);
+  font-size: .85rem;
+  line-height: 1.45;
+}
+
+.vendas-modal-actions {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: .65rem;
+}
+
+.vendas-confirm-modal {
+  width: min(100%, 440px);
+  text-align: center;
+}
+
+.vendas-confirm-icon {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 1rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--color-accent-border);
+  border-radius: 1rem;
+  background: var(--color-accent-bg);
+  font-size: 1.7rem;
+}
+
+.vendas-confirm-summary {
+  margin-top: 1.2rem;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: .75rem;
+  background: var(--color-surface);
+  text-align: left;
+}
+
+.vendas-confirm-summary span {
+  color: var(--color-text-secondary);
+  font-size: .85rem;
+}
+
+.vendas-confirm-summary strong {
+  color: var(--color-text);
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.vendas-confirm-modal .vendas-modal-actions {
+  margin-top: 1.2rem;
+}
+
+.vendas-confirm-products {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.vendas-confirm-product {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.vendas-confirm-product > span {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.vendas-confirm-product small {
+  color: var(--color-text-muted, #6b7280);
+  font-size: 0.85rem;
+}
+
+.vendas-confirm-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding-top: 8px;
+  /* border-top: 1px solid var(--color-border, #e5e7eb); */
+}
+
+.vendas-confirm-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (max-width: 720px) {
+  .vendas-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .vendas-card-total,
+  .vendas-card-revenue {
+    height: auto;
+    min-height: 130px;
+  }
+
+  .vendas-card-total {
+    margin-top: 0;
+  }
+
+  .vendas-section-heading {
+    padding: 1rem;
+  }
+
+  .vendas-table th,
+  .vendas-table td {
+    padding: .8rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .vendas-modal-backdrop {
+    padding: .65rem;
+    align-items: flex-end;
+  }
+
+  .vendas-modal {
+    max-height: 94vh;
+    padding: 1rem;
+    border-radius: 1rem;
+  }
+
+  .vendas-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .vendas-modal-actions button {
+    width: 100%;
+  }
+
+  .vendas-card {
+    padding: 1rem;
+  }
+
+  .vendas-revenue-body {
+    align-items: flex-start;
+  }
+
+  .vendas-form-item-bottom {
+    grid-template-columns: minmax(90px, .65fr) minmax(0, 1fr);
+    gap: .7rem;
+  }
+}

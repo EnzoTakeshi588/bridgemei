@@ -6,6 +6,7 @@ import {
 } from "chart.js";
 import { useTranslation } from "react-i18next";
 import "./styles/Mei.css";
+import Vendas from "./Vendas";
 import { createPortal } from "react-dom";
 
 Chart.register(
@@ -71,6 +72,7 @@ const DOCS = [
 const NAV = [
   {id:"dashboard",   icon:"🏠",key:"nav.inicio",      badge:0},
   {id:"faturamento", icon:"📈",key:"nav.faturamento", badge:0},
+  {id: "vendas", icon: "🛒", key: "nav.vendas", badge: 0},
   {id:"alertas",     icon:"🔔",key:"nav.alertas",     badge:0},
   {id:"aprendizado", icon:"📚",key:"nav.aprendizado", badge:0},
   {id:"documentos",  icon:"📁",key:"nav.documentos",  badge:0},
@@ -402,7 +404,7 @@ function Dashboard({navigate}){
     </div>
   </>);
 }
-
+/*
 function Alertas(){
   const ativos=ALERTAS.filter(a=>a.tipo==="danger"||a.tipo==="warn");
   const resolvidos=ALERTAS.filter(a=>a.tipo==="ok"||a.tipo==="info");
@@ -416,7 +418,7 @@ function Alertas(){
     <div className="a-list">{resolvidos.map((a,i)=><div key={i} className={`a-card ${a.tipo} vis`} style={{animationDelay:`${(i+ativos.length)*.1}s`}}><span className="a-emoji">{a.emoji}</span><div><div className="a-title">{a.titulo}</div><div className="a-desc">{a.desc}</div><div className="a-date">{a.data}</div></div></div>)}</div>
   </>);
 }
-
+*/
 function Aprendizado(){
   const [aberto,setAberto]=useState(null);
   const { t } = useTranslation();
@@ -479,7 +481,7 @@ function Faturamento(){
     </div>
   </>);
 }
-
+/*
 function Documentos(){
   const [toast,setToast]=useState(false);
   const ref=useRef(null);const vis=useVis(ref,.05);
@@ -501,6 +503,7 @@ function Documentos(){
     {toast&&<div className="toast">✓ {t("documents.uploadedSuccess")}</div>}
   </>);
 }
+*/
 
 /* ══════════════ APP SHELL ══════════════ */
 export default function App({ onLogout, onNavegar }){
@@ -517,9 +520,10 @@ export default function App({ onLogout, onNavegar }){
   const PAGES={
     dashboard:   <Dashboard navigate={navigate}/>,
     faturamento: <Faturamento/>,
-    alertas:     <Alertas/>,
+    vendas: <Vendas/>,
+//    alertas:     <Alertas/>,
     aprendizado: <Aprendizado/>,
-    documentos:  <Documentos/>,
+//    documentos:  <Documentos/>,
   };
 
   return(<>
