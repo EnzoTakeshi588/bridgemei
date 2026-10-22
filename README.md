@@ -58,7 +58,7 @@ Para garantir que o site abra sem dificuldades, siga o passo-a-passo na ordem co
 Links para a instalação das ferramentas: 
 
 * [Git](https://git-scm.com/install/windows) 
-* [Docker](https://www.docker.com/products/docker-desktop/)
+* [Docker](https://docs.docker.com/desktop/setup/install/windows-install/)
 
 ### 1- Clone o repositório
 No computador, abra o terminal e digite:
