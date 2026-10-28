@@ -53,6 +53,8 @@ Pré-requisitos:
 - Docker Engine ou Docker Desktop
 - Docker Compose
 
+Voce tambem pode baixar o projeto em .ZIP e utilizar o docker para a execucao ([Ir para o Passo 3](#3--inicialize-o-projeto))
+
 Para garantir que o site abra sem dificuldades, siga o passo-a-passo na ordem correta.
 
 Links para a instalação das ferramentas: 
@@ -64,7 +66,7 @@ Links para a instalação das ferramentas:
 No computador, abra o terminal e digite:
 
 ```
-git clone https://github.com/EnzoTakeshi588/bridgemei
+git clone https://github.com/marcuss25/bridgemei
 cd bridgemei
 ```
 ### 2- Altere o ```.env```
