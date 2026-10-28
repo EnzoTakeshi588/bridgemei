@@ -36,6 +36,8 @@
 
     "LoginButton": "Sign-in",
     "RegisterButton": "Free register",
+    "LoginButtonLoading": "Entering...",
+    "RegisterButtonLoading": "Creating account...",
 
     "PasswordStrength": "Password Strength",
 
@@ -186,7 +188,7 @@
 
   "modal": {
     "newProduct": " ",
-    "newProduct-em": "New",
+    "newProductEm": "New",
     "newProductAfter": " product",
     "editProduct": "Edit product",
     "newProductDescription": "Enter the new product information",
@@ -199,8 +201,13 @@
     "save": "✓ Save",
     "saving": "Saving…",
 
-    "movement": "Manage inventory",
+    "movement": "Manage ",
+    "movementEm": "inventory",
     "movementDescription": "Register incoming or outgoing units",
+    "deleteTitle": "Delete ",
+    "deleteTitleEm": "product",
+    "deleteMessage": "Do you want to remove this product?",
+    "confirmDelete": "Confirm",
     "entry": "▲ Entry",
     "exit": "▼ Exit",
     "quantity": "Quantity",

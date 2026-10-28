@@ -36,6 +36,8 @@
 
         "LoginButton": "Entrar",
         "RegisterButton": "Criar conta grátis",
+        "LoginButtonLoading": "Entrando...",
+        "RegisterButtonLoading": "Criando conta...",
 
         "PasswordStrength": "Força da senha",
 
@@ -187,11 +189,11 @@
 
   "modal": {
     "newProduct": "Novo ",
-    "newProduct-em": " produto",
+    "newProductEm": " produto",
     "newProductAfter": " ",
     "editProduct": "Editar produto",
     "newProductDescription": "Informe os dados do novo produto",
-    "editProductDescription": "Atualize o nome e o preço do item",
+   "editProductDescription": "Atualize o nome e o preço do item",
     "productName": "Nome do produto",
     "productNamePlaceholder": "Ex: Dell i7 Laptop",
     "unitPrice": "Preço unitário (R$)",
@@ -200,8 +202,13 @@
     "save": "✓ Salvar",
     "saving": "Salvando…",
 
-    "movement": "Movimentar estoque",
+    "movement": "Movimentar ",
+    "movementEm": "estoque",
     "movementDescription": "Registre entrada ou saída de unidades",
+    "deleteTitle": "Excluir ",
+    "deleteTitleEm": "produto",
+    "deleteMessage": "Você deseja remover esse produto?",
+    "confirmDelete": "Confirmar",
     "entry": "▲ Entrada",
     "exit": "▼ Saída",
     "quantity": "Quantidade",

@@ -252,7 +252,7 @@ export default function Login({ onLogin }) {
               {loading ? (
                 <>
                   <span className="btn-spinner" />
-                  {modo === "login" ? "Entrando..." : "Criando conta..."}
+                  {modo === "login" ? t("login.LoginButtonLoading") : t("login.RegisterButtonLoading")}
                 </>
               ) : (
                 modo === "login" ? t("login.LoginButton") : t('login.RegisterButton')
