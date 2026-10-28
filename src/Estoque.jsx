@@ -130,14 +130,14 @@ function ModalMovimento({ produto, onClose, onConfirm, loading }) {
             onClick={() => setTipo("entrada")}
             disabled={loading}
           >
-            ▲ Entrada
+            {t("stock.modal.entry")}
           </button>
           <button
             className={`est-mtbtn sa ${tipo === "saida" ? "act" : ""}`}
             onClick={() => setTipo("saida")}
             disabled={loading}
           >
-            ▼ Saída
+            {t("stock.modal.exit")}
           </button>
         </div>
 
@@ -423,7 +423,7 @@ export default function Estoque({ onNavegar }) {
               {loadingPage ? (
                 <div className="est-loading">
                   <div className="est-spinner" />
-                  Carregando produtos…
+                  {t("stock.products.loading")}
                 </div>
               ) : (
                 <table className="est-table">

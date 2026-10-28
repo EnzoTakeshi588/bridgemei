@@ -1,12 +1,60 @@
 {
     "login": { 
-        "welcome": "Bem-vindo de volta",
+        "leftPageLogin": {
+          "welcome": "Bem-vindo de volta",
+          "title-one": "Acesse a sua ",
+          "title-two": "conta",
+          "title-three": " agora",
+          "subtitle": "Continue de onde parou. Seus dados, declarações e faturamento estão todos aqui.",
+          "features": {
+            "one": "Segurança com criptografia de ponta",
+            "two": "Acesso em qualquer dispositivo",
+            "three": "Suporte 24 horas por dia"
+          }
+        },
+        "leftPageRegister": {
+          "welcome": "Comece agora, é grátis",
+          "title-one": "Cuide do seu ",
+          "title-two": "negocio",
+          "title-three": " com a gente",
+          "subtitle": "Gerencie seu CNPJ, DAS e faturamento de forma simples e inteligente.",
+          "features": {
+            "one": "Cadastro rápido em menos de 1 minuto", 
+            "two": "Sem burocracia, sem custo", 
+            "three": " "
+          }
+        },
+
+        "formLogin": "Bem-vindo de volta 👋",
+        "formRegister": "Crie sua conta 🚀",
+
+        "formLoginSub": "Use seu e-mail e senha para acessar", 
+        "formRegisterSub": "Preencha os dados abaixo para começar",
+
+        "LoginSuccess": "Login realizado com sucesso!",
+        "RegisterSuccess": "Conta criada com sucesso!",
+
+        "LoginButton": "Entrar",
+        "RegisterButton": "Criar conta grátis",
+
+        "PasswordStrength": "Força da senha",
+
+        "formLoginTail": {
+          "1": "Não tem conta?",
+          "2": "Criar conta grátis"
+        }, 
+        "formRegisterTail": {
+          "1": "Já tem conta?", 
+          "2": "Entrar"
+        },
+
         "name": "Nome", 
         "surname": "Sobrenome",
         "email": "Email", 
         "password": "Senha", 
         "login": "Entrar", 
         "register": "Criar conta", 
+        "remember": "Lembrar de mim",
         "forgotPassword": "Esqueci minha senha"
     },
 
@@ -138,7 +186,9 @@
   },
 
   "modal": {
-    "newProduct": "Novo produto",
+    "newProduct": "Novo ",
+    "newProduct-em": " produto",
+    "newProductAfter": " ",
     "editProduct": "Editar produto",
     "newProductDescription": "Informe os dados do novo produto",
     "editProductDescription": "Atualize o nome e o preço do item",
@@ -231,7 +281,7 @@
       "addProduct": "Adicionar outro produto",
       "removeItem": "Remover produto",
       "onThisSale": "Produtos desta venda",
-      "saleTotal": "Total da venda",
+      "salesTotal": "Total da venda",
       "errors": {
         "addProduct": "Adicione pelo menos um produto à venda.",
         "invalidItem": "Confira os produtos e as quantidades informadas.",

@@ -441,10 +441,10 @@ useEffect(() => {
                 })}
               </div>
 
-              <button className="vendas-add-item" type="button" onClick={adicionarItem}>＋ {t("vendas.form.addProduct")}</button>
+              <button className="vendas-add-item" type="button" onClick={adicionarItem}> + {t("vendas.form.addProduct")}</button>
 
               <div className="vendas-form-total">
-                <span>{t("vendas.form.saleTotal")}</span>
+                <span>{t("vendas.form.salesTotal")}</span>
                 <strong>{money(totalFormulario, locale)}</strong>
               </div>
 
