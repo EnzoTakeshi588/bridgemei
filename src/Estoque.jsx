@@ -47,12 +47,10 @@ function ModalProduto({ onClose, onSave, initial, loading }) {
     <div className="est-mbg" onClick={(e) => e.target === e.currentTarget && !loading && onClose()}>
       <div className="est-mo">
         <div className="est-mt">
-          {initial ? t("stock.modal.editProduct") : t("stock.modal.newProduct")}
+          {t("stock.modal.newProduct")}<em>{t("stock.modal.newProductEm")}</em>{t("stock.modal.newProductAfter")}
         </div>
         <div className="est-ms">
-          {initial
-            ? t("stock.modal.editProductDescription")
-            : t("stock.modal.newProductDescription")}
+          {t("stock.modal.newProductDescription")}
         </div>
         <div className="est-fg">
           <label>{t("stock.modal.productName")}</label>
@@ -111,7 +109,7 @@ function ModalMovimento({ produto, onClose, onConfirm, loading }) {
   return (
     <div className="est-mbg" onClick={(e) => e.target === e.currentTarget && !loading && onClose()}>
       <div className="est-mo">
-        <div className="est-mt">{t("stock.modal.movement")}</div>
+        <div className="est-mt">{t("stock.modal.movement")}<em>{t("stock.modal.movementEm")}</em></div>
         <div className="est-ms">{t("stock.modal.movementDescription")}</div>
 
         {/* Info do produto */}
@@ -130,14 +128,14 @@ function ModalMovimento({ produto, onClose, onConfirm, loading }) {
             onClick={() => setTipo("entrada")}
             disabled={loading}
           >
-            ▲ Entrada
+            {t("stock.modal.entry")}
           </button>
           <button
             className={`est-mtbtn sa ${tipo === "saida" ? "act" : ""}`}
             onClick={() => setTipo("saida")}
             disabled={loading}
           >
-            ▼ Saída
+            {t("stock.modal.exit")}
           </button>
         </div>
 
@@ -173,9 +171,33 @@ function ModalMovimento({ produto, onClose, onConfirm, loading }) {
   );
 }
 
-// Modal: excluir
-function ModalExcluir({produto, onClose, onConfirm, loading}) {
-  const [d, setD] = useState("excluir");
+function ModalExcluir({ onClose, onConfirm, loading }) {
+  const { t } = useTranslation();
+
+  return (
+    <div className="est-mbg" onClick={(event) => event.target === event.currentTarget && !loading && onClose()}>
+      <section
+        className="est-mo"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="est-delete-title"
+        aria-describedby="est-delete-description"
+      >
+        <h2 className="est-mt" id="est-delete-title">{t("stock.modal.deleteTitle")}<em>{t("stock.modal.deleteTitleEm")}</em></h2>
+        <p className="est-ms est-delete-message" id="est-delete-description">
+          {t("stock.modal.deleteMessage")}
+        </p>
+        <div className="est-mbtns">
+          <button className="est-bcx" type="button" onClick={onClose} disabled={loading}>
+            {t("stock.modal.cancel")}
+          </button>
+          <button className="est-bsv est-bsv-delete" type="button" onClick={onConfirm} disabled={loading}>
+            {t("stock.modal.confirmDelete")}
+          </button>
+        </div>
+      </section>
+    </div>
+  );
 }
 
 // ── Componente principal ───────────────────────────────────────────────────
@@ -185,7 +207,7 @@ export default function Estoque({ onNavegar }) {
   const [loadingPage, setLP]      = useState(true);
   const [loadingAct,  setLA]      = useState(false);
   const [erro,      setErro]      = useState("");
-  const [modal,     setModal]     = useState(null); // null | "novo" | produto (editar) | { mov: produto }
+  const [modal,     setModal]     = useState(null); // null | "novo" | { mov: produto } | { excluir: produto }
   const [toast,     setToast]     = useState(null); // { msg, tipo }
   const [anim,      setAnim]      = useState(false);
   /*
@@ -309,12 +331,12 @@ export default function Estoque({ onNavegar }) {
 
   // ── Excluir (requer endpoint DELETE na API — ver nota abaixo) ────────────
   const excluir = async (p) => {
-    if (!confirm(t("stock.messages.removeConfirm", { name: p.nome }))) return;
     setLA(true);
     try {
       // DELETE /api/produtos/{id}  ← precisa adicionar esse endpoint na API
       await apiFetch(`/api/Produtos/${p.id}`, { method: "DELETE" });
       await carregarProdutos();
+      setModal(null);
       showToast(t("stock.messages.removeSuccess"));
     } catch (e) {
       showToast(t("stock.messages.error", { error: e.message }), "err");
@@ -423,7 +445,7 @@ export default function Estoque({ onNavegar }) {
               {loadingPage ? (
                 <div className="est-loading">
                   <div className="est-spinner" />
-                  Carregando produtos…
+                  {t("stock.products.loading")}
                 </div>
               ) : (
                 <table className="est-table">
@@ -476,7 +498,7 @@ export default function Estoque({ onNavegar }) {
                                   className="est-bi est-bdl"
                                   title={t("stock.actions.remove")}
                                   disabled={loadingAct}
-                                  onClick={() => excluir(p)}
+                                  onClick={() => setModal({ excluir: p })}
                                 >✕</button>
                               </div>
                             </td>
@@ -511,6 +533,14 @@ export default function Estoque({ onNavegar }) {
           produto={modal.mov}
           onClose={() => setModal(null)}
           onConfirm={confirmarMovimento}
+          loading={loadingAct}
+        />
+      )}
+
+      {modal?.excluir && (
+        <ModalExcluir
+          onClose={() => setModal(null)}
+          onConfirm={() => excluir(modal.excluir)}
           loading={loadingAct}
         />
       )}

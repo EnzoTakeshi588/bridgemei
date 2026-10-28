@@ -39,11 +39,7 @@ const CONTEUDOS = [
   {emoji:"🏦",titulo:"Limite de faturamento",   desc:"Quanto você pode faturar por ano e o que acontece se ultrapassar.",tag:"Importante",conteudo:<>MEI pode faturar até <strong>R$ 81.000/ano</strong>.<br/><br/>Ultrapassar até 20% → vira ME. Ultrapassar mais → perda retroativa dos benefícios.<br/><br/>⚠️ Seu faturamento está em <strong>84%</strong> do limite.</>},
   {emoji:"📄",titulo:"Nota Fiscal do MEI",      desc:"Quando emitir, como emitir e diferença entre NF de serviço e produto.",tag:"Prática",   conteudo:<><strong>NFS-e:</strong> prefeitura, para serviços a PJ.<br/><strong>NF Produto:</strong> SEFAZ, para venda a empresas.<br/><br/>Para pessoas físicas não é obrigatória, mas é recomendada.</>},
   {emoji:"🔄",titulo:"IBS e CBS — Reforma",     desc:"O que muda com a reforma tributária e como o MEI é afetado.",tag:"Novo",       conteudo:<><strong>CBS</strong> substitui PIS/COFINS. <strong>IBS</strong> substitui ICMS/ISS.<br/><br/>O MEI está protegido por regras específicas. Transição: 2026–2032.</>},
-  {emoji:"🛡️",titulo:"Benefícios do MEI",      desc:"Aposentadoria, auxílio-doença, salário-maternidade e outros direitos.",tag:"Direitos", conteudo:<>Pagando DAS em dia você tem:<br/><br/>✅ Aposentadoria por idade · ✅ Auxílio-doença (12 meses) · ✅ Salário-maternidade (10 meses) · ✅ Pensão por morte</>},
-];
-
-const SEGUROS = [
-  {emoji:"🛡️",title:"", desc:"",tag:"", content:<></>},
+  {emoji:"🛡️",titulo:"Benefícios do MEI",      desc:"Aposentadoria, auxílio-doença, salário-maternidade e outros direitos.",tag:"Direitos", conteudo:<>Pagando DAS em dia você tem:<br/><br/>✅ Aposentadoria por idade · ✅ Auxílio-doença (12 meses) · ✅ Salário-maternidade (10 meses) · ✅ Pensão por morte</>}, {emoji:"🛡️",title:"", desc:"",tag:"", content:<></>},
   {emoji:"🏦",title:"",desc: "",tag:"",content:<></>},
 ];
 
@@ -73,9 +69,9 @@ const NAV = [
   {id:"dashboard",   icon:"🏠",key:"nav.inicio",      badge:0},
   {id:"faturamento", icon:"📈",key:"nav.faturamento", badge:0},
   {id: "vendas", icon: "🛒", key: "nav.vendas", badge: 0},
-  {id:"alertas",     icon:"🔔",key:"nav.alertas",     badge:0},
+//  {id:"alertas",     icon:"🔔",key:"nav.alertas",     badge:0},
   {id:"aprendizado", icon:"📚",key:"nav.aprendizado", badge:0},
-  {id:"documentos",  icon:"📁",key:"nav.documentos",  badge:0},
+//  {id:"documentos",  icon:"📁",key:"nav.documentos",  badge:0},
 ];
 
 /* ══════════════ HOOKS ══════════════ */
@@ -355,12 +351,12 @@ function Dashboard({navigate}){
   return(<>
     <div className="page-eyebrow">{t("dashboard.overview")}</div>
     <h1 className="page-h1">{t("dashboard.greetings")} <em>{nome}</em></h1>
-    <div className="alert-banner">
+    {/*<div className="alert-banner">
       <span>⚠️</span>
       <div><strong>{t("dashboard.attention")}: </strong>
         2 faturas vencem nos próximos 3 dias. Total: <strong>R$ 4.820</strong></div>
       <button className="alert-action" onClick={()=>navigate("alertas")}>{t("dashboard.viewAlerts")}</button>
-    </div>
+    </div>*/}
     <div className="stats-grid" ref={sRef}>
       {STATS.map((s,i)=>(
         <div key={i} className={`stat-card${sVis?" vis":""}`}>
@@ -384,7 +380,7 @@ function Dashboard({navigate}){
     </div>
     <div className="bottom-grid" ref={bRef}>
       <div className={`info-card${bVis?" vis":""}`}>
-        <div className="card-hdr"><div className="card-title">{t("dashboard.alertsCard")}</div><button className="card-link" onClick={()=>navigate("alertas")}>{t("dashboard.viewAll")} →</button></div>
+        <div className="card-hdr"><div className="card-title">{t("dashboard.alertsCard")}</div><button className="card-link">{t("dashboard.viewAll")} →</button></div>
         <div className="mini-alert-list">
           {ALERTAS.slice(0,3).map((a,i)=>(
             <div key={i} className={`mini-alert ${a.tipo==="danger"||a.tipo==="warn"?"warn":"ok"}${bVis?" vis":""}`}>
@@ -436,7 +432,7 @@ function Aprendizado(){
         </div>
       ))}
     </div>
-    <div className="page-eyebrow-2">{t("learning.serviceInfo")}</div>
+    {/*<div className="page-eyebrow-2">{t("learning.serviceInfo")}</div>
     <h2 className="page-h2">{t("learning.serviceTitle")} <em>{t("learning.serviceTitle-em")}</em></h2>
       <div className="service-info-grid">
         {SEGUROS.map((c,i,j)=>(<div key={i} className={`edu-card vis${aberto===i?" open":""}`} style={{animationDelay:`${i*.07}s`}} onClick={()=>setAberto(aberto===i?null:i)}>
@@ -445,7 +441,7 @@ function Aprendizado(){
           <div className="edu-desc">{c.desc}</div>
           <span className="edu-tag">{c.tag}</span>
         {aberto===i&&<div className="edu-content">{c.content}</div>}</div>))}
-      </div>
+      </div>*/}
   </>);
 }
 

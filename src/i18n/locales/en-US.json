@@ -1,12 +1,62 @@
 {
   "login": {
-    "welcome": "Welcome back",
+    "leftPageLogin": {
+          "welcome": "Welcome back",
+          "title-one": "Acess your ",
+          "title-two": "account",
+          "title-three": " now",
+          "subtitle": "Pick up where you left off. Your data, tax filings, and revenue are all here.",
+          "features": {
+            "one": "Advanced encryption security",
+            "two": "Access on any device",
+            "three": "24/7 support"
+          }
+        },
+
+        "leftPageRegister": {
+          "welcome": "Get started for free",
+          "title-one": "Take care of ",
+          "title-two": "business",
+          "title-three": " with us",
+          "subtitle": "Manage your business registration, taxes, and revenue simply and intelligently.",
+          "features": {
+            "one": "Quick registration in under a minute", 
+            "two": "No bureaucracy, no cost", 
+            "three": " "
+          }
+    },
+
+    "formLogin": "Welcome back 👋",
+    "formRegister": "Create your account 🚀",
+    "formLoginSub": "Use your e-mail and password to sign-in", 
+    "formRegisterSub": "Fill with your info to start",
+
+    "LoginSuccess": "Successfully Loged-in!",
+    "RegisterSuccess": "Account successfully created!",
+
+    "LoginButton": "Sign-in",
+    "RegisterButton": "Free register",
+    "LoginButtonLoading": "Entering...",
+    "RegisterButtonLoading": "Creating account...",
+
+    "PasswordStrength": "Password Strength",
+
+    "formLoginTail": {
+      "1": "Don't have an account?",
+      "2": "Create for free"
+    }, 
+    "formRegisterTail": {
+      "1": "Already have an account?", 
+      "2": "Sign-in"
+    },
+    
     "name": "Name", 
     "surname": "Surname",
     "email": "Email",
     "password": "Password",
     "login": "Sign in",
     "register": "Create account",
+    "remember": "Remember Me",
     "forgotPassword": "Forgot my password"
   }, 
 
@@ -137,7 +187,9 @@
   },
 
   "modal": {
-    "newProduct": "New product",
+    "newProduct": " ",
+    "newProductEm": "New",
+    "newProductAfter": " product",
     "editProduct": "Edit product",
     "newProductDescription": "Enter the new product information",
     "editProductDescription": "Update the item's name and price",
@@ -149,8 +201,13 @@
     "save": "✓ Save",
     "saving": "Saving…",
 
-    "movement": "Manage inventory",
+    "movement": "Manage ",
+    "movementEm": "inventory",
     "movementDescription": "Register incoming or outgoing units",
+    "deleteTitle": "Delete ",
+    "deleteTitleEm": "product",
+    "deleteMessage": "Do you want to remove this product?",
+    "confirmDelete": "Confirm",
     "entry": "▲ Entry",
     "exit": "▼ Exit",
     "quantity": "Quantity",
@@ -227,7 +284,7 @@
       "addProduct": "Add another product",
       "removeItem": "Remove product",
       "onThisSale": "Products in this sale",
-      "saleTotal": "Sale total",
+      "salesTotal": "Sale total",
       "errors": {
         "addProduct": "Add at least one product to the sale.",
         "invalidItem": "Check the selected products and quantities.",
