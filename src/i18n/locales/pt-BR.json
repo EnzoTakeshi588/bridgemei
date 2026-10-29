@@ -114,8 +114,11 @@
 
   "revenue": {
     "heading": "Financeiro",
-    "title": "Dashboard de ",
+    "titleBefore": "Dashboard de ",
     "title-em": "Faturamento",
+    "titleAfter": " ",
+    "loadingData": "Carregando dados de vendas...",
+    "loadingError": "Não foi possível carregar o faturamento:",
     "accumulated": "Faturamento acumulado",
     "annualLimit": "Limite anual",
     "annual-percent": " do limite anual",

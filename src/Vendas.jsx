@@ -13,7 +13,7 @@ import "./styles/Vendas.css";
  *
  * Se não forem fornecidos, o componente usa dados demonstrativos locais.
  */
-const produtosDemo = [
+/*const produtosDemo = [
   { id: 1, nome: "Caderno", quantidade: 24, preco: 18.9 },
   { id: 2, nome: "Caneta azul", quantidade: 80, preco: 2.5 },
   { id: 3, nome: "Mochila", quantidade: 7, preco: 89.9 },
@@ -39,7 +39,7 @@ const vendasDemo = [
     ],
   },
 ];
-
+*/
 const money = (value, locale) =>
   new Intl.NumberFormat(locale || "pt-BR", {
     style: "currency",

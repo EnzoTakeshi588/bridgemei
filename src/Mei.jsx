@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { getUserFromToken } from "./utils/auth";
 import {
   Chart, ArcElement, DoughnutController, LineController, LineElement,
@@ -7,14 +7,19 @@ import {
 import { useTranslation } from "react-i18next";
 import "./styles/Mei.css";
 import Vendas from "./Vendas";
-import { createPortal } from "react-dom";
+import useVendas from "./hooks/useVendas.js";
+import { calcularMetricasVendas } from "./utils/metricasVendas.js";
 
 Chart.register(
   ArcElement, DoughnutController, LineController, LineElement,
   PointElement, LinearScale, CategoryScale, Filler, Tooltip
 );
 
-/* ══════════════ DATA ══════════════ */
+/* 
+══════════════ 
+DATA
+══════════════ 
+*/
 
 const PIE_DATA = [
   { label: "Serviços", value: 58, color: "--color-accent" },
@@ -43,39 +48,23 @@ const CONTEUDOS = [
   {emoji:"🏦",title:"",desc: "",tag:"",content:<></>},
 ];
 
-/* const CONTATOS = [
-  {id:1,init:"C", nome:"Contador Silva", status:"Online agora",      preview:"Enviei o boleto do DAS",      time:"10:42",unread:true},
-  {id:2,init:"🤖",nome:"Assistente IA",  status:"Sempre disponível", preview:"Posso te ajudar com dúvidas", time:"09:15",unread:true},
-];
-const MSGS_INIT = {
-  1:[{de:"theirs",texto:"Olá! Enviei o boleto do DAS de maio para você.",hora:"10:30"},{de:"theirs",texto:"Lembre-se que vence no dia 20!",hora:"10:31"},{de:"mine",texto:"Obrigada! Vou pagar ainda hoje.",hora:"10:42"}],
-  2:[{de:"theirs",texto:"Olá! Sou o assistente IA. Como posso ajudar?",hora:"09:00"},{de:"mine",texto:"Qual o prazo da DASN?",hora:"09:10"},{de:"theirs",texto:"A DASN-SIMEI deve ser entregue até 31 de maio. Está em dia! ✅",hora:"09:15"}],
-}; */
-
+/*
 const MESES = [{nome:"Jan",valor:5200},{nome:"Fev",valor:4800},{nome:"Mar",valor:6100},{nome:"Abr",valor:7400},{nome:"Mai",valor:6300},{nome:"Jun",valor:8200},{nome:"Jul",valor:7100},{nome:"Ago",valor:5900},{nome:"Set",valor:4700},{nome:"Out",valor:5800},{nome:"Nov",valor:3900},{nome:"Dez",valor:3000}];
 const FAT_TOTAL=68400,FAT_LIMITE=81000,FAT_PCT=Math.round(FAT_TOTAL/FAT_LIMITE*100),MAIOR_MES=Math.max(...MESES.map(m=>m.valor));
-
-const DOCS = [
-  {icon:"📄",nome:"DAS_maio_2025.pdf",   meta:"Enviado há 3 dias · 42 KB",     tag:"fiscal",   tagLabel:"Fiscal"},
-  {icon:"📊",nome:"Faturamento_Q1.pdf",  meta:"Enviado há 1 semana · 128 KB",  tag:"ok",       tagLabel:"Aprovado"},
-  {icon:"📋",nome:"DASN_2023.pdf",       meta:"Enviado há 2 meses · 88 KB",    tag:"ok",       tagLabel:"Aprovado"},
-  {icon:"🧾",nome:"NF_servico_abr.pdf",  meta:"Aguardando revisão · 56 KB",    tag:"pendente", tagLabel:"Pendente"},
-  {icon:"📄",nome:"Contrato_MEI.pdf",    meta:"Aguardando revisão · 210 KB",   tag:"pendente", tagLabel:"Pendente"},
-  {icon:"📊",nome:"Relatorio_anual.pdf", meta:"Enviado há 3 meses · 340 KB",   tag:"ok",       tagLabel:"Aprovado"},
-  {icon:"🧾",nome:"NF_produto_mar.pdf",  meta:"Enviado há 1 mês · 64 KB",      tag:"fiscal",   tagLabel:"Fiscal"},
-];
+*/
 
 const NAV = [
   {id:"dashboard",   icon:"🏠",key:"nav.inicio",      badge:0},
   {id:"faturamento", icon:"📈",key:"nav.faturamento", badge:0},
   {id: "vendas", icon: "🛒", key: "nav.vendas", badge: 0},
-//  {id:"alertas",     icon:"🔔",key:"nav.alertas",     badge:0},
   {id:"aprendizado", icon:"📚",key:"nav.aprendizado", badge:0},
-//  {id:"documentos",  icon:"📁",key:"nav.documentos",  badge:0},
 ];
 
-/* ══════════════ HOOKS ══════════════ */
-  function useTypewriter(text, speed = 28) {
+/* 
+══════════════ 
+HOOKS 
+══════════════ 
+function useTypewriter(text, speed = 28) {
   const [display, setDisplay] = useState("");
 
   useEffect(() => {
@@ -94,7 +83,7 @@ const NAV = [
 
   return display;
 }
-
+*/
 function useVis(ref, threshold = 0.1) {
   const [visible, setVisible] = useState(false);
 
@@ -125,8 +114,12 @@ function getThemeColor(variable) {
     .trim();
 }
 
-/* ══════════════ CHARTS ══════════════ */
-function LineChart(){
+/* 
+══════════════ 
+CHARTS 
+══════════════ 
+*/
+function LineChart({meses, idioma}){
   const r = useRef(null);
   const inst = useRef(null);
   useEffect(() => {
@@ -145,10 +138,11 @@ function LineChart(){
       type: "line",
 
       data: {
-        labels: MONTHS,
+        labels: meses.map(({ mes }) => new Intl.DateTimeFormat(idioma, { month: "short" })
+        .format(new Date(new Date().getFullYear(), mes, 1))),
 
         datasets: [{
-          data: REVENUE,
+          data: meses.map(({ total }) => total),
           borderColor: accent,
           backgroundColor: accentGlow,
           borderWidth: 2.5,
@@ -232,7 +226,7 @@ function LineChart(){
     });
 
     return () => inst.current?.destroy();
-  }, []);
+  }, [meses, idioma]);
 
   return <canvas ref={r}/>;
 }
@@ -333,7 +327,15 @@ function DonutChart(){
   );
 }
 
-/* ══════════════ PAGES ══════════════ */
+/* 
+══════════════ 
+PAGES 
+══════════════ 
+
+══════════════ 
+DASHBOARD
+══════════════ 
+*/
 function Dashboard({navigate}){
   const user = getUserFromToken();
   const nome = user?.nome || "Usuário";
@@ -400,20 +402,10 @@ function Dashboard({navigate}){
     </div>
   </>);
 }
-/*
-function Alertas(){
-  const ativos=ALERTAS.filter(a=>a.tipo==="danger"||a.tipo==="warn");
-  const resolvidos=ALERTAS.filter(a=>a.tipo==="ok"||a.tipo==="info");
-  const { t } = useTranslation();
-  return(<>
-    <div className="page-eyebrow">{t("alerts.heading")}</div>
-    <h1 className="page-h1">{t("alerts.title")} <em>{t("alerts.title-em")}</em></h1>
-    <div className="a-section-label">{t("alerts.attention")} ({ativos.length})</div>
-    <div className="a-list">{ativos.map((a,i)=><div key={i} className={`a-card ${a.tipo} vis`} style={{animationDelay:`${i*.1}s`}}><span className="a-emoji">{a.emoji}</span><div><div className="a-title">{a.titulo}</div><div className="a-desc">{a.desc}</div><div className="a-date">{a.data}</div></div></div>)}</div>
-    <div className="a-section-label">{t("alerts.resolved")} ({resolvidos.length})</div>
-    <div className="a-list">{resolvidos.map((a,i)=><div key={i} className={`a-card ${a.tipo} vis`} style={{animationDelay:`${(i+ativos.length)*.1}s`}}><span className="a-emoji">{a.emoji}</span><div><div className="a-title">{a.titulo}</div><div className="a-desc">{a.desc}</div><div className="a-date">{a.data}</div></div></div>)}</div>
-  </>);
-}
+/* 
+══════════════ 
+APRENDIZADO 
+══════════════ 
 */
 function Aprendizado(){
   const [aberto,setAberto]=useState(null);
@@ -432,76 +424,211 @@ function Aprendizado(){
         </div>
       ))}
     </div>
-    {/*<div className="page-eyebrow-2">{t("learning.serviceInfo")}</div>
-    <h2 className="page-h2">{t("learning.serviceTitle")} <em>{t("learning.serviceTitle-em")}</em></h2>
-      <div className="service-info-grid">
-        {SEGUROS.map((c,i,j)=>(<div key={i} className={`edu-card vis${aberto===i?" open":""}`} style={{animationDelay:`${i*.07}s`}} onClick={()=>setAberto(aberto===i?null:i)}>
-          <div className="edu-emoji">{c.emoji}</div>
-          <div className="edu-titulo">{c.title}</div>
-          <div className="edu-desc">{c.desc}</div>
-          <span className="edu-tag">{c.tag}</span>
-        {aberto===i&&<div className="edu-content">{c.content}</div>}</div>))}
-      </div>*/}
   </>);
 }
-
+/* 
+══════════════ 
+FATURAMENTO 
+══════════════ 
+*/
 function Faturamento(){
   const ref=useRef(null);const vis=useVis(ref,.05);
   const [barAnim,setBarAnim]=useState(false);
-  useEffect(()=>{const t=setTimeout(()=>setBarAnim(true),300);return()=>clearTimeout(t);},[]);
-  const { t } = useTranslation();
-  return(<>
-    <div className="page-eyebrow">{t("revenue.heading")}</div>
-    <h1 className="page-h1">{t("revenue.title")} <em>{t("revenue.title-em")}</em></h1>
-    <div className="fat-cards" ref={ref}>
-      {[
-        {label:t("revenue.accumulated"),value:"R$ 68.400",sub:<><span className="twarn">{FAT_PCT}% {t("revenue.annual-percent")}</span></>},
-        {label:t("revenue.meiLimit"),value:"R$ 81.000",sub:<>{t("revenue.remaining")} <span className="tok">R$ 12.600</span></>},
-        {label:t("revenue.bestMonth"),value:"R$ 8.200",sub:"Junho/2024"},
-      ].map((c,i)=><div key={i} className={`fat-card${vis?" vis":""}`} style={{animationDelay:`${i*.1}s`}}><div className="fat-card-label">{c.label}</div><div className="fat-card-value">{c.value}</div><div className="fat-card-sub">{c.sub}</div></div>)}
-    </div>
-    <div className="big-bar-box">
-      <div className="big-bar-label"><span>{t("revenue.progress")}</span><span className="twarn">{FAT_PCT}%</span></div>
-      <div className="big-bar-track"><div className="big-bar-fill" style={{width:barAnim?`${FAT_PCT}%`:"0%",background:FAT_PCT>85?"var(--color-danger)":"var(--color-accent)"}}/></div>
-      <div className="big-bar-info"><span>R$ 0</span><span>⚠️ {t("revenue.attentionZone")}</span><span>R$ 81.000</span></div>
-    </div>
-    <div className="page-eyebrow" style={{marginBottom:14}}>{t("revenue.byMonth")}</div>
-    <div className="meses-grid">
-      {MESES.map((m,i)=>(
-        <div key={i} className={`mes-card${vis?" vis":""}`} style={{animationDelay:`${.3+i*.04}s`}}>
-          <div className="mes-nome">{m.nome}</div>
-          <div className="mes-valor" style={{color:m.valor<4500?"var(--color-text)":undefined}}>R$ {(m.valor/1000).toFixed(1)}k</div>
-          <div className="mes-bar"><div className="mes-bar-fill" style={{width:barAnim?`${(m.valor/MAIOR_MES)*100}%`:"0%",background:m.valor<4500?"var(--color-warning)":"var(--color-accent)",transition:"width 1.2s cubic-bezier(.22,1,.36,1)"}}/></div>
-        </div>
-      ))}
-    </div>
-  </>);
-}
-/*
-function Documentos(){
-  const [toast,setToast]=useState(false);
-  const ref=useRef(null);const vis=useVis(ref,.05);
-  const simular=()=>{setToast(true);setTimeout(()=>setToast(false),3000);};
-  const { t } = useTranslation();
-  return(<>
-    <div className="page-eyebrow">{t("documents.heading")}</div>
-    <h1 className="page-h1">{t("documents.title")} <em>{t("documents.title-em")}</em></h1>
-    <div className="upload-area" onClick={simular}>
-      <div className="upload-icon">📤</div>
-      <div className="upload-title">{t("documents.uploadNew")}</div>
-      <div className="upload-sub">{t("documents.uploadType")}</div>
-      <button className="upload-btn">{t("documents.selectFile")}</button>
-    </div>
-    <div className="page-eyebrow">{t("documents.documentsList")} ({DOCS.length})</div>
-    <div className="docs-grid" ref={ref}>
-      {DOCS.map((d,i)=><div key={i} className={`doc-card${vis?" vis":""}`} style={{animationDelay:`${i*.06}s`}}><div className="doc-icon-big">{d.icon}</div><div className="doc-name">{d.nome}</div><div className="doc-meta">{d.meta}</div><span className={`doc-tag ${d.tag}`}>{d.tagLabel}</span></div>)}
-    </div>
-    {toast&&<div className="toast">✓ {t("documents.uploadedSuccess")}</div>}
-  </>);
-}
-*/
+  
+  useEffect(()=>{const t=setTimeout(()=>setBarAnim(true),300);
+    return()=>clearTimeout(t);
+  },[]);
 
-/* ══════════════ APP SHELL ══════════════ */
+ 
+  const { t, i18n } = useTranslation();
+  const { vendas, carregando, erro } = useVendas();
+
+  const metricas = useMemo(
+    () => calcularMetricasVendas(vendas),
+    [vendas]
+  );
+
+  const LIMITE_MEI_ANUAL = 81000;
+  const anoAtual = new Date().getFullYear();
+
+  const percentual = Math.min(
+    (metricas.faturamentoAnual / LIMITE_MEI_ANUAL) * 100,
+    100
+  );
+
+  const restante = Math.max(
+    LIMITE_MEI_ANUAL - metricas.faturamentoAnual,
+    0
+  );
+
+  const formatarMoeda = (valor) =>
+    new Intl.NumberFormat(
+      i18n.language === "en-US" ? "en-US" : "pt-BR",
+      {
+        style: "currency",
+        currency: "BRL",
+      }
+    ).format(valor);
+
+  const nomeMes = (mes) =>
+    new Intl.DateTimeFormat(
+      i18n.language === "en-US" ? "en-US" : "pt-BR",
+      { month: "long" }
+    ).format(new Date(anoAtual, mes, 1));
+
+  const melhorMes = metricas.melhorMes;
+
+  const maiorValorMensal = Math.max(
+    ...metricas.meses.map((mes) => mes.total),
+    0
+  );
+  return (
+    <>
+      <div className="page-eyebrow">{t("revenue.heading")}</div>
+
+      <h1 className="page-h1">
+        {t("revenue.titleBefore")}<em>{t("revenue.title-em")}</em>{t("revenue.titleAfter")}
+      </h1>
+
+      {carregando && (
+        <p className="fat-card-sub">{t("renevue.loadingData")}</p>
+      )}
+
+      {erro && (
+        <p className="fat-card-sub" role="alert">
+          {t("revenue.loadingError")} {erro}
+        </p>
+      )}
+
+      <div className="fat-cards" ref={ref}>
+        {[
+          {
+            label: t("revenue.accumulated"),
+            value: formatarMoeda(metricas.faturamentoAnual),
+            sub: (
+              <span className="twarn">
+                {percentual.toFixed(1)}% {t("revenue.annual-percent")}
+              </span>
+            ),
+          },
+          {
+            label: t("revenue.meiLimit"),
+            value: formatarMoeda(LIMITE_MEI_ANUAL),
+            sub: (
+              <>
+                {t("revenue.remaining")}{" "}
+                <span className="tok">{formatarMoeda(restante)}</span>
+              </>
+            ),
+          },
+          {
+            label: t("revenue.bestMonth"),
+            value: melhorMes
+              ? formatarMoeda(melhorMes.total)
+              : formatarMoeda(0),
+            sub: melhorMes
+              ? `${nomeMes(melhorMes.mes)} / ${anoAtual}`
+              : "Nenhuma venda neste ano",
+          },
+        ].map((c, i) => (
+          <div
+            key={i}
+            className={`fat-card${vis ? " vis" : ""}`}
+            style={{ animationDelay: `${i * 0.1}s` }}
+          >
+            <div className="fat-card-label">{c.label}</div>
+            <div className="fat-card-value">{c.value}</div>
+            <div className="fat-card-sub">{c.sub}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="big-bar-box">
+        <div className="big-bar-label">
+          <span>{t("revenue.progress")}</span>
+          <span className="twarn">{percentual.toFixed(1)}%</span>
+        </div>
+
+        <div className="big-bar-track">
+          <div
+            className="big-bar-fill"
+            style={{
+              width: barAnim ? `${percentual}%` : "0%",
+              background:
+                percentual >= 85
+                  ? "var(--color-danger)"
+                  : "var(--color-accent)",
+            }}
+          />
+        </div>
+
+        <div className="big-bar-info">
+          <span>{formatarMoeda(0)}</span>
+          <span>⚠️ {t("revenue.attentionZone")}</span>
+          <span>{formatarMoeda(LIMITE_MEI_ANUAL)}</span>
+        </div>
+      </div>
+
+      <div className="page-eyebrow" style={{ marginBottom: 14 }}>
+        {t("revenue.byMonth")}
+      </div>
+
+      <div className="meses-grid">
+        {metricas.meses.map((m) => {
+          const percentualMes =
+            maiorValorMensal > 0
+              ? (m.total / maiorValorMensal) * 100
+              : 0;
+
+          return (
+            <div
+              key={m.mes}
+              className={`mes-card${vis ? " vis" : ""}`}
+              style={{
+                animationDelay: `${0.3 + m.mes * 0.04}s`,
+              }}
+            >
+              <div className="mes-nome">{nomeMes(m.mes)}</div>
+
+              <div
+                className="mes-valor"
+                style={{
+                  color:
+                    m.total < 4500
+                      ? "var(--color-text)"
+                      : undefined,
+                }}
+              >
+                {formatarMoeda(m.total)}
+              </div>
+
+              <div className="mes-bar">
+                <div
+                  className="mes-bar-fill"
+                  style={{
+                    width: barAnim ? `${percentualMes}%` : "0%",
+                    background:
+                      m.total < 4500
+                        ? "var(--color-warning)"
+                        : "var(--color-accent)",
+                    transition:
+                      "width 1.2s cubic-bezier(.22,1,.36,1)",
+                  }}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
+/* 
+══════════════ 
+APP SHELL 
+══════════════ 
+*/
 export default function App({ onLogout, onNavegar }){
   const [view,setView]=useState("dashboard"),[key,setKey]=useState(0);
   const navigate=(id)=>{setView(id);setKey(k=>k+1);window.scrollTo({top:0,behavior:"smooth"});};
@@ -517,9 +644,7 @@ export default function App({ onLogout, onNavegar }){
     dashboard:   <Dashboard navigate={navigate}/>,
     faturamento: <Faturamento/>,
     vendas: <Vendas/>,
-//    alertas:     <Alertas/>,
     aprendizado: <Aprendizado/>,
-//    documentos:  <Documentos/>,
   };
 
   return(<>
