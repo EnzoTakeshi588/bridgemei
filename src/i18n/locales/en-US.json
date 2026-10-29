@@ -88,13 +88,20 @@
   },
 
   "dash-stats": {
-    "revenue": "Monthly Revenue",
-    "activeOrders": "Active Orders",
-    "default": "Delinquency",
-    "Score": "NPS Score"
+    "monthRevenue": "Monthly revenue",
+    "monthSales": "Monthly sales",
+    "stockAttention": "Products needing attention",
+    "monthTicket": "Average sale value",
+    "currentMonth": "Annual revenue limit progress",
+    "salesRegistered": "Sales registered this month",
+    "stockUnavailable": "Unable to load inventory",
+    "stockBreakdown": "{{low}} low stock · {{out}} out of stock",
+    "averagePerSale": "Average value per sale",
+    "loadingSales": "Loading sales data...",
+    "salesUnavailable": "Unable to load sales."
   },
 
-   "alerts": {
+  "alerts": {
     "heading": "Notifications",
     "title": "Your ",
     "title-em": "Alerts",
@@ -114,12 +121,15 @@
 
   "revenue": {
     "heading": "Financial",
-    "title": "Revenue ",
-    "title-em": "Dashboard",
+    "titleBefore": " ",
+    "title-em": "Revenue ",
+    "titleAfter": "Dashboard",
+    "loadingData": "Carregando dados de vendas...",
+    "loadingError": "Não foi possível carregar o faturamento:",
     "accumulated": "Accumulated revenue",
     "annualLimit": "Annual limit",
     "annual-percent": " of annual limit",
-    "meiLimit": "MEI 2024 limit",
+    "meiLimit": "MEI limit",
     "remaining": "Remaining",
     "bestMonth": "Best month",
     "progress": "Annual limit progress",

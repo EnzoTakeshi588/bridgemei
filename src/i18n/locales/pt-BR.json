@@ -88,10 +88,17 @@
   },
 
   "dash-stats": {
-    "revenue": "Receita Mensal",
-    "activeOrders": "Pedidos Ativos",
-    "default": "Inadimplência",
-    "Score": "NPS Score"
+    "monthRevenue": "Faturamento do mês",
+    "monthSales": "Vendas do mês",
+    "stockAttention": "Produtos com estoque crítico",
+    "monthTicket": "Ticket médio do mês",
+    "currentMonth": "Faturamento no ano considerado no limite anual",
+    "salesRegistered": "Vendas registradas no mês",
+    "stockUnavailable": "Não foi possível carregar o estoque",
+    "stockBreakdown": "{{low}} com estoque baixo · {{out}} sem estoque",
+    "averagePerSale": "Valor médio por venda",
+    "loadingSales": "Carregando dados de vendas...",
+    "salesUnavailable": "Não foi possível carregar as vendas."
   },
 
   "alerts": {
@@ -114,12 +121,15 @@
 
   "revenue": {
     "heading": "Financeiro",
-    "title": "Dashboard de ",
+    "titleBefore": "Dashboard de ",
     "title-em": "Faturamento",
+    "titleAfter": " ",
+    "loadingData": "Carregando dados de vendas...",
+    "loadingError": "Não foi possível carregar o faturamento:",
     "accumulated": "Faturamento acumulado",
     "annualLimit": "Limite anual",
     "annual-percent": " do limite anual",
-    "meiLimit": "Limite MEI 2024",
+    "meiLimit": "Limite MEI",
     "remaining": "Restam",
     "bestMonth": "Melhor mês",
     "progress": "Progresso do limite anual",
