@@ -9,6 +9,7 @@ import "./styles/Mei.css";
 import Vendas from "./Vendas";
 import useVendas from "./hooks/useVendas.js";
 import { calcularMetricasVendas } from "./utils/metricasVendas.js";
+import {fetchEstoqueWithAuth} from "./services/api.js"
 
 Chart.register(
   ArcElement, DoughnutController, LineController, LineElement,
@@ -26,8 +27,9 @@ const PIE_DATA = [
   { label: "Produtos", value: 27, color: "--color-success" },
   { label: "Outros", value: 15, color: "--color-warning" }
 ];
+/*
 const MONTHS    = ["Jan","Fev","Mar","Abr","Mai","Jun","Jul","Ago"];
-const REVENUE   = [4200,5100,6300,7200,6100,5900,6200,6800];
+const REVENUE   = [4200,5100,6300,7200,6100,5900,6200,6800];*/
 
 const ALERTAS = [
   {tipo:"danger",emoji:"🚨",titulo:"DAS vence em 6 dias!",              desc:"O DAS de maio/2025 no valor de R$ 72,60 vence em 20/05/2025. Não pague com atraso para evitar multa.",data:"Hoje"},
@@ -336,72 +338,303 @@ PAGES
 DASHBOARD
 ══════════════ 
 */
-function Dashboard({navigate}){
+
+function Dashboard({ navigate }) {
   const user = getUserFromToken();
   const nome = user?.nome || "Usuário";
-  const sRef=useRef(null),cRef=useRef(null),bRef=useRef(null);
-  const sVis=useVis(sRef),cVis=useVis(cRef),bVis=useVis(bRef);
-  const [barAnim,setBarAnim]=useState(false);
-  const { t } = useTranslation();
-  useEffect(()=>{const t=setTimeout(()=>setBarAnim(true),500);return()=>clearTimeout(t);},[]);
-  const STATS=[
-    {icon:"💰",cls:"si-0",key:"dash-stats.revenue", value:"R$ 6.800",sub:<><span className="tok">▲ 6,5%</span> vs. mês anterior</>,  bar:"84%",barColor:"var(--color-warning)"},
-    {icon:"📦",cls:"si-1",key:"dash-stats.activeOrders",  value:"142",      sub:<><span className="tok">✓ 97%</span> processados</>,         bar:"97%",barColor:"var(--color-success)"},
-    {icon:"🔴",cls:"si-2",key:"dash-stats.default",   value:"R$ 1.240", sub:<><span className="twarn">▲ 2%</span> vs. mês anterior</>,  bar:"18%",barColor:"var(--color-danger)"},
-    {icon:"⭐",cls:"si-3",key:"dash-stats.Score",        value:"87",       sub:<><span className="tok">▲ 3pts</span> — Excelente</>,       bar:"87%",barColor: "var(--color-accent)"},
+  const sRef = useRef(null);
+  const cRef = useRef(null);
+  const bRef = useRef(null);
+
+  const sVis = useVis(sRef);
+  const cVis = useVis(cRef);
+  const bVis = useVis(bRef);
+
+  const [barAnim, setBarAnim] = useState(false);
+  const [produtos, setProdutos] = useState([]);
+  const [erroEstoque, setErroEstoque] = useState(false);
+
+  const { t, i18n } = useTranslation();
+  const { vendas, carregando, erro } = useVendas();
+
+  const metricas = useMemo(
+    () => calcularMetricasVendas(vendas),
+    [vendas]
+  );
+
+  const idioma =
+    i18n.language === "en-US" ? "en-US" : "pt-BR";
+
+  const formatarMoeda = (valor) =>
+    new Intl.NumberFormat(idioma, {
+      style: "currency",
+      currency: "BRL",
+    }).format(valor || 0);
+  // Carrega os produtos para calcular os alertas de estoque.
+  useEffect(() => {
+    let ativo = true;
+
+    async function carregarProdutos() {
+      try {
+        const resposta = await fetchEstoqueWithAuth("/api/Produtos");
+
+        if (!resposta.ok) {
+          throw new Error("Falha ao carregar estoque");
+        }
+
+        const dados = await resposta.json();
+
+        if (!Array.isArray(dados)) {
+          throw new Error("Resposta inválida da API");
+        }
+
+        const normalizados = dados.map((p) => ({
+          id: p.Id ?? p.id,
+          nome: p.Nome ?? p.nome,
+          quantidade: Number(
+            p.Quantidade ?? p.quantidade ?? 0
+          ),
+        }));
+
+        if (ativo) {
+          setProdutos(normalizados);
+          setErroEstoque(false);
+        }
+      } catch {
+        if (ativo) {
+          setErroEstoque(true);
+        }
+      }
+    }
+
+    carregarProdutos();
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setBarAnim(true), 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Mesma regra de estoque usada em Estoque.jsx.
+  const estoqueZerado = produtos.filter(
+    (p) => p.quantidade === 0
+  ).length;
+
+  const estoqueBaixo = produtos.filter(
+    (p) => p.quantidade > 0 && p.quantidade <= 5
+  ).length;
+
+  const produtosAtencao = estoqueZerado + estoqueBaixo;
+
+  const ticketMedioMensal =
+    metricas.quantidadeVendasMensal > 0
+      ? metricas.faturamentoMensal /
+        metricas.quantidadeVendasMensal
+      : 0;
+
+  // Percentuais usados nas barras visuais.
+  const percentualAnual = Math.min(
+    100,
+    (metricas.faturamentoAnual / 81000) * 100
+  );
+
+  const percentualVendas =
+    metricas.quantidadeVendas > 0
+      ? Math.min(
+          100,
+          (metricas.quantidadeVendasMensal /
+            metricas.quantidadeVendas) *
+            100
+        )
+      : 0;
+
+  const percentualEstoque =
+    produtos.length > 0
+      ? (produtosAtencao / produtos.length) * 100
+      : 0;
+
+  const percentualTicket =
+    metricas.faturamentoMensal > 0
+      ? (ticketMedioMensal /
+          metricas.faturamentoMensal) *
+        100
+      : 0;
+
+  const STATS = [
+    {icon: "💰", cls: "si-0", key: "dash-stats.monthRevenue",
+      value: formatarMoeda(metricas.faturamentoMensal),
+      sub: t("dash-stats.currentMonth"),
+      bar: `${percentualAnual}%`, barColor: "var(--color-warning)",},
+
+    {icon: "🛒", cls: "si-1", key: "dash-stats.monthSales",
+      value: metricas.quantidadeVendasMensal,
+      sub: t("dash-stats.salesRegistered"),
+      bar: `${percentualVendas}%`, barColor: "var(--color-success)",},
+
+    {icon: "📦", cls: "si-2", key: "dash-stats.stockAttention",
+      value: erroEstoque ? "—" : produtosAtencao,
+      sub: erroEstoque ? t("dash-stats.stockUnavailable") : t("dash-stats.stockBreakdown", 
+        {
+          low: estoqueBaixo,
+          out: estoqueZerado,
+        }),
+      bar: `${percentualEstoque}%`, barColor: "var(--color-danger)",},
+      
+    {icon: "🧾", cls: "si-3", key: "dash-stats.monthTicket",
+      value: formatarMoeda(ticketMedioMensal),
+      sub: t("dash-stats.averagePerSale"),
+      bar: `${percentualTicket}%`, barColor: "var(--color-accent)",},
   ];
-  return(<>
-    <div className="page-eyebrow">{t("dashboard.overview")}</div>
-    <h1 className="page-h1">{t("dashboard.greetings")} <em>{nome}</em></h1>
-    {/*<div className="alert-banner">
-      <span>⚠️</span>
-      <div><strong>{t("dashboard.attention")}: </strong>
-        2 faturas vencem nos próximos 3 dias. Total: <strong>R$ 4.820</strong></div>
-      <button className="alert-action" onClick={()=>navigate("alertas")}>{t("dashboard.viewAlerts")}</button>
-    </div>*/}
-    <div className="stats-grid" ref={sRef}>
-      {STATS.map((s,i)=>(
-        <div key={i} className={`stat-card${sVis?" vis":""}`}>
-          <div className={`stat-icon ${s.cls}`}>{s.icon}</div>
-          <div className="stat-label">{t(s.key)}</div>
-          <div className="stat-value">{s.value}</div>
-          <div className="bar-wrap"><div className="bar-fill" style={{width:barAnim?s.bar:"0%",background:s.barColor}}/></div>
-          <div className="stat-sub">{s.sub}</div> 
-        </div>
-      ))}
-    </div>
-    <div className={`chart-panel${cVis?" vis":""}`} ref={cRef}>
-      <div className="panel-header">
-        <div className="panel-title">{t("dashboard.revenueCategory")}</div>
-        <div className="panel-badge">▲ 6,5% {t("dashboard.thisMonth")}</div>
+
+  return (
+    <>
+      <div className="page-eyebrow">
+        {t("dashboard.overview")}
       </div>
-      <div className="charts-inner">
-        <div className="line-wrap"><LineChart/></div>
-        <DonutChart/>
-      </div>
-    </div>
-    <div className="bottom-grid" ref={bRef}>
-      <div className={`info-card${bVis?" vis":""}`}>
-        <div className="card-hdr"><div className="card-title">{t("dashboard.alertsCard")}</div><button className="card-link">{t("dashboard.viewAll")} →</button></div>
-        <div className="mini-alert-list">
-          {ALERTAS.slice(0,3).map((a,i)=>(
-            <div key={i} className={`mini-alert ${a.tipo==="danger"||a.tipo==="warn"?"warn":"ok"}${bVis?" vis":""}`}>
-              <span>{a.emoji}</span>
-              <div><div style={{fontWeight:500,fontSize:"12.5px"}}>{a.titulo}</div><div style={{fontSize:"11.5px",opacity:.7,marginTop:2}}>{a.data}</div></div>
+
+      <h1 className="page-h1">
+        {t("dashboard.greetings")} <em>{nome}</em>
+      </h1>
+
+      {(carregando || erro) && (
+        <p className="fat-card-sub" role={erro ? "alert" : undefined}>
+          {carregando
+            ? t("dash-stats.loadingSales")
+            : `${t("dash-stats.salesUnavailable")} ${erro}`}
+        </p>
+      )}
+
+      <div className="stats-grid" ref={sRef}>
+        {STATS.map((s, i) => (
+          <div
+            key={s.key}
+            className={`stat-card${sVis ? " vis" : ""}`}
+          >
+            <div className={`stat-icon ${s.cls}`}>
+              {s.icon}
             </div>
-          ))}
+
+            <div className="stat-label">
+              {t(s.key)}
+            </div>
+
+            <div className="stat-value">
+              {s.value}
+            </div>
+
+            <div className="bar-wrap">
+              <div
+                className="bar-fill"
+                style={{
+                  width: barAnim ? s.bar : "0%",
+                  background: s.barColor,
+                }}
+              />
+            </div>
+
+            <div className="stat-sub">
+              {s.sub}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div
+        className={`chart-panel${cVis ? " vis" : ""}`}
+        ref={cRef}
+      >
+        <div className="panel-header">
+          <div className="panel-title">
+            {t("dashboard.revenueCategory")}
+          </div>
+
+          <div className="panel-badge">
+            {t("dashboard.thisMonth")}
+          </div>
+        </div>
+
+        <div className="charts-inner">
+          <div className="line-wrap">
+            <LineChart
+              meses={metricas.meses}
+              idioma={idioma}
+            />
+          </div>
+
+          <DonutChart />
         </div>
       </div>
-      <div className={`info-card${bVis?" vis":""}`}>
-        <div className="card-hdr"><div className="card-title">{t("dashboard.chatDisabled")}</div></div>
-        <div className="mini-chat-list"></div>
+
+      <div className="bottom-grid" ref={bRef}>
+        <div className={`info-card${bVis ? " vis" : ""}`}>
+          <div className="card-hdr">
+            <div className="card-title">
+              {t("dashboard.alertsCard")}
+            </div>
+
+            <button className="card-link">
+              {t("dashboard.viewAll")} →
+            </button>
+          </div>
+
+          <div className="mini-alert-list">
+            {ALERTAS.slice(0, 3).map((a, i) => (
+              <div
+                key={i}
+                className={`mini-alert ${
+                  a.tipo === "danger" || a.tipo === "warn"
+                    ? "warn"
+                    : "ok"
+                }${bVis ? " vis" : ""}`}
+              >
+                <span>{a.emoji}</span>
+
+                <div>
+                  <div style={{ fontWeight: 500, fontSize: "12.5px" }}>
+                    {a.titulo}
+                  </div>
+
+                  <div
+                    style={{
+                      fontSize: "11.5px",
+                      opacity: 0.7,
+                      marginTop: 2,
+                    }}
+                  >
+                    {a.data}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={`info-card${bVis ? " vis" : ""}`}>
+          <div className="card-hdr">
+            <div className="card-title">
+              {t("dashboard.chatDisabled")}
+            </div>
+          </div>
+
+          <div className="mini-chat-list" />
+        </div>
+
+        <div className={`info-card${bVis ? " vis" : ""}`}>
+          <div className="card-hdr">
+            <div className="card-title">
+              {t("dashboard.aiDisabled")}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className={`info-card${bVis?" vis":""}`}>
-        <div className="card-hdr"><div className="card-title">{t("dashboard.aiDisabled")}</div></div>
-      </div>
-    </div>
-  </>);
+    </>
+  );
 }
+
 /* 
 ══════════════ 
 APRENDIZADO 
