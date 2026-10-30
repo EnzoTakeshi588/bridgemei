@@ -116,15 +116,15 @@ export default function Login({ onLogin }) {
   };
 
   const leftContent = modo === "login" ? {
-    tag: "Bem-vindo de volta",
-    title: <>Acesse sua <em>conta</em> agora</>,
-    sub: "Continue de onde parou. Seus dados, declarações e faturamento estão todos aqui.",
-    features: ["Segurança com criptografia de ponta", "Acesso em qualquer dispositivo", "Suporte 24 horas por dia"],
+    tag: t("login.leftPageLogin.welcome"),
+    title: <>{t("login.leftPageLogin.title-one")}<em>{t("login.leftPageLogin.title-two")}</em>{t("login.leftPageLogin.title-three")}</>,
+    sub: t("login.leftPageLogin.subtitle"),
+    features: [t("login.leftPageLogin.features.one"), t("login.leftPageLogin.features.two"), ],
   } : {
-    tag: "Comece agora, é grátis",
-    title: <>Crie sua <em>conta</em> MEI</>,
-    sub: "Gerencie seu CNPJ, DAS e faturamento de forma simples e inteligente.",
-    features: ["Cadastro rápido em menos de 1 minuto", "Sem burocracia, sem custo", "Alertas automáticos de vencimento"],
+    tag: t("login.leftPageRegister.welcome"),
+    title: <>{t("login.leftPageRegister.title-one")}<em>{t("login.leftPageRegister.title-two")}</em>{t("login.leftPageRegister.title-three")}</>,
+    sub: t("login.leftPageRegister.subtitle"),
+    features: [t("login.leftPageRegister.features.one"), t("login.leftPageRegister.features.two"), ]
   };
   return (
     <>
@@ -164,13 +164,13 @@ export default function Login({ onLogin }) {
             </div>
 
             <div className="card-header">
-              <h2 className="card-title">{modo === "login" ? "Bem-vindo de volta 👋" : "Crie sua conta 🚀"}</h2>
-              <p className="card-subtitle">{modo === "login" ? "Use seu e-mail e senha para acessar" : "Preencha os dados abaixo para começar"}</p>
+              <h2 className="card-title">{modo === "login" ? t("login.formLogin") : t("login.formRegister")}</h2>
+              <p className="card-subtitle">{modo === "login" ? t("login.formLoginSub") : t("login.formRegisterSub")}</p>
             </div>
 
             {success && (
               <div className="success-msg">
-                ✓ {modo === "login" ? "Login realizado com sucesso!" : "Conta criada com sucesso!"}
+                ✓ {modo === "login" ? t("login.LoginSuccess") : t("login.RegisterSuccess")}
               </div>
             )}
 
@@ -199,7 +199,7 @@ export default function Login({ onLogin }) {
                   <div className="form-options">
                     <label className="remember-label">
                       <input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)} />
-                      Lembrar de mim
+                      {t("login.remember")}
                     </label>
                     <button className="forgot-link">{t("login.forgotPassword")}</button>
                   </div>
@@ -239,7 +239,7 @@ export default function Login({ onLogin }) {
                           ))}
                         </div>
                         <div className="strength-label" style={{ color: strengthColors[strength] }}>
-                          Força da senha: {strengthLabels[strength]}
+                          {t("login.PasswordStrength")} {strengthLabels[strength]}
                         </div>
                       </>
                     )}
@@ -252,10 +252,10 @@ export default function Login({ onLogin }) {
               {loading ? (
                 <>
                   <span className="btn-spinner" />
-                  {modo === "login" ? "Entrando..." : "Criando conta..."}
+                  {modo === "login" ? t("login.LoginButtonLoading") : t("login.RegisterButtonLoading")}
                 </>
               ) : (
-                modo === "login" ? "Entrar" : "Criar conta grátis"
+                modo === "login" ? t("login.LoginButton") : t('login.RegisterButton')
               )}
             </button>
 
@@ -264,9 +264,9 @@ export default function Login({ onLogin }) {
             </div>
 
             <p className="switch-row">
-              {modo === "login" ? "Não tem conta?" : "Já tem conta?"}
+              {modo === "login" ? t("login.formLoginTail.1") : t("login.formRegisterTail.1")}
               <button className="switch-link" onClick={() => trocarModo(modo === "login" ? "cadastro" : "login")}>
-                {modo === "login" ? "Criar conta grátis" : "Entrar"}
+                {modo === "login" ? t("login.formLoginTail.2") : t("login.formRegisterTail.2")}
               </button>
             </p>
 

@@ -839,6 +839,19 @@
     margin-bottom: 22px;
   }
 
+  .est-delete-message {
+    font-size: 14px;
+  }
+
+  .est-bsv-delete {
+    background: var(--color-danger);
+  }
+
+  .est-bsv-delete:hover {
+    background: var(--color-danger);
+    filter: brightness(.9);
+  }
+
   .est-fg {
     margin-bottom: 16px;
   }
