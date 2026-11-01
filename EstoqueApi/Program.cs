@@ -62,7 +62,7 @@ builder.Services.AddSwaggerGen(options =>
 
 // database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 0)))
 ); 
 
 builder.Services.AddScoped<EstoqueService>();
