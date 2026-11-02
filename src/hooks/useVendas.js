@@ -41,7 +41,8 @@ export default function useVendas() {
           venda.ValorTotal ?? venda.valorTotal ?? 0
         ),
         itens: (venda.Itens ?? venda.itens ?? []).map((item) => ({
-          produtoId: item.ProdutoId ?? item.produtoId,
+          produtoId: item.ProdutoId ?? item.produtoId ?? item.ProdutoIdHistorico ?? item.produtoIdHistorico,
+          produtoIdHistorico: item.ProdutoIdHistorico ?? item.produtoIdHistorico ?? null,
           nomeProduto: item.NomeProduto ?? item.nomeProduto,
           quantidade: Number(
             item.Quantidade ?? item.quantidade ?? 0
