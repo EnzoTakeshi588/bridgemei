@@ -204,6 +204,7 @@ function ModalExcluir({ onClose, onConfirm, loading }) {
 export default function Estoque({ onNavegar }) {
   const { t } = useTranslation();
   const [produtos,  setProdutos]  = useState([]);
+  const [historico, setHistorico] = useState([]);
   const [loadingPage, setLP]      = useState(true);
   const [loadingAct,  setLA]      = useState(false);
   const [erro,      setErro]      = useState("");
@@ -264,14 +265,31 @@ export default function Estoque({ onNavegar }) {
     }
   }, [apiFetch]);
 
+  const carregarHistorico = useCallback(async () => {
+    try {
+      const data = await apiFetch("/api/Produtos/movimentacoes");
+      setHistorico((data || []).map((m) => ({
+        id: m.Id ?? m.id,
+        produtoId: m.ProdutoId ?? m.produtoId ?? m.ProdutoIdHistorico ?? m.produtoIdHistorico,
+        nomeProduto: m.NomeProduto ?? m.nomeProduto ?? "Produto removido",
+        tipo: m.Tipo ?? m.tipo,
+        quantidade: Number(m.Quantidade ?? m.quantidade ?? 0),
+        data: m.Data ?? m.data,
+      })));
+    } catch (e) {
+      setErro(t("stock.history.loadError", { error: e.message }));
+    }
+  }, [apiFetch, t]);
+
   useEffect(() => {
   let ativo = true;
   const load = async () => {
     if (ativo) await carregarProdutos();
   };
   load();
+  carregarHistorico();
   return () => { ativo = false; };
-}, [carregarProdutos]);
+}, [carregarProdutos, carregarHistorico]);
   useEffect(() => { const t = setTimeout(() => setAnim(true), 350); return () => clearTimeout(t); }, []);
 
   // ── Toast ────────────────────────────────────────────────────────────────
@@ -314,7 +332,7 @@ export default function Estoque({ onNavegar }) {
       await apiFetch(`/api/Produtos/${tipo}?id=${produto.id}&quantidade=${quantidade}`, {
         method: "POST",
       });
-      await carregarProdutos();
+      await Promise.all([carregarProdutos(), carregarHistorico()]);
       setModal(null);
       const emoji = tipo === "entrada" ? "▲" : "▼";
       showToast(t("stock.messages.movementSuccess", {
@@ -335,7 +353,7 @@ export default function Estoque({ onNavegar }) {
     try {
       // DELETE /api/produtos/{id}  ← precisa adicionar esse endpoint na API
       await apiFetch(`/api/Produtos/${p.id}`, { method: "DELETE" });
-      await carregarProdutos();
+      await Promise.all([carregarProdutos(), carregarHistorico()]);
       setModal(null);
       showToast(t("stock.messages.removeSuccess"));
     } catch (e) {
@@ -510,7 +528,34 @@ export default function Estoque({ onNavegar }) {
                 </table>
               )}
               <section className="est-history">
-                {/**/}
+                <div className="est-ph">
+                  <div className="est-ptitle">{t("stock.history.title")}</div>
+                  <div className="est-pcnt">{historico.length} {t("stock.history.records")}</div>
+                </div>
+                {historico.length === 0 ? (
+                  <p className="est-empty-history">{t("stock.history.empty")}</p>
+                ) : (
+                  <div className="est-history-scroll">
+                    <table className="est-table est-history-table">
+                      <thead><tr>
+                        <th>{t("stock.history.date")}</th>
+                        <th>{t("stock.history.product")}</th>
+                        <th>{t("stock.history.type")}</th>
+                        <th>{t("stock.history.quantity")}</th>
+                        <th>{t("stock.history.productId")}</th>
+                      </tr></thead>
+                      <tbody>{historico.map((m) => (
+                        <tr key={m.id}>
+                          <td>{m.data ? new Date(m.data).toLocaleString("pt-BR") : "—"}</td>
+                          <td>{m.nomeProduto}</td>
+                          <td><span className="est-history-type">{t("stock.history.types." + String(m.tipo).toLowerCase(), { defaultValue: m.tipo })}</span></td>
+                          <td>{m.quantidade}</td>
+                          <td>{m.produtoId ?? "—"}</td>
+                        </tr>
+                      ))}</tbody>
+                    </table>
+                  </div>
+                )}
               </section>
             </div>
           </div>
