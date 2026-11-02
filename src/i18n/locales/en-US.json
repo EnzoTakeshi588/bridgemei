@@ -75,7 +75,11 @@
     "alertsCard": "Alerts",
     "viewAll": "View all",
     "chatDisabled": "CHAT DISABLED",
-    "aiDisabled": "AI DISABLED"
+    "aiDisabled": "AI DISABLED",
+    "bestSellingProduct": "Best-selling product",
+    "otherProducts": "Other products",
+    "noProductSales": "No products sold",
+    "ofMonth": "of the month"
   },
   "dash-stats": {
     "monthRevenue": "Monthly revenue",
