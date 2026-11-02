@@ -361,14 +361,14 @@ function Dashboard({ navigate }) {
   const percentualProdutoLider = totalUnidadesVendidas > 0
     ? (produtoMaisVendido.value / totalUnidadesVendidas) * 100
     : 0;
-  const dadosDonut = produtoMaisVendido ? [
+  const dadosDonut = useMemo(() => produtoMaisVendido ? [
     { label: produtoMaisVendido.label, value: produtoMaisVendido.value, color: "--color-accent" },
     ...(totalUnidadesVendidas > produtoMaisVendido.value ? [{
       label: "Outros produtos",
       value: totalUnidadesVendidas - produtoMaisVendido.value,
       color: "--color-success",
     }] : []),
-  ] : [];
+  ] : [], [produtoMaisVendido, totalUnidadesVendidas]);
 
   const idioma =
     i18n.language === "en-US" ? "en-US" : "pt-BR";
