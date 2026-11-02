@@ -281,6 +281,7 @@ function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
 
   return (
     <div>
+      <div className="pie-heading">{t("dashboard.bestSellingProduct")}</div>
       <div className="donut-canvas-wrap">
         <canvas ref={r} />
         <div className="donut-center">
@@ -365,7 +366,7 @@ function Dashboard({ navigate }) {
   const dadosDonut = useMemo(() => produtoMaisVendido ? [
     { label: produtoMaisVendido.label, value: produtoMaisVendido.value, color: "--color-accent" },
     ...(totalUnidadesVendidas > produtoMaisVendido.value ? [{
-      label: "Outros produtos",
+      label: t("dashboard.otherProducts"),
       value: totalUnidadesVendidas - produtoMaisVendido.value,
       color: "--color-success",
     }] : []),
