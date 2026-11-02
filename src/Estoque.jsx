@@ -201,7 +201,7 @@ function ModalExcluir({ onClose, onConfirm, loading }) {
 }
 
 // ── Componente principal ───────────────────────────────────────────────────
-export default function Estoque({ onNavegar }) {
+export default function Estoque({ onNavegar, embedded = false }) {
   const { t } = useTranslation();
   const [produtos,  setProdutos]  = useState([]);
   const [historico, setHistorico] = useState([]);
@@ -406,7 +406,7 @@ export default function Estoque({ onNavegar }) {
   // ── Render ───────────────────────────────────────────────────────────────
   return (
     <>
-      <div className="est-shell">
+      <div className={`est-shell${embedded ? " est-embedded" : ""}`}>
         <div className="est-pw">
 
           {onNavegar && (
