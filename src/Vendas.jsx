@@ -13,33 +13,7 @@ import "./styles/Vendas.css";
  *
  * Se não forem fornecidos, o componente usa dados demonstrativos locais.
  */
-/*const produtosDemo = [
-  { id: 1, nome: "Caderno", quantidade: 24, preco: 18.9 },
-  { id: 2, nome: "Caneta azul", quantidade: 80, preco: 2.5 },
-  { id: 3, nome: "Mochila", quantidade: 7, preco: 89.9 },
-];
 
-const vendasDemo = [
-  {
-    id: 1042,
-    data: "2026-10-21T10:35:00",
-    valorTotal: 125,
-    itens: [
-      { produtoId: 1, nomeProduto: "Caderno", quantidade: 2, precoUnitario: 18.9, subtotal: 37.8 },
-      { produtoId: 3, nomeProduto: "Mochila", quantidade: 1, precoUnitario: 87.2, subtotal: 87.2 },
-    ],
-  },
-  {
-    id: 1041,
-    data: "2026-10-20T16:20:00",
-    valorTotal: 68,
-    itens: [
-      { produtoId: 2, nomeProduto: "Caneta azul", quantidade: 8, precoUnitario: 2.5, subtotal: 20 },
-      { produtoId: 1, nomeProduto: "Caderno", quantidade: 2, precoUnitario: 24, subtotal: 48 },
-    ],
-  },
-];
-*/
 const money = (value, locale) =>
   new Intl.NumberFormat(locale || "pt-BR", {
     style: "currency",
@@ -48,11 +22,15 @@ const money = (value, locale) =>
 
 const dateTime = (value, locale) => {
   if (!value) return "—";
+
   const date = new Date(value);
+  
   if (Number.isNaN(date.getTime())) return "—";
+  
   return new Intl.DateTimeFormat(locale || "pt-BR", {
     dateStyle: "short",
     timeStyle: "short",
+    timeZone: "America/Sao_Paulo",
   }).format(date);
 };
 
