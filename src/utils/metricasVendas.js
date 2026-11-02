@@ -1,8 +1,18 @@
+const obterAnoMesBrasil = (data) => {
+  const partes = new Intl.DateTimeFormat("en-US", {
+    timeZone: "America/Sao_Paulo",
+    year: "numeric",
+    month: "numeric",
+  }).formatToParts(new Date(data));
+
+  return {
+    ano: Number(partes.find((p) => p.type === "year").value),
+    mes: Number(partes.find((p) => p.type === "month").value) - 1,
+  };
+};
 
 export function calcularMetricasVendas(vendas) {
-  const agora = new Date();
-  const anoAtual = agora.getFullYear();
-  const mesAtual = agora.getMonth();
+  const { ano: anoAtual, mes: mesAtual } = obterAnoMesBrasil(new Date());
 
   const vendasValidas = vendas.filter((venda) => {
     const data = new Date(venda.data);
@@ -14,11 +24,11 @@ export function calcularMetricasVendas(vendas) {
   });
 
   const vendasDoAno = vendasValidas.filter(
-    (venda) => new Date(venda.data).getFullYear() === anoAtual
+    (venda) => obterAnoMesBrasil(venda.data).ano === anoAtual
   );
 
   const vendasDoMes = vendasDoAno.filter(
-    (venda) => new Date(venda.data).getMonth() === mesAtual
+    (venda) => obterAnoMesBrasil(venda.data).mes === mesAtual
   );
 
   const somarFaturamento = (lista) =>
@@ -35,7 +45,7 @@ export function calcularMetricasVendas(vendas) {
 
   const meses = Array.from({ length: 12 }, (_, mes) => {
     const vendasDoMesAtual = vendasDoAno.filter(
-      (venda) => new Date(venda.data).getMonth() === mes
+      (venda) => obterAnoMesBrasil(venda.data).mes === mes
     );
 
     return {

@@ -1,5 +1,6 @@
 using EstoqueApi.Data;
 using EstoqueApi.Models;
+using EstoqueApi.Utils;
 
 namespace EstoqueApi.Services
 {
@@ -56,7 +57,7 @@ namespace EstoqueApi.Services
                 UsuarioId = usuarioId,
                 Tipo = "Entrada",
                 Quantidade = produto.Quantidade,
-                Data = DateTime.Now
+                Data = DataHoraBrasil.Agora()
             });
 
             _context.SaveChanges();
@@ -86,7 +87,7 @@ namespace EstoqueApi.Services
                 UsuarioId = usuarioId,
                 Tipo = "Saida",
                 Quantidade = quantidade,
-                Data = DateTime.UtcNow
+                Data = DataHoraBrasil.Agora()
             });
 
             _context.SaveChanges();
@@ -108,7 +109,7 @@ namespace EstoqueApi.Services
                 UsuarioId = usuarioId,
                 Tipo = "Exclusao",
                 Quantidade = produto.Quantidade,
-                Data = DateTime.UtcNow
+                Data = DataHoraBrasil.Agora()
             });
 
             _context.Produtos.Remove(produto);

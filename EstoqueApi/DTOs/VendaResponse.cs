@@ -3,7 +3,7 @@ namespace EstoqueApi.DTOs;
 public class VendaResponse
 {
     public int Id {get; set;}
-    public DateTime Data {get; set;}
+    public DateTimeOffset Data {get; set;}
     public decimal ValorTotal {get; set;}
 
     public List<ItemVendaResponse> Itens {get; set;} = new();
