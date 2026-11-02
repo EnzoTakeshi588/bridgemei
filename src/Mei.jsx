@@ -239,7 +239,9 @@ function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
   const { t } = useTranslation();
   const r = useRef(null);
   const inst = useRef(null);
+  const [itemEmFoco, setItemEmFoco] = useState(null);
   const chartData = dados.length ? dados : [{ label: t("dashboard.noProductSales"), value: 1, color: "--color-border" }];
+  const itemSelecionado = itemEmFoco === null ? null : chartData[itemEmFoco];
 
   useEffect(() => {
     if (!r.current) return;
@@ -267,6 +269,7 @@ function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
         maintainAspectRatio: false,
         cutout: "70%",
         animation: { animateRotate: true, duration: 1200, easing: "easeInOutQuart" },
+        onHover: (_, elements) => setItemEmFoco(elements.length ? elements[0].index : null),
         plugins: {
           legend: { display: false },
           tooltip: {
@@ -285,24 +288,31 @@ function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
       <div className="pie-heading">{t("dashboard.bestSellingProduct")}</div>
       <div className="donut-canvas-wrap">
         <canvas ref={r} />
-        <div className="donut-center">
-          <div className="donut-center-val">{percentual.toFixed(1)}%</div>
-          <div className="donut-center-sub">{t("dashboard.ofMonth")}</div>
+        <div className="donut-center" aria-live="polite">
+          {itemSelecionado ? (
+            <>
+              <div className="donut-center-focus">{itemSelecionado.label}</div>
+              <div className="donut-center-val">{itemSelecionado.value.toLocaleString("pt-BR")}</div>
+              <div className="donut-center-sub">{t("dashboard.unitsSold")}</div>
+            </>
+          ) : (
+            <>
+              <div className="donut-center-val">{percentual.toFixed(1)}%</div>
+              <div className="donut-center-sub">{t("dashboard.ofMonth")}</div>
+            </>
+          )}
         </div>
       </div>
       <div className="pie-legend">
-        <div className="pie-row">
-          <span className="pie-dot" style={{ background: getThemeColor("--color-accent") }} />
-          <span>{produtoLider || t("dashboard.noProductSales")}</span>
-          <span className="pie-val">{totalUnidades ? percentual.toFixed(1) + "%" : "0%"}</span>
-        </div>
-        {dados.length > 1 && (
-          <div className="pie-row">
-            <span className="pie-dot" style={{ background: getThemeColor("--color-success") }} />
-            <span>{t("dashboard.otherProducts")}</span>
-            <span className="pie-val">{(100 - percentual).toFixed(1)}%</span>
+        {dados.map((item) => (
+          <div className="pie-row" key={item.label}>
+            <span className="pie-dot" style={{ background: getThemeColor(item.color) }} />
+            <span>{item.label}</span>
+            <span className="pie-val">
+              {totalUnidades ? ((item.value / totalUnidades) * 100).toFixed(1) + "%" : "0%"}
+            </span>
           </div>
-        )}
+        ))}
       </div>
     </div>
   );
@@ -364,14 +374,23 @@ function Dashboard({ navigate }) {
   const percentualProdutoLider = totalUnidadesVendidas > 0
     ? (produtoMaisVendido.value / totalUnidadesVendidas) * 100
     : 0;
-  const dadosDonut = useMemo(() => produtoMaisVendido ? [
-    { label: produtoMaisVendido.label, value: produtoMaisVendido.value, color: "--color-accent" },
-    ...(totalUnidadesVendidas > produtoMaisVendido.value ? [{
-      label: t("dashboard.otherProducts"),
-      value: totalUnidadesVendidas - produtoMaisVendido.value,
-      color: "--color-success",
-    }] : []),
-  ] : [], [produtoMaisVendido, totalUnidadesVendidas, t]);
+  const dadosDonut = useMemo(() => {
+    if (!rankingProdutos.length) return [];
+    const topTres = rankingProdutos.slice(0, 3).map((produto, index) => ({
+      ...produto,
+      color: ["--color-accent", "--color-success", "--color-warning"][index],
+    }));
+    const unidadesTopTres = topTres.reduce((total, produto) => total + produto.value, 0);
+    const restantes = totalUnidadesVendidas - unidadesTopTres;
+    return [
+      ...topTres,
+      ...(restantes > 0 ? [{
+        label: t("dashboard.otherProducts"),
+        value: restantes,
+        color: "--color-text-muted",
+      }] : []),
+    ];
+  }, [rankingProdutos, totalUnidadesVendidas, t]);
 
   const idioma =
     i18n.language === "en-US" ? "en-US" : "pt-BR";
