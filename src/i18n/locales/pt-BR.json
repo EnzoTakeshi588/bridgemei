@@ -75,7 +75,11 @@
     "alertsCard": "Alertas",
     "viewAll": "Ver todos",
     "chatDisabled": "CHAT DESATIVADO",
-    "aiDisabled": "IA DESATIVADA"
+    "aiDisabled": "IA DESATIVADA",
+    "bestSellingProduct": "Produto mais vendido",
+    "otherProducts": "Outros produtos",
+    "noProductSales": "Nenhum produto vendido",
+    "ofMonth": "do mês"
   },
   "dash-stats": {
     "monthRevenue": "Faturamento do mês",
