@@ -1085,4 +1085,46 @@
 .est-history-type { display: inline-flex; padding: 4px 9px; border-radius: 20px; background: var(--color-accent-bg); color: var(--color-accent); font-size: 11px; font-weight: 600; }
 .est-empty-history { padding: 22px 8px; color: var(--color-text-muted); font-size: 13px; }
 
-.est-shell.est-embedded { min-height: auto; }
+.est-shell.est-embedded {
+  min-height: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.est-shell.est-embedded::before {
+  display: none;
+}
+
+.est-embedded .est-pw {
+  max-width: none;
+  padding: 0;
+  animation: none;
+}
+
+.est-embedded .est-h1 {
+  font-size: 30px;
+}
+
+.est-history-panel {
+  margin-top: 20px;
+}
+
+.est-history-panel .est-tp-inner {
+  overflow: hidden;
+}
+
+.est-history-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.est-history-table {
+  min-width: 680px;
+}
+
+.est-empty-history {
+  padding: 28px 20px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  text-align: center;
+}
