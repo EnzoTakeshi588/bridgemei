@@ -527,6 +527,7 @@ export default function Estoque({ onNavegar, embedded = false }) {
                   </tbody>
                 </table>
               )}
+            </div>
           </div>
           <section className="est-tp est-history-panel">
             <div className="est-tp-inner">
