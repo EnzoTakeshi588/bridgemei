@@ -686,6 +686,17 @@
     text-transform: uppercase;
     margin-top: 3px;
   }
+  .donut-center-focus {
+    max-width: 112px;
+    margin: 0 auto 3px;
+    overflow: hidden;
+    color: var(--color-text-secondary);
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .pie-legend {
     display: flex;
     flex-direction: column;
