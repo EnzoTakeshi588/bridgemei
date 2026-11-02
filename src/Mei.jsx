@@ -235,9 +235,10 @@ function LineChart({meses, idioma}){
 }
 
 function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
+  const { t } = useTranslation();
   const r = useRef(null);
   const inst = useRef(null);
-  const chartData = dados.length ? dados : [{ label: "Sem vendas", value: 1, color: "--color-border" }];
+  const chartData = dados.length ? dados : [{ label: t("dashboard.noProductSales"), value: 1, color: "--color-border" }];
 
   useEffect(() => {
     if (!r.current) return;
@@ -276,7 +277,7 @@ function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
       },
     });
     return () => inst.current?.destroy();
-  }, [dados]);
+  }, [dados, t]);
 
   return (
     <div>
@@ -284,19 +285,19 @@ function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
         <canvas ref={r} />
         <div className="donut-center">
           <div className="donut-center-val">{percentual.toFixed(1)}%</div>
-          <div className="donut-center-sub">do mês</div>
+          <div className="donut-center-sub">{t("dashboard.ofMonth")}</div>
         </div>
       </div>
       <div className="pie-legend">
         <div className="pie-row">
           <span className="pie-dot" style={{ background: getThemeColor("--color-accent") }} />
-          <span>{produtoLider || "Nenhum produto vendido"}</span>
+          <span>{produtoLider || t("dashboard.noProductSales")}</span>
           <span className="pie-val">{totalUnidades ? percentual.toFixed(1) + "%" : "0%"}</span>
         </div>
         {dados.length > 1 && (
           <div className="pie-row">
             <span className="pie-dot" style={{ background: getThemeColor("--color-success") }} />
-            <span>Outros produtos</span>
+            <span>{t("dashboard.otherProducts")}</span>
             <span className="pie-val">{(100 - percentual).toFixed(1)}%</span>
           </div>
         )}
