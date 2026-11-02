@@ -124,6 +124,23 @@ namespace EstoqueApi.Services
             if (produto == null){
             throw new KeyNotFoundException("Produto não encontrado");}
 
+            // Preenche a referência histórica dos registros antigos antes de remover o produto.
+            var movimentacoesAntigas = _context.MovimentarEstoque
+                .Where(m => m.ProdutoId == produto.Id)
+                .ToList();
+            foreach (var movimentacao in movimentacoesAntigas)
+            {
+                movimentacao.ProdutoIdHistorico ??= produto.Id;
+            }
+
+            var itensVendaAntigos = _context.ItensVenda
+                .Where(i => i.ProdutoId == produto.Id)
+                .ToList();
+            foreach (var item in itensVendaAntigos)
+            {
+                item.ProdutoIdHistorico ??= produto.Id;
+            }
+
             _context.MovimentarEstoque.Add(new MovimentarEstoque
             {
                 ProdutoId = produto.Id,
