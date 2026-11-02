@@ -60,6 +60,7 @@ const NAV = [
   {id:"faturamento", icon:"📈",key:"nav.faturamento", badge:0},
   {id: "vendas", icon: "🛒", key: "nav.vendas", badge: 0},
   {id:"aprendizado", icon:"📚",key:"nav.aprendizado", badge:0},
+  {id:"estoque", icon:"📦",key:"nav.estoque", badge:0},
 ];
 
 /* 
@@ -233,17 +234,15 @@ function LineChart({meses, idioma}){
   return <canvas ref={r}/>;
 }
 
-function DonutChart(){
+function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
   const r = useRef(null);
   const inst = useRef(null);
+  const chartData = dados.length ? dados : [{ label: "Sem vendas", value: 1, color: "--color-border" }];
 
   useEffect(() => {
     if (!r.current) return;
-
     inst.current?.destroy();
-
-    const colors = PIE_DATA.map(d => getThemeColor(d.color));
-
+    const colors = chartData.map((d) => getThemeColor(d.color));
     const text = getThemeColor("--color-text");
     const textMuted = getThemeColor("--color-text-muted");
     const surface = getThemeColor("--color-bg-secondary");
@@ -251,84 +250,60 @@ function DonutChart(){
 
     inst.current = new Chart(r.current, {
       type: "doughnut",
-
       data: {
-        labels: PIE_DATA.map(d => d.label),
-        
+        labels: chartData.map((d) => d.label),
         datasets: [{
-          data: PIE_DATA.map(d => d.value),
-          backgroundColor: colors.map(color => color + "bb"),
+          data: chartData.map((d) => d.value),
+          backgroundColor: colors.map((color) => color + "bb"),
           borderColor: colors,
           borderWidth: 2,
-          hoverOffset: 12
-        }]
+          hoverOffset: 10,
+        }],
       },
-
       options: {
         responsive: true,
         maintainAspectRatio: false,
         cutout: "70%",
-        
-        animation: {
-          animateRotate: true,
-          animateScale: false,
-          duration: 1800,
-          easing: "easeInOutQuart"
-        },
-        
+        animation: { animateRotate: true, duration: 1200, easing: "easeInOutQuart" },
         plugins: {
-          legend: {
-            display: false
-          },
-          
+          legend: { display: false },
           tooltip: {
-            backgroundColor: surface,
-            titleColor: text,
-            bodyColor: textMuted,
-            borderColor: accent,
-            borderWidth: 1,
-            padding: 10,
-            callbacks: {
-              label: (c) => ` ${c.parsed.toFixed(1)}%`
-            }
-          }
-        }
-      }
+            backgroundColor: surface, titleColor: text, bodyColor: textMuted,
+            borderColor: accent, borderWidth: 1, padding: 10,
+            callbacks: { label: (c) => " " + c.parsed.toLocaleString("pt-BR") + " unidades" },
+          },
+        },
+      },
     });
-
     return () => inst.current?.destroy();
-  }, []);
+  }, [dados]);
+
   return (
     <div>
       <div className="donut-canvas-wrap">
-        <canvas ref={r}/>
-
+        <canvas ref={r} />
         <div className="donut-center">
-          <div className="donut-center-val">85%</div>
-          <div className="donut-center-sub">Meta</div>
+          <div className="donut-center-val">{percentual.toFixed(1)}%</div>
+          <div className="donut-center-sub">do mês</div>
         </div>
       </div>
-
       <div className="pie-legend">
-        {PIE_DATA.map((d, i) => (
-          <div className="pie-row" key={d.label}>
-            <div
-              className="pie-dot"
-              style={{ background: getThemeColor(d.color) }}
-            />
-
-            {d.label}
-
-            <span className="pie-val">
-              {d.value}%
-            </span>
+        <div className="pie-row">
+          <span className="pie-dot" style={{ background: getThemeColor("--color-accent") }} />
+          <span>{produtoLider || "Nenhum produto vendido"}</span>
+          <span className="pie-val">{totalUnidades ? percentual.toFixed(1) + "%" : "0%"}</span>
+        </div>
+        {dados.length > 1 && (
+          <div className="pie-row">
+            <span className="pie-dot" style={{ background: getThemeColor("--color-success") }} />
+            <span>Outros produtos</span>
+            <span className="pie-val">{(100 - percentual).toFixed(1)}%</span>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
 }
-
 /* 
 ══════════════ 
 PAGES 
@@ -361,6 +336,39 @@ function Dashboard({ navigate }) {
     () => calcularMetricasVendas(vendas),
     [vendas]
   );
+
+  const vendasDoMes = useMemo(() => {
+    const agora = new Date();
+    return vendas.filter((venda) => {
+      const data = new Date(venda.data);
+      return !Number.isNaN(data.getTime()) && data.getFullYear() === agora.getFullYear() && data.getMonth() === agora.getMonth();
+    });
+  }, [vendas]);
+
+  const rankingProdutos = useMemo(() => {
+    const totais = new Map();
+    vendasDoMes.forEach((venda) => venda.itens.forEach((item) => {
+      const chave = item.produtoId ?? item.nomeProduto ?? "produto-sem-identificacao";
+      const atual = totais.get(chave) || { label: item.nomeProduto || "Produto", value: 0 };
+      atual.value += Number(item.quantidade) || 0;
+      totais.set(chave, atual);
+    }));
+    return [...totais.values()].sort((a, b) => b.value - a.value);
+  }, [vendasDoMes]);
+
+  const totalUnidadesVendidas = rankingProdutos.reduce((total, item) => total + item.value, 0);
+  const produtoMaisVendido = rankingProdutos[0] || null;
+  const percentualProdutoLider = totalUnidadesVendidas > 0
+    ? (produtoMaisVendido.value / totalUnidadesVendidas) * 100
+    : 0;
+  const dadosDonut = produtoMaisVendido ? [
+    { label: produtoMaisVendido.label, value: produtoMaisVendido.value, color: "--color-accent" },
+    ...(totalUnidadesVendidas > produtoMaisVendido.value ? [{
+      label: "Outros produtos",
+      value: totalUnidadesVendidas - produtoMaisVendido.value,
+      color: "--color-success",
+    }] : []),
+  ] : [];
 
   const idioma =
     i18n.language === "en-US" ? "en-US" : "pt-BR";
@@ -565,7 +573,7 @@ function Dashboard({ navigate }) {
             />
           </div>
 
-          <DonutChart />
+          <DonutChart dados={dadosDonut} percentual={percentualProdutoLider} produtoLider={produtoMaisVendido?.label} totalUnidades={totalUnidadesVendidas} />
         </div>
       </div>
 
@@ -886,7 +894,7 @@ export default function App({ onLogout, onNavegar }){
         <div className="hdr-logo">bridge<span>.</span>mei</div>
         <nav className="hdr-nav">
           {NAV.map(n =>(
-            <button key={n.id} className={`npill${view===n.id?" active":""}`} onClick={()=>navigate(n.id)}>
+            <button key={n.id} className={`npill${view===n.id?" active":""}`} onClick={()=>n.id === "estoque" ? onNavegar("estoque") : navigate(n.id)}>
               <span>{n.icon}</span>
               {n.badge>0&&<span className="npill-badge">{n.badge}</span>}
               {t(n.key)}
@@ -927,9 +935,6 @@ export default function App({ onLogout, onNavegar }){
                 </div>
 
                 <div className="user-menu-divider" />
-                  <button className="user-menu-item" onClick={() => onNavegar("estoque")}>
-                  📦 {t("profile.estoque")}
-                  </button>
                   <button className="user-menu-item danger" onClick={onLogout}>
                     ⎋  {t("profile.sair")}
                   </button>
