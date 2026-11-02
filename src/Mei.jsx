@@ -7,6 +7,7 @@ import {
 import { useTranslation } from "react-i18next";
 import "./styles/Mei.css";
 import Vendas from "./Vendas";
+import Estoque from "./Estoque";
 import useVendas from "./hooks/useVendas.js";
 import { calcularMetricasVendas } from "./utils/metricasVendas.js";
 import {fetchEstoqueWithAuth} from "./services/api.js"
@@ -888,6 +889,7 @@ export default function App({ onLogout, onNavegar }){
     faturamento: <Faturamento/>,
     vendas: <Vendas/>,
     aprendizado: <Aprendizado/>,
+    estoque: <Estoque embedded />,
   };
 
   return(<>
@@ -896,7 +898,7 @@ export default function App({ onLogout, onNavegar }){
         <div className="hdr-logo">bridge<span>.</span>mei</div>
         <nav className="hdr-nav">
           {NAV.map(n =>(
-            <button key={n.id} className={`npill${view===n.id?" active":""}`} onClick={()=>n.id === "estoque" ? onNavegar("estoque") : navigate(n.id)}>
+            <button key={n.id} className={`npill${view===n.id?" active":""}`} onClick={()=>navigate(n.id)}>
               <span>{n.icon}</span>
               {n.badge>0&&<span className="npill-badge">{n.badge}</span>}
               {t(n.key)}
