@@ -125,7 +125,8 @@ namespace EstoqueApi.Services
                     ValorTotal = v.ValorTotal,
                     Itens = v.Itens.Select(i => new ItemVendaResponse
                     {
-                        ProdutoId = i.ProdutoId,
+                        ProdutoId = i.ProdutoId ?? i.ProdutoIdHistorico,
+                        ProdutoIdHistorico = i.ProdutoIdHistorico,
                         NomeProduto = i.NomeProduto,
                         Quantidade = i.Quantidade,
                         PrecoUnitario = i.PrecoUnitario,
