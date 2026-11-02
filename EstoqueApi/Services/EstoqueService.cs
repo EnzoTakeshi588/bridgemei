@@ -1,6 +1,7 @@
 using EstoqueApi.Data;
 using EstoqueApi.Models;
 using EstoqueApi.Utils;
+using Microsoft.EntityFrameworkCore;
 
 namespace EstoqueApi.Services
 {
@@ -16,6 +17,26 @@ namespace EstoqueApi.Services
         public List<Produto> Listar(int usuarioId)
         {
             return _context.Produtos.Where(p => p.UsuarioId == usuarioId).ToList();
+        }
+
+        public List<object> ListarMovimentacoes(int usuarioId)
+        {
+            return _context.MovimentarEstoque
+                .AsNoTracking()
+                .Where(m => m.UsuarioId == usuarioId)
+                .OrderByDescending(m => m.Data)
+                .Select(m => (object)new
+                {
+                    m.Id,
+                    ProdutoId = m.ProdutoId ?? m.ProdutoIdHistorico,
+                    m.ProdutoIdHistorico,
+                    m.NomeProduto,
+                    m.Tipo,
+                    m.Quantidade,
+                    Data = DataHoraBrasil.ComFuso(m.Data),
+                    m.VendaId
+                })
+                .ToList();
         }
 
         public Produto Criar(Produto produto, int usuarioId)
@@ -53,10 +74,11 @@ namespace EstoqueApi.Services
             _context.MovimentarEstoque.Add(new MovimentarEstoque
             {
                 ProdutoId = produto.Id,
+                ProdutoIdHistorico = produto.Id,
                 NomeProduto = produto.Nome,
                 UsuarioId = usuarioId,
                 Tipo = "Entrada",
-                Quantidade = produto.Quantidade,
+                Quantidade = quantidade,
                 Data = DataHoraBrasil.Agora()
             });
 
@@ -83,6 +105,7 @@ namespace EstoqueApi.Services
             _context.MovimentarEstoque.Add(new MovimentarEstoque
             {
                 ProdutoId = produto.Id,
+                ProdutoIdHistorico = produto.Id,
                 NomeProduto = produto.Nome,
                 UsuarioId = usuarioId,
                 Tipo = "Saida",
