@@ -371,7 +371,7 @@ function Dashboard({ navigate }) {
       value: totalUnidadesVendidas - produtoMaisVendido.value,
       color: "--color-success",
     }] : []),
-  ] : [], [produtoMaisVendido, totalUnidadesVendidas]);
+  ] : [], [produtoMaisVendido, totalUnidadesVendidas, t]);
 
   const idioma =
     i18n.language === "en-US" ? "en-US" : "pt-BR";
