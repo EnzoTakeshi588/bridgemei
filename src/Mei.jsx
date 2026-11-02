@@ -293,7 +293,7 @@ function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
             <>
               <div className="donut-center-focus">{itemSelecionado.label}</div>
               <div className="donut-center-val">{itemSelecionado.value.toLocaleString("pt-BR")}</div>
-              <div className="donut-center-sub">{t("dashboard.unitsSold")}</div>
+              <div className="donut-center-sub">{t("stock.stats.items")}</div>
             </>
           ) : (
             <>
