@@ -937,3 +937,5 @@
       grid-template-columns: 1fr;
     }
   }
+
+.pie-heading { margin: 0 0 10px; color: var(--color-text-secondary); font-size: 12px; font-weight: 600; }
