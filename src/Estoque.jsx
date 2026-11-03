@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { fetchEstoqueWithAuth } from "./services/api.js";
 import "./styles/Estoque.css";
@@ -551,7 +552,11 @@ export default function Estoque({ onNavegar, embedded = false }) {
                       <tr key={m.id}>
                         <td>{m.data ? new Date(m.data).toLocaleString("pt-BR") : "—"}</td>
                         <td>{m.nomeProduto}</td>
-                        <td><span className="est-history-type">{t("stock.history.types." + String(m.tipo).toLowerCase(), { defaultValue: m.tipo })}</span></td>
+                        <td>
+                          <span className={`est-history-type est-history-type--${String(m.tipo || "").normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").toLowerCase()}`}>
+                            {t("stock.history.types." + String(m.tipo).toLowerCase(), { defaultValue: m.tipo })}
+                          </span>
+                        </td>
                         <td>{m.quantidade}</td>
                         <td>{m.produtoId ?? "—"}</td>
                       </tr>
@@ -564,31 +569,33 @@ export default function Estoque({ onNavegar, embedded = false }) {
         </div>
       </div>
 
-      {/* Modal: Novo produto */}
-      {modal === "novo" && (
+      {/* Modais renderizados no body para centralização real na viewport */}
+      {modal === "novo" && typeof document !== "undefined" && createPortal(
         <ModalProduto
           onClose={() => setModal(null)}
           onSave={salvarProduto}
           loading={loadingAct}
-        />
+        />,
+        document.body
       )}
 
-      {/* Modal: Movimentação */}
-      {modal?.mov && (
+      {modal?.mov && typeof document !== "undefined" && createPortal(
         <ModalMovimento
           produto={modal.mov}
           onClose={() => setModal(null)}
           onConfirm={confirmarMovimento}
           loading={loadingAct}
-        />
+        />,
+        document.body
       )}
 
-      {modal?.excluir && (
+      {modal?.excluir && typeof document !== "undefined" && createPortal(
         <ModalExcluir
           onClose={() => setModal(null)}
           onConfirm={() => excluir(modal.excluir)}
           loading={loadingAct}
-        />
+        />,
+        document.body
       )}
 
       {/* Toast */}
