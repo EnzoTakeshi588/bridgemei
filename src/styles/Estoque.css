@@ -790,11 +790,12 @@
   .est-mbg {
     position: fixed;
     inset: 0;
-    z-index: 1000;
+    z-index: 10000;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px;
+    overflow-y: auto;
     background: rgba(0, 0, 0, .72);
     backdrop-filter: blur(8px);
     animation: estFade .2s ease;
@@ -813,6 +814,8 @@
   .est-mo {
     width: 100%;
     max-width: 430px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-accent-border);
     border-radius: 18px;
@@ -1077,3 +1080,82 @@
       grid-template-columns: 1fr 1fr;
     }
   }
+
+/* Histórico de movimentações */
+.est-history { margin-top: 24px; padding: 22px; border: 1px solid var(--color-border); border-radius: 16px; background: var(--color-bg-secondary); }
+.est-history-scroll { width: 100%; overflow-x: auto; }
+.est-history-table { min-width: 680px; }
+.est-history-type {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 9px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.est-history-type--entrada {
+  color: #22c55e;
+  background: rgba(34, 197, 94, .12);
+  border: 1px solid rgba(34, 197, 94, .25);
+}
+.est-history-type--saida {
+  color: #ef4444;
+  background: rgba(239, 68, 68, .12);
+  border: 1px solid rgba(239, 68, 68, .25);
+}
+.est-history-type--venda {
+  color: var(--color-accent);
+  background: var(--color-accent-bg);
+  border: 1px solid var(--color-accent-border);
+}
+.est-history-type--exclusao {
+  color: #ef4444;
+  background: rgba(239, 68, 68, .12);
+  border: 1px solid rgba(239, 68, 68, .25);
+}
+.est-empty-history { padding: 22px 8px; color: var(--color-text-muted); font-size: 13px; }
+
+.est-shell.est-embedded {
+  min-height: 0;
+  background: transparent;
+  overflow: visible;
+}
+
+.est-shell.est-embedded::before {
+  display: none;
+}
+
+.est-embedded .est-pw {
+  max-width: none;
+  padding: 0;
+  animation: none;
+}
+
+.est-embedded .est-h1 {
+  font-size: 30px;
+}
+
+.est-history-panel {
+  margin-top: 20px;
+}
+
+.est-history-panel .est-tp-inner {
+  overflow: hidden;
+}
+
+.est-history-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.est-history-table {
+  min-width: 680px;
+}
+
+.est-empty-history {
+  padding: 28px 20px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  text-align: center;
+}

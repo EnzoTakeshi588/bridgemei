@@ -32,6 +32,16 @@ namespace EstoqueApi.Controllers
             return Ok(_service.Listar(usuarioId));
         }
 
+        [HttpGet("movimentacoes")]
+        public IActionResult ListarMovimentacoes()
+        {
+            var usuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (usuarioIdClaim == null)
+                return Unauthorized();
+
+            return Ok(_service.ListarMovimentacoes(int.Parse(usuarioIdClaim)));
+        }
+
         [HttpPost]
         public IActionResult Criar([FromBody] Produto produto)
         {

@@ -38,7 +38,8 @@ namespace EstoqueApi.Controllers
                     ValorTotal = venda.ValorTotal,
                     Itens = venda.Itens.Select(item => new ItemVendaResponse
                     {
-                        ProdutoId = item.ProdutoId,
+                        ProdutoId = item.ProdutoId ?? item.ProdutoIdHistorico,
+                        ProdutoIdHistorico = item.ProdutoIdHistorico,
                         NomeProduto = item.NomeProduto,
                         Quantidade = item.Quantidade,
                         PrecoUnitario = item.PrecoUnitario,
