@@ -387,7 +387,7 @@ function Dashboard({ navigate }) {
       ...(restantes > 0 ? [{
         label: t("dashboard.otherProducts"),
         value: restantes,
-        color: "#60a5fa",
+        color: "--color-info",
       }] : []),
     ];
   }, [rankingProdutos, totalUnidadesVendidas, t]);
