@@ -246,7 +246,7 @@ function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
   useEffect(() => {
     if (!r.current) return;
     inst.current?.destroy();
-    const colors = chartData.map((d) => getThemeColor(d.color));
+    const colors = chartData.map((d) => d.color.startsWith("#") ? d.color : getThemeColor(d.color));
     const text = getThemeColor("--color-text");
     const textMuted = getThemeColor("--color-text-muted");
     const surface = getThemeColor("--color-bg-secondary");
@@ -306,7 +306,7 @@ function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
       <div className="pie-legend">
         {dados.map((item) => (
           <div className="pie-row" key={item.label}>
-            <span className="pie-dot" style={{ background: getThemeColor(item.color) }} />
+            <span className="pie-dot" style={{ background: item.color.startsWith("#") ? item.color : getThemeColor(item.color) }} />
             <span>{item.label}</span>
             <span className="pie-val">
               {totalUnidades ? ((item.value / totalUnidades) * 100).toFixed(1) + "%" : "0%"}
@@ -387,7 +387,7 @@ function Dashboard({ navigate }) {
       ...(restantes > 0 ? [{
         label: t("dashboard.otherProducts"),
         value: restantes,
-        color: "--color-text-muted",
+        color: "#60a5fa",
       }] : []),
     ];
   }, [rankingProdutos, totalUnidadesVendidas, t]);
