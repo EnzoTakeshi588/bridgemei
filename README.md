@@ -197,5 +197,5 @@ O BridgeMEI é um projeto acadêmico desenvolvido por estudantes da Etec-SP. A a
 Os dados ficam no banco MySQL executado pelo Docker na máquina do usuário. Preserve o arquivo `.env` e mantenha cópias de segurança dos dados que desejar guardar.
 
 ---
-
+**
 [🇧🇷 Ler em português](README.md) · [🇺🇸 Read in English](README.en.md)
