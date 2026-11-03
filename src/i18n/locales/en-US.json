@@ -1,56 +1,49 @@
 {
   "login": {
     "leftPageLogin": {
-          "welcome": "Welcome back",
-          "title-one": "Acess your ",
-          "title-two": "account",
-          "title-three": " now",
-          "subtitle": "Pick up where you left off. Your data, tax filings, and revenue are all here.",
-          "features": {
-            "one": "Advanced encryption security",
-            "two": "Access on any device",
-            "three": "24/7 support"
-          }
-        },
-
-        "leftPageRegister": {
-          "welcome": "Get started for free",
-          "title-one": "Take care of ",
-          "title-two": "business",
-          "title-three": " with us",
-          "subtitle": "Manage your business registration, taxes, and revenue simply and intelligently.",
-          "features": {
-            "one": "Quick registration in under a minute", 
-            "two": "No bureaucracy, no cost", 
-            "three": " "
-          }
+      "welcome": "Welcome back",
+      "title-one": "Acess your ",
+      "title-two": "account",
+      "title-three": " now",
+      "subtitle": "Pick up where you left off. Your data, tax filings, and revenue are all here.",
+      "features": {
+        "one": "Advanced encryption security",
+        "two": "Access on any device",
+        "three": "24/7 support"
+      }
     },
-
+    "leftPageRegister": {
+      "welcome": "Get started for free",
+      "title-one": "Take care of ",
+      "title-two": "business",
+      "title-three": " with us",
+      "subtitle": "Manage your business registration, taxes, and revenue simply and intelligently.",
+      "features": {
+        "one": "Quick registration in under a minute",
+        "two": "No bureaucracy, no cost",
+        "three": " "
+      }
+    },
     "formLogin": "Welcome back 👋",
     "formRegister": "Create your account 🚀",
-    "formLoginSub": "Use your e-mail and password to sign-in", 
+    "formLoginSub": "Use your e-mail and password to sign-in",
     "formRegisterSub": "Fill with your info to start",
-
     "LoginSuccess": "Successfully Loged-in!",
     "RegisterSuccess": "Account successfully created!",
-
     "LoginButton": "Sign-in",
     "RegisterButton": "Free register",
     "LoginButtonLoading": "Entering...",
     "RegisterButtonLoading": "Creating account...",
-
     "PasswordStrength": "Password Strength",
-
     "formLoginTail": {
       "1": "Don't have an account?",
       "2": "Create for free"
-    }, 
+    },
     "formRegisterTail": {
-      "1": "Already have an account?", 
+      "1": "Already have an account?",
       "2": "Sign-in"
     },
-    
-    "name": "Name", 
+    "name": "Name",
     "surname": "Surname",
     "email": "Email",
     "password": "Password",
@@ -58,22 +51,20 @@
     "register": "Create account",
     "remember": "Remember Me",
     "forgotPassword": "Forgot my password"
-  }, 
-
-   "nav": {
+  },
+  "nav": {
     "inicio": "Home",
     "faturamento": "Revenue",
     "vendas": "Sales",
     "alertas": "Alerts",
     "aprendizado": "Learning",
-    "documentos": "Documents"
+    "documentos": "Documents",
+    "estoque": "Inventory"
   },
-
   "profile": {
     "estoque": "Inventory",
     "sair": "Log out"
   },
-
   "dashboard": {
     "overview": "Overview",
     "greetings": "Greetings, ",
@@ -84,9 +75,12 @@
     "alertsCard": "Alerts",
     "viewAll": "View all",
     "chatDisabled": "CHAT DISABLED",
-    "aiDisabled": "AI DISABLED"
+    "aiDisabled": "AI DISABLED",
+    "bestSellingProduct": "Best-selling product",
+    "otherProducts": "Other products",
+    "noProductSales": "No products sold",
+    "ofMonth": "of the month"
   },
-
   "dash-stats": {
     "monthRevenue": "Monthly revenue",
     "monthSales": "Monthly sales",
@@ -100,7 +94,6 @@
     "loadingSales": "Loading sales data...",
     "salesUnavailable": "Unable to load sales."
   },
-
   "alerts": {
     "heading": "Notifications",
     "title": "Your ",
@@ -108,7 +101,6 @@
     "attention": "Attention required",
     "resolved": "Resolved and informational"
   },
-
   "learning": {
     "heading": "Educational",
     "titleBefore": " ",
@@ -118,7 +110,6 @@
     "serviceTitle": "Insurance for",
     "serviceTitle-em": "MEIs"
   },
-
   "revenue": {
     "heading": "Financial",
     "titleBefore": " ",
@@ -136,7 +127,6 @@
     "attentionZone": "Attention zone starts at 80%",
     "byMonth": "Revenue by month"
   },
-
   "documents": {
     "heading": "Docs",
     "title": "Your ",
@@ -147,100 +137,106 @@
     "documentsList": "All documents",
     "uploadedSuccess": "Document uploaded successfully!"
   },
-
- "stock": {
-  "back": "Back to Dashboard",
-  "inventory": "Inventory",
-  "title": "Inventory ",
-  "title-em": "Control",
-  "subtitle": "Manage products, quantities and alerts in real time",
-
-  "tryAgain": "Try again",
-
-  "attention": "Attention",
-  "outOfStock": "product(s) out of stock",
-  "critical": "with critical quantity",
-
-  "stats": {
-    "total": "Total",
-    "items": "items",
-    "totalValue": "Total value",
-    "inStock": "in stock",
-    "lowStock": "Low stock",
-    "criticalItems": "item(s)",
-    "critical": "critical",
-    "outOfStock": "Out of stock",
-    "withoutStock": " without stock"
-  },
-
-  "actions": {
-    "add": "Add product",
-    "movement": "Edit",
-    "remove": "Remove"
-  },
-
-  "products": {
-    "title": "Products in stock",
-    "product": "Product",
-    "quantity": "Quantity",
-    "unitPrice": "Unit price",
-    "status": "Status",
-    "actions": "Actions",
-    "none": "No products registered",
-    "loading": "Loading products…"
-  },
-
-  "status": {
-    "inStock": "In stock",
-    "low": "Low stock",
-    "out": "Out of stock"
-  },
-
-  "modal": {
-    "newProduct": " ",
-    "newProductEm": "New",
-    "newProductAfter": " product",
-    "editProduct": "Edit product",
-    "newProductDescription": "Enter the new product information",
-    "editProductDescription": "Update the item's name and price",
-    "productName": "Product name",
-    "productNamePlaceholder": "Ex: Dell i7 Laptop",
-    "unitPrice": "Unit price (R$)",
-    "pricePlaceholder": "0.00",
-    "cancel": "Cancel",
-    "save": "✓ Save",
-    "saving": "Saving…",
-
-    "movement": "Manage ",
-    "movementEm": "inventory",
-    "movementDescription": "Register incoming or outgoing units",
-    "deleteTitle": "Delete ",
-    "deleteTitleEm": "product",
-    "deleteMessage": "Do you want to remove this product?",
-    "confirmDelete": "Confirm",
-    "entry": "▲ Entry",
-    "exit": "▼ Exit",
-    "quantity": "Quantity",
-    "quantityPlaceholder": "Ex: 10",
-    "processing": "Processing…",
-    "confirmEntry": "▲ Confirm entry",
-    "confirmExit": "▼ Confirm exit"
-  },
-
-  "messages": {
-    "nameRequired": "Name is required.",
-    "validQuantity": "Enter a valid quantity.",
-    "insufficientQuantity": "Insufficient quantity. Current stock: {{quantity}}",
-    "loadError": "Could not load products. {{error}}",
-    "addSuccess": "✓ Product added!",
-    "removeConfirm": "Remove \"{{name}}\"?",
-    "removeSuccess": "Product removed.",
-    "movementSuccess": "{{emoji}} {{type}} of {{quantity}} units registered!",
-    "error": "Error: {{error}}"
+  "stock": {
+    "back": "Back to Dashboard",
+    "inventory": "Inventory",
+    "title": "Inventory ",
+    "title-em": "Control",
+    "subtitle": "Manage products, quantities and alerts in real time",
+    "tryAgain": "Try again",
+    "attention": "Attention",
+    "outOfStock": "product(s) out of stock",
+    "critical": "with critical quantity",
+    "stats": {
+      "total": "Total",
+      "items": "items",
+      "totalValue": "Total value",
+      "inStock": "in stock",
+      "lowStock": "Low stock",
+      "criticalItems": "item(s)",
+      "critical": "critical",
+      "outOfStock": "Out of stock",
+      "withoutStock": " without stock"
+    },
+    "actions": {
+      "add": "Add product",
+      "movement": "Edit",
+      "remove": "Remove"
+    },
+    "products": {
+      "title": "Products in stock",
+      "product": "Product",
+      "quantity": "Quantity",
+      "unitPrice": "Unit price",
+      "status": "Status",
+      "actions": "Actions",
+      "none": "No products registered",
+      "loading": "Loading products…"
+    },
+    "status": {
+      "inStock": "In stock",
+      "low": "Low stock",
+      "out": "Out of stock"
+    },
+    "modal": {
+      "newProduct": " ",
+      "newProductEm": "New",
+      "newProductAfter": " product",
+      "editProduct": "Edit product",
+      "newProductDescription": "Enter the new product information",
+      "editProductDescription": "Update the item's name and price",
+      "productName": "Product name",
+      "productNamePlaceholder": "Ex: Dell i7 Laptop",
+      "unitPrice": "Unit price (R$)",
+      "pricePlaceholder": "0.00",
+      "cancel": "Cancel",
+      "save": "✓ Save",
+      "saving": "Saving…",
+      "movement": "Manage ",
+      "movementEm": "inventory",
+      "movementDescription": "Register incoming or outgoing units",
+      "deleteTitle": "Delete ",
+      "deleteTitleEm": "product",
+      "deleteMessage": "Do you want to remove this product?",
+      "confirmDelete": "Confirm",
+      "entry": "▲ Entry",
+      "exit": "▼ Exit",
+      "quantity": "Quantity",
+      "quantityPlaceholder": "Ex: 10",
+      "processing": "Processing…",
+      "confirmEntry": "▲ Confirm entry",
+      "confirmExit": "▼ Confirm exit"
+    },
+    "messages": {
+      "nameRequired": "Name is required.",
+      "validQuantity": "Enter a valid quantity.",
+      "insufficientQuantity": "Insufficient quantity. Current stock: {{quantity}}",
+      "loadError": "Could not load products. {{error}}",
+      "addSuccess": "✓ Product added!",
+      "removeConfirm": "Remove \"{{name}}\"?",
+      "removeSuccess": "Product removed.",
+      "movementSuccess": "{{emoji}} {{type}} of {{quantity}} units registered!",
+      "error": "Error: {{error}}"
+    },
+    "history": {
+      "title": "Movement history",
+      "records": "records",
+      "empty": "No movements recorded.",
+      "loadError": "Could not load movement history: {{error}}",
+      "date": "Date",
+      "product": "Product",
+      "type": "Type",
+      "quantity": "Quantity",
+      "productId": "Product ID",
+      "types": {
+        "entrada": "Stock in",
+        "saida": "Stock out",
+        "venda": "Sale",
+        "exclusao": "Deletion"
+      }
     }
   },
-
-    "vendas": {
+  "vendas": {
     "eyebrow": "INVENTORY / SALES",
     "titleBefore": " ",
     "title-em": "Sales ",

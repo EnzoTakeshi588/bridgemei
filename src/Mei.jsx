@@ -7,6 +7,7 @@ import {
 import { useTranslation } from "react-i18next";
 import "./styles/Mei.css";
 import Vendas from "./Vendas";
+import Estoque from "./Estoque";
 import useVendas from "./hooks/useVendas.js";
 import { calcularMetricasVendas } from "./utils/metricasVendas.js";
 import {fetchEstoqueWithAuth} from "./services/api.js"
@@ -60,6 +61,7 @@ const NAV = [
   {id:"faturamento", icon:"📈",key:"nav.faturamento", badge:0},
   {id: "vendas", icon: "🛒", key: "nav.vendas", badge: 0},
   {id:"aprendizado", icon:"📚",key:"nav.aprendizado", badge:0},
+  {id:"estoque", icon:"📦",key:"nav.estoque", badge:0},
 ];
 
 /* 
@@ -114,6 +116,13 @@ function getThemeColor(variable) {
   return getComputedStyle(document.documentElement)
     .getPropertyValue(variable)
     .trim();
+}
+
+function getDonutColor(color) {
+  if (color === "--color-info" && window.matchMedia("(prefers-color-scheme: light)").matches) {
+    return "#7c3aed";
+  }
+  return color.startsWith("#") ? color : getThemeColor(color);
 }
 
 /* 
@@ -233,17 +242,18 @@ function LineChart({meses, idioma}){
   return <canvas ref={r}/>;
 }
 
-function DonutChart(){
+function DonutChart({ dados, percentual, produtoLider, totalUnidades }) {
+  const { t } = useTranslation();
   const r = useRef(null);
   const inst = useRef(null);
+  const [itemEmFoco, setItemEmFoco] = useState(null);
+  const chartData = dados.length ? dados : [{ label: t("dashboard.noProductSales"), value: 1, color: "--color-border" }];
+  const itemSelecionado = itemEmFoco === null ? null : chartData[itemEmFoco];
 
   useEffect(() => {
     if (!r.current) return;
-
     inst.current?.destroy();
-
-    const colors = PIE_DATA.map(d => getThemeColor(d.color));
-
+    const colors = chartData.map((d) => getDonutColor(d.color));
     const text = getThemeColor("--color-text");
     const textMuted = getThemeColor("--color-text-muted");
     const surface = getThemeColor("--color-bg-secondary");
@@ -251,76 +261,62 @@ function DonutChart(){
 
     inst.current = new Chart(r.current, {
       type: "doughnut",
-
       data: {
-        labels: PIE_DATA.map(d => d.label),
-        
+        labels: chartData.map((d) => d.label),
         datasets: [{
-          data: PIE_DATA.map(d => d.value),
-          backgroundColor: colors.map(color => color + "bb"),
+          data: chartData.map((d) => d.value),
+          backgroundColor: colors.map((color) => color + "bb"),
           borderColor: colors,
           borderWidth: 2,
-          hoverOffset: 12
-        }]
+          hoverOffset: 10,
+        }],
       },
-
       options: {
         responsive: true,
         maintainAspectRatio: false,
         cutout: "70%",
-        
-        animation: {
-          animateRotate: true,
-          animateScale: false,
-          duration: 1800,
-          easing: "easeInOutQuart"
-        },
-        
+        animation: { animateRotate: true, duration: 1200, easing: "easeInOutQuart" },
+        onHover: (_, elements) => setItemEmFoco(elements.length ? elements[0].index : null),
         plugins: {
-          legend: {
-            display: false
-          },
-          
+          legend: { display: false },
           tooltip: {
-            backgroundColor: surface,
-            titleColor: text,
-            bodyColor: textMuted,
-            borderColor: accent,
-            borderWidth: 1,
-            padding: 10,
-            callbacks: {
-              label: (c) => ` ${c.parsed.toFixed(1)}%`
-            }
-          }
-        }
-      }
+            backgroundColor: surface, titleColor: text, bodyColor: textMuted,
+            borderColor: accent, borderWidth: 1, padding: 10,
+            callbacks: { label: (c) => " " + c.parsed.toLocaleString("pt-BR") + " unidades" },
+          },
+        },
+      },
     });
-
     return () => inst.current?.destroy();
-  }, []);
+  }, [dados, t]);
+
   return (
     <div>
+      <div className="pie-heading">{t("dashboard.bestSellingProduct")}</div>
       <div className="donut-canvas-wrap">
-        <canvas ref={r}/>
-
-        <div className="donut-center">
-          <div className="donut-center-val">85%</div>
-          <div className="donut-center-sub">Meta</div>
+        <canvas ref={r} />
+        <div className="donut-center" aria-live="polite">
+          {itemSelecionado ? (
+            <>
+              <div className="donut-center-focus">{itemSelecionado.label}</div>
+              <div className="donut-center-val">{itemSelecionado.value.toLocaleString("pt-BR")}</div>
+              <div className="donut-center-sub">{t("stock.stats.items")}</div>
+            </>
+          ) : (
+            <>
+              <div className="donut-center-val">{percentual.toFixed(1)}%</div>
+              <div className="donut-center-sub">{t("dashboard.ofMonth")}</div>
+            </>
+          )}
         </div>
       </div>
-
       <div className="pie-legend">
-        {PIE_DATA.map((d, i) => (
-          <div className="pie-row" key={d.label}>
-            <div
-              className="pie-dot"
-              style={{ background: getThemeColor(d.color) }}
-            />
-
-            {d.label}
-
+        {dados.map((item) => (
+          <div className="pie-row" key={item.label}>
+            <span className="pie-dot" style={{ background: getDonutColor(item.color) }} />
+            <span>{item.label}</span>
             <span className="pie-val">
-              {d.value}%
+              {totalUnidades ? ((item.value / totalUnidades) * 100).toFixed(1) + "%" : "0%"}
             </span>
           </div>
         ))}
@@ -328,7 +324,6 @@ function DonutChart(){
     </div>
   );
 }
-
 /* 
 ══════════════ 
 PAGES 
@@ -361,6 +356,48 @@ function Dashboard({ navigate }) {
     () => calcularMetricasVendas(vendas),
     [vendas]
   );
+
+  const vendasDoMes = useMemo(() => {
+    const agora = new Date();
+    return vendas.filter((venda) => {
+      const data = new Date(venda.data);
+      return !Number.isNaN(data.getTime()) && data.getFullYear() === agora.getFullYear() && data.getMonth() === agora.getMonth();
+    });
+  }, [vendas]);
+
+  const rankingProdutos = useMemo(() => {
+    const totais = new Map();
+    vendasDoMes.forEach((venda) => venda.itens.forEach((item) => {
+      const chave = item.produtoId ?? item.nomeProduto ?? "produto-sem-identificacao";
+      const atual = totais.get(chave) || { label: item.nomeProduto || "Produto", value: 0 };
+      atual.value += Number(item.quantidade) || 0;
+      totais.set(chave, atual);
+    }));
+    return [...totais.values()].sort((a, b) => b.value - a.value);
+  }, [vendasDoMes]);
+
+  const totalUnidadesVendidas = rankingProdutos.reduce((total, item) => total + item.value, 0);
+  const produtoMaisVendido = rankingProdutos[0] || null;
+  const percentualProdutoLider = totalUnidadesVendidas > 0
+    ? (produtoMaisVendido.value / totalUnidadesVendidas) * 100
+    : 0;
+  const dadosDonut = useMemo(() => {
+    if (!rankingProdutos.length) return [];
+    const topTres = rankingProdutos.slice(0, 3).map((produto, index) => ({
+      ...produto,
+      color: ["--color-accent", "--color-success", "--color-warning"][index],
+    }));
+    const unidadesTopTres = topTres.reduce((total, produto) => total + produto.value, 0);
+    const restantes = totalUnidadesVendidas - unidadesTopTres;
+    return [
+      ...topTres,
+      ...(restantes > 0 ? [{
+        label: t("dashboard.otherProducts"),
+        value: restantes,
+        color: "--color-info",
+      }] : []),
+    ];
+  }, [rankingProdutos, totalUnidadesVendidas, t]);
 
   const idioma =
     i18n.language === "en-US" ? "en-US" : "pt-BR";
@@ -565,7 +602,7 @@ function Dashboard({ navigate }) {
             />
           </div>
 
-          <DonutChart />
+          <DonutChart dados={dadosDonut} percentual={percentualProdutoLider} produtoLider={produtoMaisVendido?.label} totalUnidades={totalUnidadesVendidas} />
         </div>
       </div>
 
@@ -878,6 +915,7 @@ export default function App({ onLogout, onNavegar }){
     faturamento: <Faturamento/>,
     vendas: <Vendas/>,
     aprendizado: <Aprendizado/>,
+    estoque: <Estoque embedded />,
   };
 
   return(<>
@@ -927,9 +965,6 @@ export default function App({ onLogout, onNavegar }){
                 </div>
 
                 <div className="user-menu-divider" />
-                  <button className="user-menu-item" onClick={() => onNavegar("estoque")}>
-                  📦 {t("profile.estoque")}
-                  </button>
                   <button className="user-menu-item danger" onClick={onLogout}>
                     ⎋  {t("profile.sair")}
                   </button>

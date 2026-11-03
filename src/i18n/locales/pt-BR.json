@@ -1,79 +1,70 @@
 {
-    "login": { 
-        "leftPageLogin": {
-          "welcome": "Bem-vindo de volta",
-          "title-one": "Acesse a sua ",
-          "title-two": "conta",
-          "title-three": " agora",
-          "subtitle": "Continue de onde parou. Seus dados, declarações e faturamento estão todos aqui.",
-          "features": {
-            "one": "Segurança com criptografia de ponta",
-            "two": "Acesso em qualquer dispositivo",
-            "three": "Suporte 24 horas por dia"
-          }
-        },
-        "leftPageRegister": {
-          "welcome": "Comece agora, é grátis",
-          "title-one": "Cuide do seu ",
-          "title-two": "negocio",
-          "title-three": " com a gente",
-          "subtitle": "Gerencie seu CNPJ, DAS e faturamento de forma simples e inteligente.",
-          "features": {
-            "one": "Cadastro rápido em menos de 1 minuto", 
-            "two": "Sem burocracia, sem custo", 
-            "three": " "
-          }
-        },
-
-        "formLogin": "Bem-vindo de volta 👋",
-        "formRegister": "Crie sua conta 🚀",
-
-        "formLoginSub": "Use seu e-mail e senha para acessar", 
-        "formRegisterSub": "Preencha os dados abaixo para começar",
-
-        "LoginSuccess": "Login realizado com sucesso!",
-        "RegisterSuccess": "Conta criada com sucesso!",
-
-        "LoginButton": "Entrar",
-        "RegisterButton": "Criar conta grátis",
-        "LoginButtonLoading": "Entrando...",
-        "RegisterButtonLoading": "Criando conta...",
-
-        "PasswordStrength": "Força da senha",
-
-        "formLoginTail": {
-          "1": "Não tem conta?",
-          "2": "Criar conta grátis"
-        }, 
-        "formRegisterTail": {
-          "1": "Já tem conta?", 
-          "2": "Entrar"
-        },
-
-        "name": "Nome", 
-        "surname": "Sobrenome",
-        "email": "Email", 
-        "password": "Senha", 
-        "login": "Entrar", 
-        "register": "Criar conta", 
-        "remember": "Lembrar de mim",
-        "forgotPassword": "Esqueci minha senha"
+  "login": {
+    "leftPageLogin": {
+      "welcome": "Bem-vindo de volta",
+      "title-one": "Acesse a sua ",
+      "title-two": "conta",
+      "title-three": " agora",
+      "subtitle": "Continue de onde parou. Seus dados, declarações e faturamento estão todos aqui.",
+      "features": {
+        "one": "Segurança com criptografia de ponta",
+        "two": "Acesso em qualquer dispositivo",
+        "three": "Suporte 24 horas por dia"
+      }
     },
-
-    "nav": {
+    "leftPageRegister": {
+      "welcome": "Comece agora, é grátis",
+      "title-one": "Cuide do seu ",
+      "title-two": "negocio",
+      "title-three": " com a gente",
+      "subtitle": "Gerencie seu CNPJ, DAS e faturamento de forma simples e inteligente.",
+      "features": {
+        "one": "Cadastro rápido em menos de 1 minuto",
+        "two": "Sem burocracia, sem custo",
+        "three": " "
+      }
+    },
+    "formLogin": "Bem-vindo de volta 👋",
+    "formRegister": "Crie sua conta 🚀",
+    "formLoginSub": "Use seu e-mail e senha para acessar",
+    "formRegisterSub": "Preencha os dados abaixo para começar",
+    "LoginSuccess": "Login realizado com sucesso!",
+    "RegisterSuccess": "Conta criada com sucesso!",
+    "LoginButton": "Entrar",
+    "RegisterButton": "Criar conta grátis",
+    "LoginButtonLoading": "Entrando...",
+    "RegisterButtonLoading": "Criando conta...",
+    "PasswordStrength": "Força da senha",
+    "formLoginTail": {
+      "1": "Não tem conta?",
+      "2": "Criar conta grátis"
+    },
+    "formRegisterTail": {
+      "1": "Já tem conta?",
+      "2": "Entrar"
+    },
+    "name": "Nome",
+    "surname": "Sobrenome",
+    "email": "Email",
+    "password": "Senha",
+    "login": "Entrar",
+    "register": "Criar conta",
+    "remember": "Lembrar de mim",
+    "forgotPassword": "Esqueci minha senha"
+  },
+  "nav": {
     "inicio": "Início",
     "faturamento": "Faturamento",
     "vendas": "Vendas",
     "alertas": "Alertas",
     "aprendizado": "Aprendizado",
-    "documentos": "Documentos"
+    "documentos": "Documentos",
+    "estoque": "Estoque"
   },
-
   "profile": {
     "estoque": "Estoque",
     "sair": "Sair"
   },
-
   "dashboard": {
     "overview": "Visão geral",
     "greetings": "Bom dia, ",
@@ -84,9 +75,12 @@
     "alertsCard": "Alertas",
     "viewAll": "Ver todos",
     "chatDisabled": "CHAT DESATIVADO",
-    "aiDisabled": "IA DESATIVADA"
+    "aiDisabled": "IA DESATIVADA",
+    "bestSellingProduct": "Produto mais vendido",
+    "otherProducts": "Outros produtos",
+    "noProductSales": "Nenhum produto vendido",
+    "ofMonth": "do mês"
   },
-
   "dash-stats": {
     "monthRevenue": "Faturamento do mês",
     "monthSales": "Vendas do mês",
@@ -100,7 +94,6 @@
     "loadingSales": "Carregando dados de vendas...",
     "salesUnavailable": "Não foi possível carregar as vendas."
   },
-
   "alerts": {
     "heading": "Notificações",
     "title": "Seus ",
@@ -108,7 +101,6 @@
     "attention": "Atenção necessária",
     "resolved": "Resolvidos e informativos"
   },
-
   "learning": {
     "heading": "Educacional",
     "titleBefore": "Módulo de ",
@@ -118,7 +110,6 @@
     "serviceTitle": "Seguros para",
     "serviceTitle-em": "MEIs"
   },
-
   "revenue": {
     "heading": "Financeiro",
     "titleBefore": "Dashboard de ",
@@ -136,7 +127,6 @@
     "attentionZone": "Zona de atenção a partir de 80%",
     "byMonth": "Faturamento por mês"
   },
-
   "documents": {
     "heading": "Docs",
     "title": "Seus ",
@@ -146,101 +136,107 @@
     "selectFile": "Selecionar arquivo",
     "documentsList": "Todos os documentos",
     "uploadedSuccess": "Documento enviado com sucesso!"
-  }, 
-
+  },
   "stock": {
-  "back": "Voltar para o Dashboard",
-  "inventory": "Inventário",
-  "title": "Controle de ",
-  "title-em": "Estoque",
-  "subtitle": "Gerencie produtos, quantidades e alertas em tempo real",
-
-  "tryAgain": "Tentar novamente",
-
-  "attention": "Atenção",
-  "outOfStock": "produto(s) sem estoque",
-  "and": "e",
-  "critical": "com quantidade crítica",
-
-  "stats": {
-    "total": "Total",
-    "items": "itens",
-    "totalValue": "Valor total",
-    "inStock": "em estoque",
-    "lowStock": "Estoque baixo",
-    "criticalItems": "item(s)",
-    "critical": "críticos",
-    "outOfStock": "Zerados",
-    "withoutStock": " sem estoque"
-  },
-
-  "actions": {
-    "add": "Adicionar produto",
-    "movement": "Editar",
-    "remove": "Excluir"
-  },
-
-  "products": {
-    "title": "Produtos em estoque",
-    "product": "Produto",
-    "quantity": "Quantidade",
-    "unitPrice": "Preço unit.",
-    "status": "Status",
-    "actions": "Ações",
-    "none": "Nenhum produto cadastrado",
-    "loading": "Carregando produtos…"
-  },
-
-  "status": {
-    "inStock": "Em estoque",
-    "low": "Estoque baixo",
-    "out": "Zerado"
-  },
-
-  "modal": {
-    "newProduct": "Novo ",
-    "newProductEm": " produto",
-    "newProductAfter": " ",
-    "editProduct": "Editar produto",
-    "newProductDescription": "Informe os dados do novo produto",
-   "editProductDescription": "Atualize o nome e o preço do item",
-    "productName": "Nome do produto",
-    "productNamePlaceholder": "Ex: Dell i7 Laptop",
-    "unitPrice": "Preço unitário (R$)",
-    "pricePlaceholder": "0.00",
-    "cancel": "Cancelar",
-    "save": "✓ Salvar",
-    "saving": "Salvando…",
-
-    "movement": "Movimentar ",
-    "movementEm": "estoque",
-    "movementDescription": "Registre entrada ou saída de unidades",
-    "deleteTitle": "Excluir ",
-    "deleteTitleEm": "produto",
-    "deleteMessage": "Você deseja remover esse produto?",
-    "confirmDelete": "Confirmar",
-    "entry": "▲ Entrada",
-    "exit": "▼ Saída",
-    "quantity": "Quantidade",
-    "quantityPlaceholder": "Ex: 10",
-    "processing": "Processando…",
-    "confirmEntry": "▲ Confirmar entrada",
-    "confirmExit": "▼ Confirmar saída"
-  },
-
-  "messages": {
-    "nameRequired": "Nome é obrigatório.",
-    "validQuantity": "Informe uma quantidade válida.",
-    "insufficientQuantity": "Quantidade insuficiente. Estoque atual: {{quantity}}",
-    "loadError": "Não foi possível carregar os produtos. {{error}}",
-    "addSuccess": "✓ Produto adicionado!",
-    "removeConfirm": "Remover \"{{name}}\"?",
-    "removeSuccess": "Produto removido.",
-    "movementSuccess": "{{emoji}} {{type}} de {{quantity}} un. registrada!",
-    "error": "Erro: {{error}}"
+    "back": "Voltar para o Dashboard",
+    "inventory": "Inventário",
+    "title": "Controle de ",
+    "title-em": "Estoque",
+    "subtitle": "Gerencie produtos, quantidades e alertas em tempo real",
+    "tryAgain": "Tentar novamente",
+    "attention": "Atenção",
+    "outOfStock": "produto(s) sem estoque",
+    "and": "e",
+    "critical": "com quantidade crítica",
+    "stats": {
+      "total": "Total",
+      "items": "itens",
+      "totalValue": "Valor total",
+      "inStock": "em estoque",
+      "lowStock": "Estoque baixo",
+      "criticalItems": "item(s)",
+      "critical": "críticos",
+      "outOfStock": "Zerados",
+      "withoutStock": " sem estoque"
+    },
+    "actions": {
+      "add": "Adicionar produto",
+      "movement": "Editar",
+      "remove": "Excluir"
+    },
+    "products": {
+      "title": "Produtos em estoque",
+      "product": "Produto",
+      "quantity": "Quantidade",
+      "unitPrice": "Preço unit.",
+      "status": "Status",
+      "actions": "Ações",
+      "none": "Nenhum produto cadastrado",
+      "loading": "Carregando produtos…"
+    },
+    "status": {
+      "inStock": "Em estoque",
+      "low": "Estoque baixo",
+      "out": "Zerado"
+    },
+    "modal": {
+      "newProduct": "Novo ",
+      "newProductEm": " produto",
+      "newProductAfter": " ",
+      "editProduct": "Editar produto",
+      "newProductDescription": "Informe os dados do novo produto",
+      "editProductDescription": "Atualize o nome e o preço do item",
+      "productName": "Nome do produto",
+      "productNamePlaceholder": "Ex: Dell i7 Laptop",
+      "unitPrice": "Preço unitário (R$)",
+      "pricePlaceholder": "0.00",
+      "cancel": "Cancelar",
+      "save": "✓ Salvar",
+      "saving": "Salvando…",
+      "movement": "Movimentar ",
+      "movementEm": "estoque",
+      "movementDescription": "Registre entrada ou saída de unidades",
+      "deleteTitle": "Excluir ",
+      "deleteTitleEm": "produto",
+      "deleteMessage": "Você deseja remover esse produto?",
+      "confirmDelete": "Confirmar",
+      "entry": "▲ Entrada",
+      "exit": "▼ Saída",
+      "quantity": "Quantidade",
+      "quantityPlaceholder": "Ex: 10",
+      "processing": "Processando…",
+      "confirmEntry": "▲ Confirmar entrada",
+      "confirmExit": "▼ Confirmar saída"
+    },
+    "messages": {
+      "nameRequired": "Nome é obrigatório.",
+      "validQuantity": "Informe uma quantidade válida.",
+      "insufficientQuantity": "Quantidade insuficiente. Estoque atual: {{quantity}}",
+      "loadError": "Não foi possível carregar os produtos. {{error}}",
+      "addSuccess": "✓ Produto adicionado!",
+      "removeConfirm": "Remover \"{{name}}\"?",
+      "removeSuccess": "Produto removido.",
+      "movementSuccess": "{{emoji}} {{type}} de {{quantity}} un. registrada!",
+      "error": "Erro: {{error}}"
+    },
+    "history": {
+      "title": "Histórico de movimentações",
+      "records": "registros",
+      "empty": "Nenhuma movimentação registrada.",
+      "loadError": "Não foi possível carregar o histórico: {{error}}",
+      "date": "Data",
+      "product": "Produto",
+      "type": "Tipo",
+      "quantity": "Quantidade",
+      "productId": "ID do produto",
+      "types": {
+        "entrada": "Entrada",
+        "saida": "Saída",
+        "venda": "Venda",
+        "exclusao": "Exclusão"
+      }
     }
   },
-    
   "vendas": {
     "eyebrow": "ESTOQUE / VENDAS",
     "titleBefore": "Controle de ",
@@ -253,7 +249,6 @@
       "totalRevenue": "Receita Total",
       "totalRevenueHint": "Soma de todas as vendas"
     },
-
     "actions": {
       "newSale": "Nova Venda",
       "register": "Registrar",
@@ -261,7 +256,6 @@
       "close": "Fechar",
       "saving": "Registrando..."
     },
-
     "history": {
       "title": "Histórico de Vendas",
       "subtitle": "Consulte suas vendas e os itens de cada registro.",
@@ -282,7 +276,6 @@
       "deletedProduct": "Produto excluído",
       "noItems": "Nenhum item disponível."
     },
-
     "form": {
       "kicker": "NOVA VENDA",
       "title": "Registrar ",
@@ -306,7 +299,6 @@
         "saveFailed": "Não foi possível registrar a venda. Tente novamente."
       }
     },
-
     "confirm": {
       "title": "Confirmar venda?",
       "description": "Deseja registrar essa venda? Confira os dados antes de prosseguir.",

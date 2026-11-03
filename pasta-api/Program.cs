@@ -8,6 +8,7 @@ using Repositories;
 using Repositories.Interfaces;
 using Services;
 using Services.Interfaces;
+
 // vars
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,7 @@ builder.Services.AddAuthentication(options =>
 
 // database connection
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(connectionString!, ServerVersion.AutoDetect(connectionString!)));
+    options.UseMySql(connectionString!, new MySqlServerVersion(new Version(8, 0, 0))));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -66,10 +67,9 @@ app.MapControllers();
 
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
     try
     {
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         db.Database.Migrate();
     }
     catch (Exception ex)

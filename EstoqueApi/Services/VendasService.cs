@@ -3,6 +3,7 @@ using EstoqueApi.Data;
 using EstoqueApi.Models;
 using EstoqueApi.DTOs;
 using Microsoft.EntityFrameworkCore;
+using EstoqueApi.Utils;
 
 namespace EstoqueApi.Services
 {
@@ -62,7 +63,7 @@ namespace EstoqueApi.Services
             var venda = new Venda
             {
                 UsuarioId = usuarioId,
-                Data = DateTime.UtcNow,
+                Data = DataHoraBrasil.Agora(),
                 ValorTotal = 0
             };
 
@@ -100,7 +101,7 @@ namespace EstoqueApi.Services
                         Tipo = "Venda",
                         Quantidade = quantidade,
                         VendaId = venda.Id,
-                        Data = DateTime.UtcNow
+                        Data = DataHoraBrasil.Agora()
                     });
             }
 
@@ -120,11 +121,12 @@ namespace EstoqueApi.Services
                 .Select(v => new VendaResponse
                 {
                     Id = v.Id,
-                    Data = v.Data,
+                    Data = DataHoraBrasil.ComFuso(v.Data),
                     ValorTotal = v.ValorTotal,
                     Itens = v.Itens.Select(i => new ItemVendaResponse
                     {
-                        ProdutoId = i.ProdutoId,
+                        ProdutoId = i.ProdutoId ?? i.ProdutoIdHistorico,
+                        ProdutoIdHistorico = i.ProdutoIdHistorico,
                         NomeProduto = i.NomeProduto,
                         Quantidade = i.Quantidade,
                         PrecoUnitario = i.PrecoUnitario,
