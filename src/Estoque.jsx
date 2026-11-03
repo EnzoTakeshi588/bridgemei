@@ -7,6 +7,7 @@ import "./styles/Estoque.css";
 // ── Helpers ────────────────────────────────────────────────────────────────
 const DEFAULT_MIN  = 5; // min não existe na API, mantemos local
 const sku          = (id) => "SKU-" + String(id).padStart(4, "0");
+const normalizarTipoMovimentacao = (tipo) => String(tipo || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 const getStatus    = (p)  => (p.quantidade === 0 ? "out" : p.quantidade <= (p.min ?? DEFAULT_MIN) ? "low" : "ok");
 const getBarW      = (p)  => { const m = Math.max(p.quantidade, (p.min ?? DEFAULT_MIN) * 2, 1); return Math.min(100, Math.round((p.quantidade / m) * 100)); };
 const getBarC      = (p)  => ({ out:"#ef4444", low:"#f59e0b", ok:"#22c55e" }[getStatus(p)]);
@@ -553,8 +554,8 @@ export default function Estoque({ onNavegar, embedded = false }) {
                         <td>{m.data ? new Date(m.data).toLocaleString("pt-BR") : "—"}</td>
                         <td>{m.nomeProduto}</td>
                         <td>
-                          <span className={`est-history-type est-history-type--${String(m.tipo || "").normalize("NFD").replace(/[\\u0300-\\u036f]/g, "").toLowerCase()}`}>
-                            {t("stock.history.types." + String(m.tipo).toLowerCase(), { defaultValue: m.tipo })}
+                          <span className={`est-history-type est-history-type--${normalizarTipoMovimentacao(m.tipo)}`}>
+                            {t("stock.history.types." + normalizarTipoMovimentacao(m.tipo), { defaultValue: m.tipo })}
                           </span>
                         </td>
                         <td>{m.quantidade}</td>
